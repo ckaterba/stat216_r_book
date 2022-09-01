@@ -1,7 +1,7 @@
 --- 
 title: "R and RStudio for STAT216"
 author: "Charles Katerba"
-date: "`r Sys.Date()`"
+date: "Last update: `r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: [book.bib, packages.bib]
@@ -27,7 +27,54 @@ The chapters of this book will be organized to follow the flow of STAT216 so tha
 
 ## Getting started
 
-Using R and R Studio. 
+The [programming language R](https://en.wikipedia.org/wiki/R_programming_language) is somewhat old, appearing first in 1993. That said, it is still quite useful and will remain so for a long time coming since it is an open-source programming language and software environment.  This means that the development and maintenance of the language and software are in the hands of all users, not just a small, select group of developers. Fear not! You will not have to do any developing. For our purposes, the open-source nature of R implies that the community of users will continue to grow the features and power of the language to meet the needs of the times.  
+
+There are two mains ways to use R: through a cloud computing service or through an installation directly to your computer. The easiest way to start is through a cloud computing service. In both cases, we recommend you use the IDE *RStudio* as it makes using R more intuitive and straightforward. Below we describe how to use RStudio on the cloud and on your own computer.
+
+1.  RStudio (which will rebrand as Posit in October 2022) hosts its own cloud computing service called [RStudio Cloud](https://rstudio.cloud/). To get started:
+
+    - Click the previous link to access their website. 
+    
+    - Create a new account, for free. Your free account gives 25 project hours per month. This should be enough for your work in STAT216, but there's a chance you'll need more. There is a small fee in this case.
+    
+    - Click "Start a new project" in the top right corner of your browser. This will open an RStudio session for you.
+    
+    - Change the name of your project to something evocative to tell your future self what you were working on. Some ideas: STAT216 HW, STAT216 Activities, etc. 
+    
+    - You are now ready to rip!
+    
+2. You can also download a desktop version of RStudio. Accessing R in this way is slightly more involved, but offers more flexibility and no computational limitations. It is also free.  To install R to your own computer:
+
+    - First, [you must install R](https://cran.rstudio.com/). This link takes you to CRAN, the Comprehensive R Archive Network, where you can download the latest version of R. Be sure to select the download appropriate to your operating system and follow the instructions provided at the link above. 
+    
+    - Next, [download and install RStudio Desktop](https://www.rstudio.com/products/rstudio/download/) following the directions at the link. Again, be sure to select the download appropriate to your operating sytem.  
+    
+    - You can now open RStudio by finding the application on your computer. You, too, are now ready to rip!
+    
+No matter what version of RStudio you are using, you should now see a window that looks something like this on your computer.
+
+![An RStudio terminal.](images/rstudio_screenshot.png)
+
+
+
+Before proceeding, notice that your RStudio session has 3 windows open.
+
+1. **The console:** this is the most interactive window in your session. You can run quick calculations here. For example, type `2 + 2` then hit enter.  
+
+2. **Files/plots window:** The files tab shows all of the files present in your current working directory.  We don't need to talk much about file management here and will cover it as needed in the future. When you make quick plots, they will appear under the plot tab. For example, evaluating
+```{r}
+plot(rnorm(10), rnorm(10))
+```
+in the console will produce a plot similar to the one above in the Plots panel. This little bit of code generates 2 collections of 10 random numbers and makes a scatter plot of the results. 
+
+
+3. **Environment window:** This window displays the names of the objects you have stored in your computer's memory. As an example, if you evaluate `x <- rnorm(10)`, you will see the value `x` appear in the Environment tab. It is good to check the values you have stored when you're running into problems with your code.   
+
+At this point, you can skim the rest of this chapter or move on to [RStudio basics].
+
+## Code in this book
+
+You should be able to copy and paste all code chunks in this book into your own RStudio terminal and reproduce the results you see in the book.  All data used in this book will be sourced from  base R, other commonly used packages, or appropriate links will be given for downloaded data sets. The author will endeavor to be clear about what packages are loaded and where data sets are coming from throughout the book.   
  
 ## Debugging
 
@@ -41,12 +88,21 @@ In this class, you will very likely come to a point where some code you've writt
 
 3. Reach out to your instructor and/or the STEM tutoring center at FVCC.  These people are invaluable resources.  Be sure to not only share the error code, but the entire chunk of code that you think is problematic. Even better, share all of your code. 
 
-4. The website [CrossValidated](https://stats.stackexchange.com/) is a stack exchange where users can ask and answers questions about statistics, especially R coding. You may be able to get questions answered here, but be warned: the community is very picky about how you ask questions and about the type of questions you ask.  
+4. The website [CrossValidated](https://stats.stackexchange.com/) is a stack exchange where users can ask and answers questions about statistics, especially R coding. You may be able to get questions answered here, but be warned: the community is very picky about how you ask questions and about the type of questions you ask.
 
-## Code chunks in this book
+## Other resources
 
-You should be able to copy and paste all code chunks in this book into your own RStudio terminal and reproduce the results you see in the book.  All data used in this book will be sourced from  base R or other commonly used packages. The author will endeavor to be clear about what packages are loaded and where data sets are coming from throughout the book. 
+As mentioned above, these notes are only going to give you a brief glimpse of R and RStudio. The resources linked below will either provide a much more in-depth look at R and its applications or provide a very quick summary of certain packages and/or features. 
 
+1.  [RStudio cheatsheets](https://www.rstudio.com/resources/cheatsheets/).  These are invaluable as they provide a lot of information in a small amount of space.
+
+4. [A list of helpful R functions](https://sites.calvin.edu/scofield/courses/m143/materials/RcmdsFromClass.pdf). Thomas Scofield made a super consice list of commonly used base R functions and provided examples on how to use them. 
+
+2. [R for Data Science](https://r4ds.had.co.nz/). As the title suggests, this book focuses more on data science than on statistics, so it spends more time on data visualization, programming, data wrangling, and modeling. 
+
+3. [Advanced R](https://adv-r.hadley.nz/index.html). This book goes into the more nitty gritty details of programming in R. 
+
+In writing this book the author has referenced many of the works above along with a collection of other resources.  See the bibliography for a somewhat complete list. 
 
 <!-- You can render the HTML version of this example book without changing anything: -->
 
