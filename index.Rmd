@@ -1,0 +1,79 @@
+--- 
+title: "R and RStudio for STAT216"
+author: "Charles Katerba"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, packages.bib]
+# url: your book url like https://bookdown.org/yihui/bookdown
+# cover-image: path to the social sharing image like images/cover.jpg
+description: |
+  This is a minimal example of using the bookdown package to write a book.
+  The HTML output format for this example is bookdown::gitbook,
+  set in the _output.yml file.
+link-citations: yes
+github-repo: rstudio/bookdown-demo
+---
+
+# About
+
+This 'book' is intended to be a quick and dirty introduction to R (a statistical programming language) and RStudio (an *integrated development environment*, or IDE, for R) for students in the introductory statistics class at Flathead Valley Community College. This book aims to introduce you to all of the features you'll need to use in R to be successful in the course.  Moreover, we hope that it will help you develop the tools you need to use R in your future endeavors.  This book is by no means a complete guide to everything one can do in R, but the aim is to cut down on content and theory in the name of practicality.   
+
+This class will provide many students with their first interaction with computer programming. The coding required  is not extensive and the coding-based activities are heavily scaffolded. The point of including R in this course is not to introduce another layer of difficulty; the opposite is true in fact!  The goal is to give you a glimpse at how programming can make your life easier, at least when it comes to statistics and data science. In the process, you will hopefully add another useful and practical tool to your tool belt. Computers are not exiting our lives any time soon and being somewhat familiar with a little programming will only be an advantage. Some might say such familiarity will become essential. 
+
+## Organization
+
+The chapters of this book will be organized to follow the flow of STAT216 so that reading the book sequentially teaches you the tools as you need them in class. This book will almost certainly be a work in progress, so if there's something that you'd like to see or if you think something is missing, don't hesitate to reach out to the author (or your instructor if they are different people).   
+
+## Getting started
+
+Using R and R Studio. 
+ 
+## Debugging
+
+In this class, you will very likely come to a point where some code you've written will not run.  This experience can be very frustrating. Remember, it happens to everyone and it frustrates everyone. Hadley Wickham provides a a detailed guide on  how to debug code in this book [Advanced R](https://adv-r.hadley.nz/debugging.html), but here is my take with a few additions. 
+
+0. Double and triple check your syntax. New coders are often stymied by small syntax mistakes.  For instance, if you want to use a function called `f` in R, but you type `F` instead, the machine won't do the right thing. Similarly, be careful about commas; for example, elements of lists need to be separated by commas and they can be easy to forget. There are a too many syntax errors one can make to list here. 
+
+1. Search the internet for the error codes you're seeing. You can simply copy and paste them into your web browser. Most likely someone before you has made the same mistake and asked the same question.
+
+2. Figure out exactly where the error is. This is harder than it seems like it should be sometimes.  In short pieces of code it is usually easy to identify, but when you become more advanced and write longer code the problem can get tricky.
+
+3. Reach out to your instructor and/or the STEM tutoring center at FVCC.  These people are invaluable resources.  Be sure to not only share the error code, but the entire chunk of code that you think is problematic. Even better, share all of your code. 
+
+4. The website [CrossValidated](https://stats.stackexchange.com/) is a stack exchange where users can ask and answers questions about statistics, especially R coding. You may be able to get questions answered here, but be warned: the community is very picky about how you ask questions and about the type of questions you ask.  
+
+## Code chunks in this book
+
+You should be able to copy and paste all code chunks in this book into your own RStudio terminal and reproduce the results you see in the book.  All data used in this book will be sourced from  base R or other commonly used packages. The author will endeavor to be clear about what packages are loaded and where data sets are coming from throughout the book. 
+
+
+<!-- You can render the HTML version of this example book without changing anything: -->
+
+<!-- 1. Find the **Build** pane in the RStudio IDE, and -->
+
+<!-- 1. Click on **Build Book**, then select your output format, or select "All formats" if you'd like to use multiple formats from the same book source files. -->
+
+<!-- Or build the book from the R console: -->
+
+<!-- ```{r, eval=FALSE} -->
+<!-- bookdown::render_book() -->
+<!-- ``` -->
+
+<!-- To render this example to PDF as a `bookdown::pdf_book`, you'll need to install XeLaTeX. You are recommended to install TinyTeX (which includes XeLaTeX): <https://yihui.org/tinytex/>. -->
+
+<!-- ## Preview book -->
+
+<!-- As you work, you may start a local server to live preview this HTML book. This preview will update as you edit the book when you save individual .Rmd files. You can start the server in a work session by using the RStudio add-in "Preview book", or from the R console: -->
+
+<!-- ```{r eval=FALSE} -->
+<!-- bookdown::serve_book() -->
+<!-- ``` -->
+
+
+<!-- ```{r include=FALSE} -->
+<!-- # automatically create a bib database for R packages -->
+<!-- knitr::write_bib(c( -->
+<!--   .packages(), 'bookdown', 'knitr', 'rmarkdown' -->
+<!-- ), 'packages.bib') -->
+<!-- ``` -->
