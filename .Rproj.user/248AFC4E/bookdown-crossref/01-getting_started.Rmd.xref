@@ -1,4 +1,18 @@
-h1:hello-bookdown Hello bookdown
-h2:a-section A section
-h3:an-unnumbered-section An unnumbered section
+h1:rstudio-basics RStudio basics
+h2:a-big-calculator A big calculator
+h3:numbers Numbers
+h3:strings Strings
+h3:logicals-and-logical-operators Logicals and Logical operators
+h2:naming-things Naming things
+h2:lists-and-vectors Lists and vectors
+h3:creating-lists Creating lists
+h3:subsetting-lists Subsetting lists
+h2:packages Packages
+h2:data-frames-and-tibbles Data frames and tibbles
+h3:whats-the-difference Whats the difference?
+h3:using-data-framestibbles Using data frames/tibbles
+h3:creating-data-framestibbles Creating data frames/tibbles
+h4:manual-entry Manual entry
+h4:reading-files Reading files
+h2:r-markdown-documents R Markdown documents
 

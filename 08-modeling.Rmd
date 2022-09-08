@@ -1,0 +1,9 @@
+# Modeling relationships
+
+To do
+
+## Simple linear regression
+
+## Multiple linear regression
+
+## Bonus topic: logistic regression

@@ -1,6 +1,6 @@
-h1:cross Cross-references
-h2:chapters-and-sub-chapters Chapters and sub-chapters
-h2:captioned-figures-and-tables Captioned figures and tables
-fig:nice-fig Here is a nice figure!
-tab:nice-tab Here is a nice table!
+h1:cross Summary statistics and data visualization
+h2:summary-statistics-in-r Summary statistics in R
+h2:data-visualization Data visualization
+h3:base-r Base R
+h3:ggplot2 
 

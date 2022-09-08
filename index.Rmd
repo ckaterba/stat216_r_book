@@ -75,7 +75,27 @@ At this point, you can skim the rest of this chapter or move on to [RStudio basi
 ## Code in this book
 
 You should be able to copy and paste all code chunks in this book into your own RStudio terminal and reproduce the results you see in the book.  All data used in this book will be sourced from  base R, other commonly used packages, or appropriate links will be given for downloaded data sets. The author will endeavor to be clear about what packages are loaded and where data sets are coming from throughout the book.   
- 
+
+## Help
+
+There are many avenues for finding help using R.  Your instructor, the STEM tutoring center, and the internet are great places to start. For the latter, you have to carefully phrase what you're asking, but if you do so, you can usually find great results with some clear examples. 
+
+R also has a lot of built in help documentation.  You can access this documentation using a `?` before the name of the function/object that you're intereted in. For example, R has a function called `prop.test(...)` that we'll learn how to use in this class. To see R's documententation for `prop.test(...)`, simply run 
+
+```{r, eval = FALSE}
+?prop.test
+```
+
+in the console. The examples are usually helpful, but sometimes can create more confusion. In any case, this is a great place to start when you feel confused about a particular function or object.
+
+If you bring up the documentation for an in-built data set, it will describe what the variables of that data set are. For instance, try running 
+
+```{r, eval = FALSE}
+?mtcars
+```
+
+in the console
+
 ## Debugging
 
 In this class, you will very likely come to a point where some code you've written will not run.  This experience can be very frustrating. Remember, it happens to everyone and it frustrates everyone. Hadley Wickham provides a a detailed guide on  how to debug code in this book [Advanced R](https://adv-r.hadley.nz/debugging.html), but here is my take with a few additions. 

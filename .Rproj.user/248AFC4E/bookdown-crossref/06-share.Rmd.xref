@@ -1,5 +1,12 @@
-h1:sharing-your-book Sharing your book
-h2:publishing Publishing
-h2:pages 404 pages
-h2:metadata-for-sharing Metadata for sharing
+h1:inferential-statistics-take-2 Inferential statistics, take 2
+h2:analyzing-categorical-variables Analyzing categorical variables
+h3:single-sample Single sample
+h3:two-sample Two sample
+h3:chi-squared-goodness-of-fit-test Chi-squared goodness of fit test
+h3:chi-squared-test-of-independence Chi-squared test of independence
+h2:analyzing-numerical-variables Analyzing numerical variables
+h3:single-sample-mean Single sample mean
+h3:two-sample-mean Two sample mean
+h3:paired-data Paired data
+h3:analysis-of-variance-anova Analysis of variance (ANOVA)
 

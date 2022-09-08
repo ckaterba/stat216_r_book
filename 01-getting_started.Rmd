@@ -125,7 +125,9 @@ y
 x/y 
 ```
 
-**Technical aside. Only read this if you have experience programming elsewhere, skip to next section otherwise.** R makes copies of objects in a different way from, say, Python (and many other languages).The difference lies in deep vs shallow copies. Basically, a deep copy creates an entirely new object in memory, but a shallow copy merely points to the original object's position in memory. R will actually create a shallow copy until the original object is modified, then it will create a deep copy in order to save on memory. To illustrate this point, if you were to run the following code in Python
+Once you've named an object and stored it in memory, you can use its name anywhere else to call the value associated to the name. 
+
+**Read the following only if you've had some programming experience. If not, skip to the next section.** R makes copies of objects in a different way from, say, Python (and many other languages).The difference lies in deep vs shallow copies. Basically, a deep copy creates an entirely new object in memory, but a shallow copy merely points to the original object’s position in memory. R will actually create a shallow copy until the original object is modified, then it will create a deep copy in order to save on memory. To illustrate this point, if you were to run the following code in Python:
 
 ```{r, eval = FALSE}
 x = [1,2,3]
@@ -134,21 +136,122 @@ x.append(5)
 y
 ```
 
-it would print `[1,2,3,5]` since, in Python, `y` was a shallow copy of `x`.  On the other had, the equivalent code in R is
+it would print `[1,2,3,5]`. However, the equivalent code in R is
 
 ```{r}
 x = 1:3
 y = x # shallow copy of x created here
-x <- append(x, 5) #but deep copy of original x created here
+x <- append(x, 5) #but deep copy of original x created here for y
 y
 ```
-It's good to know how R is behaving; deep copies can end up using more memory, but that won't be an issue in this class with modern computing power
+
+It’s good to know how R is behaving; deep copies can end up using more memory, but that won’t be an issue in this class with modern computing power.
 
 ## Lists and vectors
 
+One of the many advantages to using a computer for mathematics, statistics, and data analysis is their ability to store and organize large chunks of information. A list/vector is the most basic way to start organizing data in R. This section will guide you through creating and manipulating lists. 
+
 ### Creating lists
 
+The most basic tool for creating a list in R is the function `c(..)`.  According to the documentation `c(...)` "is a generic function which combines its arguments."  All that to say that it is a function that creates a list. Here's a few examples. You can make lists with any types of data in them. 
+
+```{r}
+x <- c(1,2,3)
+y <- c("cat", "dog", "rabbit")
+```
+
+You can combine lists easily with the `c(...)` function as well, but notice in the example below that something funny happens.
+
+```{r}
+z <- c(x, y)
+z
+```
+
+R coerced the numbers from the list `x` into characters/strings because `y` contains strings. This is a subtlety that can sometimes cause headaches.  If your lists all contain the same types of objects, you have nothing to worry about. 
+
+Throughout this course you'll often want to know how many objects are in a list and most times we don't want to manually count them. The `length` function does this for us. The examples above are easy to count by hand, but as a quick check:
+
+```{r}
+length(x)
+length(y)
+length(z)
+```
+
 ### Subsetting lists
+
+After defining a list, sometimes we want to access only certain elements of that list; this is called **subsetting**. We'll spend more time on fancier subsetting methods later in this course, but this will get us started with the basics. *Technical note:* R indexing starts at 1 and not 0, a difference between R and some other programming languages like python. 
+
+To get started, we'll create a long list of randomly generated numbers. 
+
+```{r}
+rando <- runif(1000, min = 0, max = 100)
+length(rando)
+```
+
+This list has 1000 elements in it. We can find the 497th element using
+
+```{r}
+rando[497]
+```
+
+and in general, use `listName[number]`. We can also easily select ranges of indicies. For instance, suppose we want to know what the first 10 values in our list are.  
+
+```{r}
+rando[1:10]
+```
+
+Finally, we can pick out specific elements from our big list using a smaller list of our desired indices. For example, if we wanted the entries number 2,3,5,7,11, and 13 from our list, we could use the following.
+
+```{r}
+indicies <- c(2,3,5,7,11,13)
+rando[indicies]
+```
+
+
+### Special lists
+
+The last section taught us how to make the most basic type of list. While useful, making lists in this way can be tedious because it requires one to type in all values. Often out in the wild, you will want to create lists that follow specific patterns. For instance: the letters "c" through "p"; a list of the integers from 1 to 100; a list of numbers from -10 to 10, spaced by .01; the letters "d", "g", and "z" repeated 1000 times each. It is easy to construct these types of lists in R with minimal typing. 
+
+*Lists of integers*: to make a list of sequential integers in R, use the format `start : end`, for instance `2:5` will return the list `2,3,4,5`.
+
+```{r}
+x <- -8:12
+x
+length(x)
+```
+
+*Lists of sequential numbers that are not integers:* The function `seq` produces sequences of numbers that follow a particular pattern. The general syntax is `seq( from = STARTING VALUE, to = ENDING VALUE, by = SPACE BETWEEN ENTRIES)`
+
+So if we wanted a list of all numbers from -10 to 10, spaced by .01, we'd use
+
+```{r}
+foo <- seq(from = -10, to = 10, by = .01)
+```
+
+We can access the first 5 elements of this list and count the number of elements in our list `foo` with the following.  
+
+```{r}
+foo[1:5]
+length(foo)
+```
+
+*Lists of sequential letters:* R has two in-built lists of letters called `letters` and `LETTERS`. No surprise, one of them is a list of lower case letters, the other upper case. 
+
+```{r}
+letters
+```
+
+To select the 4th through 11th lowercase letters of the alphabet, use the following syntax (which will be explained in a subsequent section). 
+
+```{r}
+letters[4:11]
+```
+
+*Lists with a repeating patterns:* 
+
+
+
+### List arithmetic
 
 ## Packages
 
