@@ -106,12 +106,28 @@ TRUE + TRUE
 TRUE*FALSE
 ```
 
-- Note: R may occasionally exhibit behavior that you find goofy when comparing objects. This is usually because of *coercion*.  When comparing objects, R will try to make the objects into the same type, if possible. We don't want to get bogged down in these details, but it is something to be aware of. The following example illustrates coercion when trying to compare a string to a number. 
+**Note**: R may occasionally exhibit behavior that you find goofy when comparing objects. This is usually because of *coercion*.  When comparing objects, R will try to make the objects into the same type, if possible. We don't want to get bogged down in these details, but it is something to be aware of. The following example illustrates coercion when trying to compare a string to a number. 
 
 ```{r}
 "1" == 1 #R converts the string to 1, as a number, then compares.
 "01" == 1 # R leaves the string as is, so the objects are unequal.
 ```
+
+Finally, you can combine logical into compound expressions using the operators AND (in R AND is `&`) and OR (in R `|`).  
+
+-  The expression `P & Q` is `TRUE` if and only if `P` and `Q` are both true. 
+
+-  The expression `P | Q` yields `TRUE`if and only if at least one of `P` or `Q` is true. 
+
+Let's look at some examples in code. 
+
+```{r}
+(5 > 2) & (4 == 2^2) # both statements are true, so compound is as well
+(5 < 2) & (4 == 2^2) # first statement false, so compound is false
+(5 < 2) | (4 == 2^2) # second statement is true, so compound is true
+(5 < 2) | (4 != 2^2) # both false, so compound is false
+```
+This might seem odd right now, but this simple feature is very helpful when identifying subsets of a dataset with certain properties as well see later on in these notes. 
 
 ## Naming things
 
@@ -212,7 +228,7 @@ rando[indicies]
 
 The last section taught us how to make the most basic type of list. While useful, making lists in this way can be tedious because it requires one to type in all values. Often out in the wild, you will want to create lists that follow specific patterns. For instance: the letters "c" through "p"; a list of the integers from 1 to 100; a list of numbers from -10 to 10, spaced by .01; the letters "d", "g", and "z" repeated 1000 times each. It is easy to construct these types of lists in R with minimal typing. 
 
-*Lists of integers*: to make a list of sequential integers in R, use the format `start : end`, for instance `2:5` will return the list `2,3,4,5`.
+**Lists of integers**: to make a list of sequential integers in R, use the format `start : end`, for instance `2:5` will return the list `2,3,4,5`.
 
 ```{r}
 x <- -8:12
@@ -220,7 +236,7 @@ x
 length(x)
 ```
 
-*Lists of sequential numbers that are not integers:* The function `seq` produces sequences of numbers that follow a particular pattern. The general syntax is `seq( from = STARTING VALUE, to = ENDING VALUE, by = SPACE BETWEEN ENTRIES)`
+**Lists of sequential numbers that are not integers**: The function `seq` produces sequences of numbers that follow a particular pattern. The general syntax is `seq( from = STARTING VALUE, to = ENDING VALUE, by = SPACE BETWEEN ENTRIES)`
 
 So if we wanted a list of all numbers from -10 to 10, spaced by .01, we'd use
 
@@ -235,7 +251,7 @@ foo[1:5]
 length(foo)
 ```
 
-*Lists of sequential letters:* R has two in-built lists of letters called `letters` and `LETTERS`. No surprise, one of them is a list of lower case letters, the other upper case. 
+**Lists of sequential letters**: R has two in-built lists of letters called `letters` and `LETTERS`. No surprise, one of them is a list of lower case letters, the other upper case. 
 
 ```{r}
 letters
@@ -247,15 +263,135 @@ To select the 4th through 11th lowercase letters of the alphabet, use the follow
 letters[4:11]
 ```
 
-*Lists with a repeating patterns:* 
+**Lists with a repeating patterns**:  If you're performing an experiment or reformatting a data set, you may want to create a list with a repeated pattern. For example, suppose you have an experiment with 1000 people in the treatment group and 1000 people in the control group. The group a research subject is in is a *variable*, so should be a column in a data set. If the outcome of the experiment will be recorded in the order "treatment, control, treatment, control, etc." for all 2000 participants, we would like to easily make a list of length 2000 following this pattern. 
 
+The function `rep( x, times = n)` will do exactly this for us! In this case `x` is a list and times specifies the number of times you'd like that list to be repeated. As an example, to make the list described above, we would use the commands
 
+```{r}
+vals <- c( "treatment", "control")
+group <- rep( vals, times = 1000 )
+```
+
+To ensure this does what we want, let's look at the length of `group` and at the first 10 elements. 
+
+```{r}
+length(group)
+group[1:10]
+```
+
+Success!
 
 ### List arithmetic
 
+Lists are great for storing information, but the real power comes from being able to manipulate them. You can weak lists in a few ways: using summary functions, which we'll cover in the next chapter, and using usual arithmetic. 
+
+Let's start by defining 3 lists. 
+
+```{r}
+x <- 1:3
+y <- c(9, 18, 27)
+z <- 10:15 #note length(z) = 6
+```
+
+We'll start by adding, subtracting, multiplying, dividing lists, and exponentiate lists. We can also scale all values in a list by a constant and raise all elements to a certain power (note that R performs all of these operations component wise, so it may not be what you'd expect if you've had some experience with matrices). 
+
+```{r}
+x + y
+x - y
+x*y
+y/x
+y^x
+.5*x
+x^2
+```
+
+Many *functions* in R are vectorized, meaning that if you input a list, the function will be applied to every element of the list. For example:
+
+```{r}
+sin(x)
+log(y, 3) #log base 3
+```
+We need to be careful when doing arithmetic with lists. If we're not careful, seemingly mysterious behavior can crop up if the lists we're working with have different length. For instance, adding the lists `x` and `z` above doesn't seem to make sense since they have different lengths. But running the following returns a list with length 6.
+
+```{r}
+x + z
+```
+
+So what's going on? R will repeat the values from the shorter list until the length matches the longer one. In the example above, we're really getting the same result as
+
+```{r}
+rep(x, 2) + z
+```
+
+This feature can be annoying and confusing if you're not aware of it, but helpful and powerful if you are.  The next silly example will hopefully illustrate this point. 
+
+Suppose we want to generate a list of random numbers such that the odd numbers are between -1 and 0, but the even numbers are between 1 and 2. Here's our strategy: first, generate 10 random numbers between 0 and 1; next, add one to all the even indexed entries so that their possible range of values goes from 0 to 1 to 1 to 2; finally, multiply the odd entries by -1. In code, this looks like
+
+```{r}
+rando <- runif(10, min = 0, max = 1)
+rando <- c(0,1) + rando 
+rando <- c(-1,1)*rando
+rando
+```
+
+A more practical application of this vectorization feature is to use logical operators and use them to help subset lists. As a basic example, R will compare lists component wise or to a particular value.
+
+```{r}
+x < y
+x < 2
+```
+Remember that we can combine logicals using `&` and `|` (AND and OR).  This gives us a way to check more complicated conditions on values.  The list `rando` from above should have numbers between -1 and 0 in the odd entries and between 1 and 2 in the even. Let's check that.
+
+```{r}
+#subsetting only odd indices
+(rando <= 0  & rando >= -1)[seq(from = 1, to = 10, by = 2)]
+#subsetting only even indices
+(rando >=1  & rando <= 2)[seq(from = 2, to = 10, by = 2)] 
+```
+So the even and odd index entries of `rando` have the properties we wanted them to! Yahoo. Hopefully you are starting to see how these simple functions and features can be combined and layered into much more sophisticated gadgets. 
 ## Packages
 
+This short section changes gears. Recall that R and RStudio are both open-source projects, so much of the development lies in the hands of the community of users.  There are many features and functions built into R, but you'll occasionally run into things that are not innate to it.  When this happens, you have two options: you can either program the feature that you want on your own (which is hard), or try to figure out if someone else has already programmed the feature you're interested in.  Very often you'll find that they have and *typically* these features will be available in an R **package**. Packages are simply extensions of the base R programming language; they typically contain code, data, and documentation.
+
+In this class, we'll use only a handful of packages. Some of them are:
+
+- [tidyverse](https://www.tidyverse.org/): actually a collection of packages that utilize the same underlying syntax, grammar, etc. In principle, the tidyverse makes data science more intuitive, cleaner, and faster than base R. 
+
+- [openintro](https://cran.r-project.org/web/packages/openintro/index.html): a package that contains many of the data sets in our textbook, *OpenIntro Statistics*. 
+
+- [infer](https://infer.netlify.app/): a package that implements the tidyverse syntax and grammar for statistical inference. 
+
+- [BDSA](https://cran.r-project.org/package=BSDA): a package that has a handful of data sets and a few functions that will be useful. This package is associated with the book "Basic Statistics and Data Analysis" by Larry J. Kitchens.
+
+There are thousands of R packages available to help you accomplish almost any task you can imagine. Some fun examples:
+
+- [spotifyr](https://www.rdocumentation.org/packages/spotifyr/versions/2.2.3): a package to streamline accessing Spotify's API (application programming interface), so you can pull data on song, artist, and playlist information. There are similar packages for many of your favorite websites and applications. 
+
+- [caret](https://topepo.github.io/caret/): a consolidated machine learning library that makes creating, analyzing, and utilizing machine learning algorithms a breeze. 
+
+- [leaflet](https://cran.r-project.org/web/packages/leaflet/index.html): a package for creating interactive maps in R. You have very likely interacted with a map created in leaflet! [This link](https://ckaterba.github.io/DDP_projects/DDP_project_1_ski_heatmap) will show you some code to create a heatmap from Strava data using leaflet. 
+
+- [bookdown](https://bookdown.org/yihui/bookdown/): a package for authoring books in RStudio. The book you are reading was written using bookdown!
+
+You probably get the point: once you start using packages, the capabilities of R and RStudio are limitless. But how do you actually use them? First, you have to install the package, then load it into your current working environment. 
+
+1.  **Installing packages**: to install a package, use the function `install.packages(...)` in the console of RStudio. Be sure to put the name of the package in quotation marks. For example, to install the `tidyverse` package, execute the following code in the console:
+
+```{r, eval=FALSE}
+install.packages("tidyverse")
+```
+
+2. Once you've install a package, you have to load and attach the package to your current working environment. Use the `library(...)` function to do this. After intalling the package, you no longer need to call it with quotation marks. Thus, to attach the `tidyverse` package, execute the following in your Rstudio console: 
+
+```{r, eval = FALSE}
+library(tidyverse)
+```
+
+**Caution**: You have to attach the packages you'd like to use every time you start a new RStudio session! Alternatively, you have to load them at the beginning of your R script or R Markdown document. More on this in a coming section. 
+
 ## Data frames and tibbles
+
+To Do. 
 
 ### Whats the difference? 
 

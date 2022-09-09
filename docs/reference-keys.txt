@@ -16,7 +16,6 @@ creating-lists
 subsetting-lists
 special-lists
 list-arithmetic
-packages
 data-frames-and-tibbles
 whats-the-difference
 using-data-framestibbles

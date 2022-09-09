@@ -15,6 +15,10 @@ link-citations: yes
 github-repo: rstudio/bookdown-demo
 ---
 
+```{r, echo = F, message=F, error=FALSE}
+library(tidyverse)
+```
+
 # About
 
 This 'book' is intended to be a quick and dirty introduction to R (a statistical programming language) and RStudio (an *integrated development environment*, or IDE, for R) for students in the introductory statistics class at Flathead Valley Community College. This book aims to introduce you to all of the features you'll need to use in R to be successful in the course.  Moreover, we hope that it will help you develop the tools you need to use R in your future endeavors.  This book is by no means a complete guide to everything one can do in R, but the aim is to cut down on content and theory in the name of practicality.   

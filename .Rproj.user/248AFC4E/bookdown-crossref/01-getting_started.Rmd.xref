@@ -7,6 +7,8 @@ h2:naming-things Naming things
 h2:lists-and-vectors Lists and vectors
 h3:creating-lists Creating lists
 h3:subsetting-lists Subsetting lists
+h3:special-lists Special lists
+h3:list-arithmetic List arithmetic
 h2:packages Packages
 h2:data-frames-and-tibbles Data frames and tibbles
 h3:whats-the-difference Whats the difference?
