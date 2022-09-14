@@ -16,12 +16,13 @@ creating-lists
 subsetting-lists
 special-lists
 list-arithmetic
+packages
 data-frames-and-tibbles
-whats-the-difference
-using-data-framestibbles
-creating-data-framestibbles
-manual-entry
+creating-data-frames
+from-packages
 reading-files
+manual-entry
+using-data-frames
 r-markdown-documents
 cross
 summary-statistics-in-r

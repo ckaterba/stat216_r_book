@@ -1,16 +1,29 @@
 # Summary statistics and data visualization {#cross}
 
-TODO
+At this point you should start feeling more comfortable using R. You know how to define lists, make calculations involving lists, define data frames, install and load packages, and work in and on R Markdown documents. 
+
+Up to this point you may feel like R has made your life harder; the point of this chapter is to convince you that, at least for doing statistics, R can make your life much, much easier.
 
 ## Summary statistics in R
+
+### Numerical variables
+
+mean, median, sd, iqr quantile, min, max, summary, lists and data frames 
+
+
+### Categorical variables
+
+sample proportions, contingency tables frequency tables 
 
 ## Data visualization
 
 There are three main ways to create plots in R: base R, `lattice`, and `ggplot2`.  We will only learn about base R and `ggplot2` in this course.  In practice, I use base R to make graphs quickly to get an idea of what's going on and `ggplot2` to make more visually appealing and complicated graphics. 
 
-
-
 ### Base R
 
+scatter, histogram, box
+
 ### `ggplot2`
+
+scatter, scatter with different colors by group, histogram, box multiple factor levels, violin  
 
