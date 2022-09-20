@@ -4,24 +4,213 @@ At this point you should start feeling more comfortable using R. You know how to
 
 Up to this point you may feel like R has made your life harder; the point of this chapter is to convince you that, at least for doing statistics, R can make your life much, much easier.
 
+```{r, echo = F, warning=F, message=FALSE}
+library(tidyverse)
+library(openintro)
+```
+
+In all of  the examples below we will be using the `teacher` data set from the `openintro` package in R which contains salary data for 71 teachers in the St. Louis Public Schools and other variables that may influence salary. For more information, evaluate `?teacher` in the console.  
+
+```{r}
+head(teacher)
+```
+
 ## Summary statistics in R
+
+R makes calculating summary statistics a breeze so that we can focus instead on appropriately interpreting and using these statistics. Of course, the software can handle both categorical and numerical variables equally as well. Remember, when analyzing numerical variables, we typically look at the mean/standard deviation or median/IQR as summary statistics; when analyzing categorical variables, we typically look at sample counts and/or proportions.
+
 
 ### Numerical variables
 
-mean, median, sd, iqr quantile, min, max, summary, lists and data frames 
+The commands we use to calculate  all of your favorite summary statistics are fairly intuitive and straightforward in R. For example to calculate the mean of a data variable `x`, simply evaluate `mean(x)`.  The list below gives some common summary statistics and an example using the `teacher` data set. As usual, this is not a complete list. 
 
+- `mean(x, ...)` and `median(x, ...)`: calculates the average and median of the data set. If `x` contains `NA` (unknown or not available) values, considering setting using the option `na.rm = T` which removes the `NA` values from your list. The average base salary for a teacher from our data set is 
+
+```{r}
+mean(teacher$base)
+median(teacher$base)
+```
+
+- `var(x, ...)` and `sd(x, ...)`: calculates the *sample* variance and standard deviation of the data set. For our base teacher salary:
+
+```{r}
+var(teacher$base)
+sd(teacher$base)
+```
+
+
+- `quantile(x, probs = # or list of percentiles )`: returns the *value* in your data set corresponding to the given percentiles. For instance `quantile(x, probs = .25)` returns the first quartile of `x`.
+
+```{r}
+quantile(teacher$base, probs = .25) #first quartile
+quantile(teacher$base, probs = .75) #third quartile
+quantile(teacher$base, probs = c(.25, .5, .75)) #Q1, median, Q3
+```
+
+- `IRQ(x,...)`: returns the interquartile range of the numerical variable `x`.
+
+```{r}
+IQR(teacher$base)
+quantile(teacher$base, .75) - quantile(teacher$base, .25) 
+```
+
+- `min(x,...)` and `max(x,...)`: returns the minimum and maximum values of the numerical varible `x`. 
+
+```{r}
+min(teacher$base)
+max(teacher$base)
+```
+
+- `summary(x,...)`: returns 6 summary statistics if `x` is a numerical variable: min, first quartile, median, mean, third quartile, and max.
+
+```{r}
+summary(teacher$base)
+```
+
+- `fivenum(x, ...)`: returns a classic five number summary of the numerical variable `x`: min, Q1, median, Q3, and max. 
+
+```{r}
+fivenum(teacher$base)
+```
 
 ### Categorical variables
 
-sample proportions, contingency tables frequency tables 
+This section will focus on ways to create summary tables (ie frequency tables and contingency tables) for categorical variables. We will focus on using "base R" techniques for these purposes, but Chapter 3 will go into more detail about using the `dplyr` package to make the construction of more complicated summaries a bit easier.  As above, the list below will help you summarize and analyze categorical variables. 
+
+- `summary(x, ...)`: if `x` is a list of observations of a categorical variable, `summary(x)` will return a list counts for each value of the variable. Such a table is called a *one-way frequency table*. For example
+
+```{r}
+unique(teacher$degree) #unique values this variable takes on
+summary(teacher$degree) #count the number of occurences of each value
+```
+- `table(...)`: this function is more flexible than `summary` in that will return either a one-way table (if only one categorical variable is specified) or a two-way/contingincy table (if two categorical variables are specified). 
+
+```{r}
+#generates a one-way table
+table(teacher$degree) 
+#generates a two-way table
+table(teacher$degree, teacher$fte) 
+```
+
+- `xtabs(~.)`: the output of this function is very similar to `table(...)`, but the output labels the variables. The input syntax is slightly different because it uses R's formula syntax.  To illustrate the difference in input, we'll create the same tables as the last example. Variable names follow the `~` and are separated by `+`.  
+
+```{r}
+#one-way table
+xtabs(~degree, data = teacher)
+#two-way table
+xtabs(~degree + fte, data = teacher)
+```
+
+- `prop.table(...)`: the input of `prop.table` is a table itself. This function converts a table of frequencies into a table of proportions.  
+
+```{r}
+#define one-way table, convert to proportion table
+tbl1 <- table(teacher$degree)
+prop.table(tbl1)
+#define two-way table, convert to proportion table
+tbl2 <- xtabs(~degree  + fte, data = teacher)
+prop.table(tbl2)
+```
+### Combining it all
+
+You can combine these summary statistic functions with various subsetting techniques from the previous chapter to tease out relationships between variables. As an example, using the `teacher` data set still, we'd expect teachers with more education to earn a higher salary on average. In the examples above we saw that there is only one part time teacher in the sample (the teacher with `fte = 0.5`) and this person has a lower salary simply from working less. Thus, to compare salaries by degree, we may want to exclude this observation.  Doing this manually:
+
+```{r}
+#subset for only full time teachers
+fullTime <- subset(teacher, fte == "1")
+#subset by degree
+bach <- subset(fullTime, degree == "BA") 
+mast <- subset(fullTime, degree == "MA")
+#finally calculate averages
+mean(bach$base)
+mean(mast$base)
+```
+It would be nice if we could streamline this process. We can do so using the `by` function. The input is `by(dataToSummarize, variableToGroupBy, summaryFunctionToApply)`. Thus, to recreate our work above we can use
+
+```{r}
+by(fullTime$base, fullTime$degree, mean)
+```
+As a final example, we will give a preview of creating the same table in using `tidyverse`syntax and grammer. Check out the next chapter for much more information, starting with the original `teacher` data set. 
+
+```{r}
+fullTime %>%
+  filter( fte == "1") %>% #select only full time
+  group_by(degree) %>% #specify variables to group by
+  summarize( n = n(), #create summary table, first column is a count
+              avgSal = mean(base)) #second column is average salary
+  
+```
 
 ## Data visualization
 
-There are three main ways to create plots in R: base R, `lattice`, and `ggplot2`.  We will only learn about base R and `ggplot2` in this course.  In practice, I use base R to make graphs quickly to get an idea of what's going on and `ggplot2` to make more visually appealing and complicated graphics. 
+There are three main ways to create plots in R: base R, `lattice`, and `ggplot2`.  We will only learn about base R and `ggplot2` in this course.  In practice, I use base R to make graphs quickly to get an idea of what's going on and `ggplot2` to make more visually appealing and complicated graphics. In general, you should be able to make most graphs using either package, but sometimes it is easier to use one over the other.
+
+**Caution**: When creating data visualizations you may have to massage your data ahead of time to get it formatted correctly! 
 
 ### Base R
 
-scatter, histogram, box
+The basic function for plotting in base R is simply `plot`. Often, R will correctly interpret what type of graph you're trying to make if you format the data correctly. To avoid possible confusion, it's best to call the type of plot you're trying to make directly. 
+
+Each of the functions below have a lot of options and arguments for customizing the visualizations. The best way to learn about these is to simply play around. 
+
+**Histograms**: When trying to visualize the distribution of a single numerical variable you often want to start with a histogram. The basic command for this is `hist(...)`. The first histogram below just gives you a rough idea of what the histograms look like, the second demonstrates the types of options you can specify. 
+
+```{r}
+#no options specified
+hist(teacher$base)
+#vs many options specified
+hist(teacher$base, #variable to make a histogram of
+     breaks = 11, #number of cells, can be left blank
+     freq = FALSE, #displays relative frequency on y-axis, if true, displays frequency
+     main = "Histogram of Teacher Base Salary", #sets main title
+     xlab = "Base salary (USD)", #x-axis label
+     ylab = "Frequency" #y-axis label, can be left blank in this case
+     )
+```
+
+**Scatter plots**: when checking for an association between two numerical variables you will often want to start your analysis with a scatter plot. The function `plot(x,y)` creates a scatter plot of $x$ and $y$. Make sure these lists have the same length! 
+
+As above, we'll make a basic scatter plot, then play around with the labels and options of the same graph. 
+
+```{r}
+#basic plot of years experience vs total teacher salary
+plot(teacher$years, teacher$total)
+#same plot with updated options
+plot( teacher$years, teacher$total,
+      pch = 16, #change mark to filled in circle
+      main = "Teacher experience vs total salary",
+      xlab = "Teaching experience (in years)", 
+      ylab = "Total annual salary (USD)")
+
+```
+
+**Bar charts**: bar charts help visualize one or two categorical variables; you can think of them as a visualization of one-way and two way tables. The basic function is, no surprise, `barplot(...)`, but you must input a table instead of vectors.
+
+```{r}
+#define our tables
+tbl1 <- prop.table(table(teacher$degree)) # one-way rel. freq. table 
+tbl2 <- xtabs(~degree + fte, data = teacher ) #two-way table
+#visualize one-way table
+barplot(tbl1, 
+        main = "Relative frequency of teacher degrees", 
+        xlab = "Degree", 
+        ylab = "Proportion")
+#visualize two-way table
+barplot(tbl2, 
+        main = "Teacher employment employment by degree",
+        xlab = "Employment (by FTE)",
+        ylab = "Frequency",
+        col = c("red", "blue"), #set colors for degree types, alphabetically
+        legend = rownames(tbl2) #create legend with rows from the table
+        )
+```
+
+
+
+**Box plots**
+
+
+
 
 ### `ggplot2`
 

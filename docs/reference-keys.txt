@@ -26,6 +26,9 @@ using-data-frames
 r-markdown-documents
 cross
 summary-statistics-in-r
+numerical-variables
+categorical-variables
+combining-it-all
 data-visualization
 base-r
 ggplot2
