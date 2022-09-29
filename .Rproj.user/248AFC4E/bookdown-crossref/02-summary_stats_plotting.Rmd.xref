@@ -2,6 +2,7 @@ h1:cross Summary statistics and data visualization
 h2:summary-statistics-in-r Summary statistics in R
 h3:numerical-variables Numerical variables
 h3:categorical-variables Categorical variables
+h3:combining-it-all Combining it all
 h2:data-visualization Data visualization
 h3:base-r Base R
 h3:ggplot2 

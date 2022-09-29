@@ -130,7 +130,7 @@ It would be nice if we could streamline this process. We can do so using the `by
 ```{r}
 by(fullTime$base, fullTime$degree, mean)
 ```
-As a final example, we will give a preview of creating the same table in using `tidyverse`syntax and grammer. Check out the next chapter for much more information, starting with the original `teacher` data set. 
+As a final example, we will give a preview of creating the same table in using `tidyverse`syntax and grammar. Check out the next chapter for much more information, starting with the original `teacher` data set. 
 
 ```{r}
 fullTime %>%
@@ -205,14 +205,174 @@ barplot(tbl2,
         )
 ```
 
+**Box plots**: Box plots help us visualize a the distribution of a numerical variable; stacking box plots side by side help us compare the distribution of a numerical variable over several values of a categorical variable. No suprise, both it is easy to make these plots in both situations using the function `boxplot`.    
 
+The syntax for creating a box plot for a single numerical variable is simple, as the next example shows. 
 
-**Box plots**
+```{r}
+boxplot(teacher$base, 
+        ylab = "Base salary (USD)", 
+        main = "Distribution of MI teacher salaries")
+```
 
+When creating a box plot for a numerical variable over several values of a categorical variable, you need to use R's formula syntax. This syntax will appear a few more times throughout the course since it is used often when looking at relationships between two variables.  The basic notation is `Response variable ~ explanatory variables` or, if your response variable is `y` and your explanatory variable is `x`, simply `y ~ x`.  Note the `~` symbol is to the left of the `1` key on your keyboard. The next examples shows a breakdown of teacher salary by highest degree. 
 
+```{r}
+boxplot(base ~ degree, data = fullTime, 
+        xlab = "Degree", 
+        ylab = "Base salary (USD)",
+        main = "MI teacher base salary by degree")
+```
 
+Before moving on to plotting with `ggplot2`, we remind the reader that this is by no means a comprehensive list of all plotting features in R. Moreover, each of the plotting functions used above have many more features and are very customizable; you can go down a deep rabbit hole making plots look just how you want them to.  
 
 ### `ggplot2`
 
-scatter, scatter with different colors by group, histogram, box multiple factor levels, violin  
+This section will guide you through using the package `ggplot2` for data visualization in R. Many find the output from `ggplot2` to be more visually appealing than plots from base R, but the plotting syntax in `ggplot2` is often much more intuitive than plotting in base R, especially if you're making more complicated visualizations.  The basic idea of plotting with `ggplot2` is to 
+
+1. Open an empty plot based on a particular data set using the function `ggplot(data, aes(...))` where `data` is the name of the data set you're using and `aes(...)` specifies the aesthetic of the plot to come. You specify which variables are assigned to which axes inside `aes(...)`.  This will become clearer through examples.  
+
+2. Add layers to the empty plot to construct the visualization you're imagining, separating each layer with `+`. These layers are `geom`s, labels, legends, etc. Again, this will become much clearer through some examples. 
+
+The ability to sequentially add layers to a plot makes complicated plotting more intuitive in `ggplot2`. For example, adding a line to a scatter plot is simple under this organization because you simply have to add another layer! We will reproduce the plots from the previous section in the examples that follow, tweaking some parameters here and there to give you an idea of how to change visualizations. 
+
+**Histograms**: The `geom` for a histogram is `geom_histogram(...)`.  Notice that our plot below does open an empty plot first, then adds layers to it. 
+
+```{r}
+# open empty plot
+ggplot(teacher, aes(x = base)) + 
+  # add histogram layer with 15 bins. fill changes bar color, but color changes outline color
+  geom_histogram(bins = 15, fill = "steelblue", color = "black") + 
+  # adds label layer with only a title. can add subtitle and caption. 
+  labs( title = "Distribution of MI teacher base salary") +
+  # changes x-axis label
+  xlab("Base salary (USD)")
+```
+
+**Scatter plots**: The `geom` for a scatter plot is `geom_point(...)`. You can tweak the appearance quite a bit using different arguments inside this (and all!) `geom`s. For instance the option `alpha` sets the transparency, `color` the color of each point, `shape` the shape, etc. 
+
+```{r}
+#open empty plot and specify explanatory (x) and response (y) variables
+ggplot(teacher, aes(x = years, y = total))  + 
+  geom_point(color = "steelblue", alpha = .5) + 
+  labs(title = "Teacher salary vs years experience") + 
+  xlab("Experience (years)") +
+  ylab("Total salary (USD)")
+```
+
+Adding a line of best fit (see Chapter 8 for more information on modeling) to a scatter plot is straightforward with a `geom_smooth(...)` layer, setting `method = 'lm'` (this means add a linear model to your plot)
+
+```{r}
+ggplot(teacher, aes(x = years, y = total))  + 
+  geom_point() + 
+  geom_smooth( method = 'lm', formula = y~x, se = FALSE) + #adds line of best fit without error bars
+  labs(title = "Teacher salary vs years experience") + 
+  xlab("Experience (years)") +
+  ylab("Total salary (USD)")
+```
+
+We can make the same plot, but color the points by each teacher's degree and change the shape of each point by full/part time status. 
+
+```{r}
+ggplot(teacher, aes(x = years, y = total, color = degree))  + 
+  geom_point(aes(shape = fte)) + 
+  labs(title = "Teacher salary vs years experience, by highest degree") + 
+  xlab("Experience (years)") +
+  ylab("Total salary (USD)")
+```
+This school district's pay scale becomes much more apparent! Teachers with masters degrees earn a little bit more, but everyone's salary increases at roughly the same rate during their first 11 years, then flattens out. We also see that the outlier with minimal experience and low pay is also the only part-time employee. 
+
+As a final example of tweaking scatter plots, we can even add a line of best fit for each degree group! 
+
+```{r}
+ggplot(teacher, aes(x = years, y = total, color = degree))  + 
+  geom_point(aes(shape = fte)) + 
+  geom_smooth(method = 'lm', formula = y~x, se = FALSE) + 
+  labs(title = "Teacher salary vs years experience, by highest degree") + 
+  xlab("Experience (years)") +
+  ylab("Total salary (USD)")
+```
+You can see that it is easy to start adding a lot of information to a plot! Be careful, however; there is a fine line between a detailed, informative visualization, and a confusing, overly busy one. 
+
+**Bar graphs**: We can make bar graphs easily with `ggplot2` using the `geom_bar(...)` layer.  The first two plots below look identical at first pass, but the one on the left is a frequency bar chart, so displays the raw count on the $y$-axis, but the chart on the right is a relative bar chart.  To make the relative frequency bar chart, we include the option `y = ..prop..` in the aesthetic.  We also have to specify the number of groups to ensure that our proportions are out of the total. 
+
+
+```{r, message = F}
+# first load a package for side by side plots
+library(gridExtra)
+# Frequency bar plot 
+p1 <- ggplot(teacher, aes(x = degree)) + 
+  geom_bar(fill = "aquamarine3", color = "black") +
+  labs( title = "MI teacher education (count)")
+# relative frequency bar plot
+p2 <- ggplot(teacher, aes(x = degree, y = ..prop.., group =1)) + 
+  geom_bar(fill = "aquamarine3", color = "black") +
+  labs( title = "MI teacher education (proportion)")
+#display both plots side by side. 
+grid.arrange(p1,p2, ncol = 2)
+```
+Next we'll make stacked and side by side box plots.  
+
+```{r}
+#stacked
+p1 <- ggplot(teacher, aes(x = degree, fill = fte)) + 
+  geom_bar(color = "black") + 
+  labs(title = "MI teacher education")
+#side by side 
+p2 <- ggplot(teacher, aes(x = degree, fill = fte)) + 
+  geom_bar( position = position_dodge(), color = "black") + # big change is setting position! 
+  labs(title = "MI teacher education")
+#display both plots side by side
+grid.arrange(p1, p2, ncol = 2)
+```
+One could combine our first and second examples of box plots to get side-by-side and stacked relative frequency plots. This takes a little bit of extra fuss that can be avoided by first manipulating the data you input into `ggplot2`. In other words, to make these types of plots, make the summary calculations on your own earlier, then feed those into the appropriate `geom`. 
+
+**Box plots**: We will finish up our brief tour of `ggplot2` by making a few box plots. The `geom` for box plots is, no surprise, `geom_boxplot(...)`. Let's first look at a box plot of the teacher's total salary. 
+
+```{r}
+ggplot(teacher, aes(y = total)) + 
+  geom_boxplot()  +
+  theme(axis.text.x=element_blank(), #this layer just removes the scale on the x-axis
+        axis.ticks.x=element_blank()) +
+  labs(title = "Total MI teacher salary")
+``` 
+
+By adding an `x` value to our aesthetic, we can produce boxplots of the range of values of a categorical variable. The example below also adds a point representing the mean of each group and colors the outlier red. 
+
+```{r}
+ggplot(teacher, aes(x = degree, y = total)) + 
+  geom_boxplot(outlier.color = "red", 
+               outlier.size = 2) +
+  stat_summary_bin(fun = "mean", 
+                   geom = "point", 
+                   color = "blue", 
+                   size = 2) +
+  labs(title = "MI teacher salaries by degree")
+```
+ 
+There are many, many more `geoms`, options, and possible visualizations you can make with `ggplot2`; this section should give you enough to get started and make some high quality graphics. For more information, check out the [official `ggplot2` guide](https://ggplot2-book.org/individual-geoms.html). 
+
+### Saving plots 
+
+Now that you know how to make plots in R, what do you do with them? Data visualization is essential for two aspects of data analysis: exploration and communication. Initial data visualization can help guide your analysis by illuminating patterns and trends that may be difficult to observe in your raw data.  For the same reason, you will want to include high quality visualizations when you write up your work; visualizations help readers get a good understanding of your work without digging deep into the details. So how do you get your visualizations into a write up? There are two possibilities: 
+
+1. Do your entire analysis and write-up in an RMarkdown document! You can hide code chunks so that output only shows plots and calculation results. You can use RMarkdown to create impressive, professional documents.
+
+2. You can save your plot in your favorite file format. There are two ways to do this, from the console or from the File/Plot explorer window in RStudio. Both options will save the file to whatever directory or folder you are currently working in.
+
+**File/Plot Explorer**: When you make a plot in RStudio it displays in the bottom right Plot window.  That window has an "Export" button. Clicking this button reveals a bunch of options for saving your plot. Pick whichever you think is best for your application. 
+
+**From the console**: You can also export an image programmatically. The basic process is 1) open a "graphics device", 2) code your plot, then close the graphics device. This option is best if you have to save multiple images or want to customize the file you're saving.  As an example, the following code will create a PDF file called "salary_viz.pdf" of the side-by-side box plot we created at the end of the base R plotting section. 
+
+```{r, eval = FALSE}
+pdf("salary_viz.pdf") #opens graphic device
+boxplot(base ~ degree, data = fullTime, 
+        xlab = "Degree", 
+        ylab = "Base salary (USD)",
+        main = "MI teacher base salary by degree")
+dev.off()
+```
+
+You can save your plot in many different file formats; the command to open the appropriate graphics device is usually obvious. For instance, a png graphics device is opened with the function `png(...)`. 
+
 

@@ -32,6 +32,7 @@ combining-it-all
 data-visualization
 base-r
 ggplot2
+saving-plots
 wrangling-data
 distribution-calculations
 inferential-statistics-take-1
