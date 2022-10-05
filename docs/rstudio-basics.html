@@ -8,7 +8,7 @@
   <meta name="description" content="<p>This is a minimal example of using the bookdown package to write a book.
 The HTML output format for this example is bookdown::gitbook,
 set in the _output.yml file.</p>" />
-  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 2 RStudio basics | R and RStudio for STAT216" />
   <meta property="og:type" content="book" />
@@ -189,7 +189,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.2.3" data-path="cross.html"><a href="cross.html#saving-plots"><i class="fa fa-check"></i><b>3.2.3</b> Saving plots</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="wrangling-data.html"><a href="wrangling-data.html"><i class="fa fa-check"></i><b>4</b> Wrangling data</a></li>
+<li class="chapter" data-level="4" data-path="wrangling-data.html"><a href="wrangling-data.html"><i class="fa fa-check"></i><b>4</b> Wrangling data</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="wrangling-data.html"><a href="wrangling-data.html#the-goal-tidy-data."><i class="fa fa-check"></i><b>4.1</b> The goal: “tidy” data.</a></li>
+<li class="chapter" data-level="4.2" data-path="wrangling-data.html"><a href="wrangling-data.html#the-pipe"><i class="fa fa-check"></i><b>4.2</b> The pipe</a></li>
+<li class="chapter" data-level="4.3" data-path="wrangling-data.html"><a href="wrangling-data.html#common-tidying-operations"><i class="fa fa-check"></i><b>4.3</b> Common tidying operations</a></li>
+<li class="chapter" data-level="4.4" data-path="wrangling-data.html"><a href="wrangling-data.html#mutate-group-by-and-summarize"><i class="fa fa-check"></i><b>4.4</b> Mutate, group by, and summarize</a></li>
+</ul></li>
 <li class="chapter" data-level="5" data-path="distribution-calculations.html"><a href="distribution-calculations.html"><i class="fa fa-check"></i><b>5</b> Distribution calculations</a></li>
 <li class="chapter" data-level="6" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html"><i class="fa fa-check"></i><b>6</b> Inferential statistics, take 1</a></li>
 <li class="chapter" data-level="7" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html"><i class="fa fa-check"></i><b>7</b> Inferential statistics, take 2</a>
@@ -209,13 +215,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.2.4" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#analysis-of-variance-anova"><i class="fa fa-check"></i><b>7.2.4</b> Analysis of variance (ANOVA)</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="chapter" data-level="8" data-path="modeling-relationships.html"><a href="modeling-relationships.html"><i class="fa fa-check"></i><b>8</b> Modeling relationships</a>
 <ul>
 <li class="chapter" data-level="8.1" data-path="modeling-relationships.html"><a href="modeling-relationships.html#simple-linear-regression"><i class="fa fa-check"></i><b>8.1</b> Simple linear regression</a></li>
 <li class="chapter" data-level="8.2" data-path="modeling-relationships.html"><a href="modeling-relationships.html#multiple-linear-regression"><i class="fa fa-check"></i><b>8.2</b> Multiple linear regression</a></li>
 <li class="chapter" data-level="8.3" data-path="modeling-relationships.html"><a href="modeling-relationships.html#bonus-topic-logistic-regression"><i class="fa fa-check"></i><b>8.3</b> Bonus topic: logistic regression</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -416,15 +422,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## [1] 1000</code></pre>
 <p>This list has 1000 elements in it. We can find the 497th element using</p>
 <div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="rstudio-basics.html#cb87-1" aria-hidden="true" tabindex="-1"></a>rando[<span class="dv">497</span>]</span></code></pre></div>
-<pre><code>## [1] 29.05136</code></pre>
+<pre><code>## [1] 25.81991</code></pre>
 <p>and in general, use <code>listName[number]</code>. We can also easily select ranges of indicies. For instance, suppose we want to know what the first 10 values in our list are.</p>
 <div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="rstudio-basics.html#cb89-1" aria-hidden="true" tabindex="-1"></a>rando[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code></pre></div>
-<pre><code>##  [1] 93.7787586  0.0259043  0.8492633 51.4133384 26.1894178 59.3788950 56.0817956
-##  [8] 36.1998722 51.3900375 85.2774918</code></pre>
+<pre><code>##  [1] 27.707894 69.126561 42.667312 17.652772  9.378819 16.644141  5.221245 47.671184
+##  [9] 11.198759 85.913969</code></pre>
 <p>Finally, we can pick out specific elements from our big list using a smaller list of our desired indices. For example, if we wanted the entries number 2,3,5,7,11, and 13 from our list, we could use the following.</p>
 <div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="rstudio-basics.html#cb91-1" aria-hidden="true" tabindex="-1"></a>indicies <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">7</span>,<span class="dv">11</span>,<span class="dv">13</span>)</span>
 <span id="cb91-2"><a href="rstudio-basics.html#cb91-2" aria-hidden="true" tabindex="-1"></a>rando[indicies]</span></code></pre></div>
-<pre><code>## [1]  0.0259043  0.8492633 26.1894178 56.0817956 70.8071191 93.0068162</code></pre>
+<pre><code>## [1] 69.126561 42.667312  9.378819  5.221245 11.228170 86.388616</code></pre>
 </div>
 <div id="special-lists" class="section level3 hasAnchor" number="2.3.3">
 <h3><span class="header-section-number">2.3.3</span> Special lists<a href="rstudio-basics.html#special-lists" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -445,8 +451,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## [1] 2001</code></pre>
 <p><strong>Lists of sequential letters</strong>: R has two in-built lists of letters called <code>letters</code> and <code>LETTERS</code>. No surprise, one of them is a list of lower case letters, the other upper case.</p>
 <div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="rstudio-basics.html#cb102-1" aria-hidden="true" tabindex="-1"></a>letters</span></code></pre></div>
-<pre><code>##  [1] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot; &quot;e&quot; &quot;f&quot; &quot;g&quot; &quot;h&quot; &quot;i&quot; &quot;j&quot; &quot;k&quot; &quot;l&quot; &quot;m&quot; &quot;n&quot; &quot;o&quot; &quot;p&quot; &quot;q&quot; &quot;r&quot; &quot;s&quot;
-## [20] &quot;t&quot; &quot;u&quot; &quot;v&quot; &quot;w&quot; &quot;x&quot; &quot;y&quot; &quot;z&quot;</code></pre>
+<pre><code>##  [1] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot; &quot;e&quot; &quot;f&quot; &quot;g&quot; &quot;h&quot; &quot;i&quot; &quot;j&quot; &quot;k&quot; &quot;l&quot; &quot;m&quot; &quot;n&quot; &quot;o&quot; &quot;p&quot; &quot;q&quot; &quot;r&quot; &quot;s&quot; &quot;t&quot;
+## [21] &quot;u&quot; &quot;v&quot; &quot;w&quot; &quot;x&quot; &quot;y&quot; &quot;z&quot;</code></pre>
 <p>To select the 4th through 11th lowercase letters of the alphabet, use the following syntax (which will be explained in a subsequent section).</p>
 <div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="rstudio-basics.html#cb104-1" aria-hidden="true" tabindex="-1"></a>letters[<span class="dv">4</span><span class="sc">:</span><span class="dv">11</span>]</span></code></pre></div>
 <pre><code>## [1] &quot;d&quot; &quot;e&quot; &quot;f&quot; &quot;g&quot; &quot;h&quot; &quot;i&quot; &quot;j&quot; &quot;k&quot;</code></pre>
@@ -501,8 +507,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb134-2"><a href="rstudio-basics.html#cb134-2" aria-hidden="true" tabindex="-1"></a>rando <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>) <span class="sc">+</span> rando </span>
 <span id="cb134-3"><a href="rstudio-basics.html#cb134-3" aria-hidden="true" tabindex="-1"></a>rando <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="sc">*</span>rando</span>
 <span id="cb134-4"><a href="rstudio-basics.html#cb134-4" aria-hidden="true" tabindex="-1"></a>rando</span></code></pre></div>
-<pre><code>##  [1] -0.7478683  1.9137435 -0.8602055  1.1837200 -0.1650536  1.4795474 -0.1822178
-##  [8]  1.1933523 -0.6185231  1.7719593</code></pre>
+<pre><code>##  [1] -0.4765606  1.8437656 -0.1203448  1.3699802 -0.8590367  1.3407069 -0.5441534
+##  [8]  1.1624768 -0.4130356  1.9123076</code></pre>
 <p>A more practical application of this vectorization feature is to use logical operators and use them to help subset lists. As a basic example, R will compare lists component wise or to a particular value.</p>
 <div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="rstudio-basics.html#cb136-1" aria-hidden="true" tabindex="-1"></a>x <span class="sc">&lt;</span> y</span></code></pre></div>
 <pre><code>## [1] TRUE TRUE TRUE</code></pre>
@@ -648,7 +654,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb149-2"><a href="rstudio-basics.html#cb149-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">weight =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">45</span>, <span class="dv">2</span>, <span class="dv">15</span>),</span>
 <span id="cb149-3"><a href="rstudio-basics.html#cb149-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">length =</span> <span class="fu">c</span>(<span class="dv">24</span>, <span class="dv">35</span>, <span class="dv">10</span>, <span class="dv">15</span>)) </span>
 <span id="cb149-4"><a href="rstudio-basics.html#cb149-4" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div>
-<pre><code>## # A tibble: 4 × 3
+<pre><code>## # A tibble: 4 x 3
 ##   animal weight length
 ##   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;
 ## 1 cat         5     24
@@ -659,19 +665,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="rstudio-basics.html#cb151-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, </span>
 <span id="cb151-2"><a href="rstudio-basics.html#cb151-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> <span class="dv">2</span><span class="sc">*</span>x <span class="sc">+</span> <span class="dv">3</span> <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">10</span>))</span>
 <span id="cb151-3"><a href="rstudio-basics.html#cb151-3" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div>
-<pre><code>## # A tibble: 10 × 2
+<pre><code>## # A tibble: 10 x 2
 ##        x     y
 ##    &lt;int&gt; &lt;dbl&gt;
-##  1     1  6.36
-##  2     2  7.20
-##  3     3 11.5 
-##  4     4 12.2 
-##  5     5 14.5 
-##  6     6 12.7 
-##  7     7 16.7 
-##  8     8 19.6 
+##  1     1  6.02
+##  2     2  7.11
+##  3     3  8.94
+##  4     4 11.0 
+##  5     5 12.4 
+##  6     6 16.1 
+##  7     7 16.1 
+##  8     8 17.4 
 ##  9     9 21.4 
-## 10    10 23.5</code></pre>
+## 10    10 22.9</code></pre>
 <p>As a final example, let’s start with a table that doesn’t follow the convention of variables in columns, observations in rows. For this example, suppose you recorded the weight in pounds of 5 turtles, cats, and dogs as follows:</p>
 <table>
 <thead>
@@ -714,7 +720,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="rstudio-basics.html#cb153-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>( <span class="at">species =</span> <span class="fu">c</span>( <span class="fu">rep</span>(<span class="st">&quot;turtle&quot;</span>, <span class="dv">5</span>), <span class="fu">rep</span>(<span class="st">&quot;cat&quot;</span>, <span class="dv">5</span>), <span class="fu">rep</span>(<span class="st">&quot;dog&quot;</span>, <span class="dv">5</span>)),</span>
 <span id="cb153-2"><a href="rstudio-basics.html#cb153-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">weight =</span> <span class="fu">c</span>(<span class="dv">15</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">12</span>, <span class="dv">12</span>,<span class="dv">2</span>, <span class="dv">13</span>, <span class="dv">12</span>,  <span class="dv">8</span> , <span class="dv">2</span>,<span class="dv">26</span>, <span class="dv">60</span>, <span class="dv">60</span>, <span class="dv">22</span>, <span class="dv">59</span>))</span>
 <span id="cb153-3"><a href="rstudio-basics.html#cb153-3" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div>
-<pre><code>## # A tibble: 15 × 2
+<pre><code>## # A tibble: 15 x 2
 ##    species weight
 ##    &lt;chr&gt;    &lt;dbl&gt;
 ##  1 turtle      15
@@ -747,46 +753,46 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p>Let’s see how all of these (except <code>view</code>) behave on the <code>starwars</code> data set. Try <code>view(starwars)</code> out on your own.</p>
 <div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="rstudio-basics.html#cb155-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(starwars)</span></code></pre></div>
-<pre><code>## # A tibble: 6 × 14
-##   name       height  mass hair_color skin_color eye_color birth_year sex   gender
-##   &lt;chr&gt;       &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
-## 1 Luke Skyw…    172    77 blond      fair       blue            19   male  mascu…
-## 2 C-3PO         167    75 &lt;NA&gt;       gold       yellow         112   none  mascu…
-## 3 R2-D2          96    32 &lt;NA&gt;       white, bl… red             33   none  mascu…
-## 4 Darth Vad…    202   136 none       white      yellow          41.9 male  mascu…
-## 5 Leia Orga…    150    49 brown      light      brown           19   fema… femin…
-## 6 Owen Lars     178   120 brown, gr… light      blue            52   male  mascu…
-## # … with 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
+<pre><code>## # A tibble: 6 x 14
+##   name          height  mass hair_color skin_color eye_color birth_year sex   gender
+##   &lt;chr&gt;          &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
+## 1 Luke Skywalk~    172    77 blond      fair       blue            19   male  mascu~
+## 2 C-3PO            167    75 &lt;NA&gt;       gold       yellow         112   none  mascu~
+## 3 R2-D2             96    32 &lt;NA&gt;       white, bl~ red             33   none  mascu~
+## 4 Darth Vader      202   136 none       white      yellow          41.9 male  mascu~
+## 5 Leia Organa      150    49 brown      light      brown           19   fema~ femin~
+## 6 Owen Lars        178   120 brown, gr~ light      blue            52   male  mascu~
+## # ... with 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
 ## #   vehicles &lt;list&gt;, starships &lt;list&gt;</code></pre>
 <div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="rstudio-basics.html#cb157-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(starwars)</span></code></pre></div>
-<pre><code>## # A tibble: 6 × 14
-##   name       height  mass hair_color skin_color eye_color birth_year sex   gender
-##   &lt;chr&gt;       &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
-## 1 Finn           NA    NA black      dark       dark              NA male  mascu…
-## 2 Rey            NA    NA brown      light      hazel             NA fema… femin…
-## 3 Poe Damer…     NA    NA brown      light      brown             NA male  mascu…
-## 4 BB8            NA    NA none       none       black             NA none  mascu…
-## 5 Captain P…     NA    NA unknown    unknown    unknown           NA &lt;NA&gt;  &lt;NA&gt;  
-## 6 Padmé Ami…    165    45 brown      light      brown             46 fema… femin…
-## # … with 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
+<pre><code>## # A tibble: 6 x 14
+##   name          height  mass hair_color skin_color eye_color birth_year sex   gender
+##   &lt;chr&gt;          &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
+## 1 Finn              NA    NA black      dark       dark              NA male  mascu~
+## 2 Rey               NA    NA brown      light      hazel             NA fema~ femin~
+## 3 Poe Dameron       NA    NA brown      light      brown             NA male  mascu~
+## 4 BB8               NA    NA none       none       black             NA none  mascu~
+## 5 Captain Phas~     NA    NA unknown    unknown    unknown           NA &lt;NA&gt;  &lt;NA&gt;  
+## 6 Padmé Amidala    165    45 brown      light      brown             46 fema~ femin~
+## # ... with 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
 ## #   vehicles &lt;list&gt;, starships &lt;list&gt;</code></pre>
 <div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="rstudio-basics.html#cb159-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(starwars)</span></code></pre></div>
 <pre><code>## Rows: 87
 ## Columns: 14
-## $ name       &lt;chr&gt; &quot;Luke Skywalker&quot;, &quot;C-3PO&quot;, &quot;R2-D2&quot;, &quot;Darth Vader&quot;, &quot;Leia Org…
-## $ height     &lt;int&gt; 172, 167, 96, 202, 150, 178, 165, 97, 183, 182, 188, 180, 22…
-## $ mass       &lt;dbl&gt; 77.0, 75.0, 32.0, 136.0, 49.0, 120.0, 75.0, 32.0, 84.0, 77.0…
-## $ hair_color &lt;chr&gt; &quot;blond&quot;, NA, NA, &quot;none&quot;, &quot;brown&quot;, &quot;brown, grey&quot;, &quot;brown&quot;, NA…
-## $ skin_color &lt;chr&gt; &quot;fair&quot;, &quot;gold&quot;, &quot;white, blue&quot;, &quot;white&quot;, &quot;light&quot;, &quot;light&quot;, &quot;l…
-## $ eye_color  &lt;chr&gt; &quot;blue&quot;, &quot;yellow&quot;, &quot;red&quot;, &quot;yellow&quot;, &quot;brown&quot;, &quot;blue&quot;, &quot;blue&quot;, …
-## $ birth_year &lt;dbl&gt; 19.0, 112.0, 33.0, 41.9, 19.0, 52.0, 47.0, NA, 24.0, 57.0, 4…
-## $ sex        &lt;chr&gt; &quot;male&quot;, &quot;none&quot;, &quot;none&quot;, &quot;male&quot;, &quot;female&quot;, &quot;male&quot;, &quot;female&quot;, …
-## $ gender     &lt;chr&gt; &quot;masculine&quot;, &quot;masculine&quot;, &quot;masculine&quot;, &quot;masculine&quot;, &quot;feminin…
-## $ homeworld  &lt;chr&gt; &quot;Tatooine&quot;, &quot;Tatooine&quot;, &quot;Naboo&quot;, &quot;Tatooine&quot;, &quot;Alderaan&quot;, &quot;Ta…
-## $ species    &lt;chr&gt; &quot;Human&quot;, &quot;Droid&quot;, &quot;Droid&quot;, &quot;Human&quot;, &quot;Human&quot;, &quot;Human&quot;, &quot;Human…
-## $ films      &lt;list&gt; &lt;&quot;The Empire Strikes Back&quot;, &quot;Revenge of the Sith&quot;, &quot;Return …
-## $ vehicles   &lt;list&gt; &lt;&quot;Snowspeeder&quot;, &quot;Imperial Speeder Bike&quot;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &quot;Impe…
-## $ starships  &lt;list&gt; &lt;&quot;X-wing&quot;, &quot;Imperial shuttle&quot;&gt;, &lt;&gt;, &lt;&gt;, &quot;TIE Advanced x1&quot;, …</code></pre>
+## $ name       &lt;chr&gt; &quot;Luke Skywalker&quot;, &quot;C-3PO&quot;, &quot;R2-D2&quot;, &quot;Darth Vader&quot;, &quot;Leia Organa~
+## $ height     &lt;int&gt; 172, 167, 96, 202, 150, 178, 165, 97, 183, 182, 188, 180, 228, ~
+## $ mass       &lt;dbl&gt; 77.0, 75.0, 32.0, 136.0, 49.0, 120.0, 75.0, 32.0, 84.0, 77.0, 8~
+## $ hair_color &lt;chr&gt; &quot;blond&quot;, NA, NA, &quot;none&quot;, &quot;brown&quot;, &quot;brown, grey&quot;, &quot;brown&quot;, NA, &quot;~
+## $ skin_color &lt;chr&gt; &quot;fair&quot;, &quot;gold&quot;, &quot;white, blue&quot;, &quot;white&quot;, &quot;light&quot;, &quot;light&quot;, &quot;ligh~
+## $ eye_color  &lt;chr&gt; &quot;blue&quot;, &quot;yellow&quot;, &quot;red&quot;, &quot;yellow&quot;, &quot;brown&quot;, &quot;blue&quot;, &quot;blue&quot;, &quot;re~
+## $ birth_year &lt;dbl&gt; 19.0, 112.0, 33.0, 41.9, 19.0, 52.0, 47.0, NA, 24.0, 57.0, 41.9~
+## $ sex        &lt;chr&gt; &quot;male&quot;, &quot;none&quot;, &quot;none&quot;, &quot;male&quot;, &quot;female&quot;, &quot;male&quot;, &quot;female&quot;, &quot;no~
+## $ gender     &lt;chr&gt; &quot;masculine&quot;, &quot;masculine&quot;, &quot;masculine&quot;, &quot;masculine&quot;, &quot;feminine&quot;,~
+## $ homeworld  &lt;chr&gt; &quot;Tatooine&quot;, &quot;Tatooine&quot;, &quot;Naboo&quot;, &quot;Tatooine&quot;, &quot;Alderaan&quot;, &quot;Tatoo~
+## $ species    &lt;chr&gt; &quot;Human&quot;, &quot;Droid&quot;, &quot;Droid&quot;, &quot;Human&quot;, &quot;Human&quot;, &quot;Human&quot;, &quot;Human&quot;, ~
+## $ films      &lt;list&gt; &lt;&quot;The Empire Strikes Back&quot;, &quot;Revenge of the Sith&quot;, &quot;Return of ~
+## $ vehicles   &lt;list&gt; &lt;&quot;Snowspeeder&quot;, &quot;Imperial Speeder Bike&quot;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &quot;Imperia~
+## $ starships  &lt;list&gt; &lt;&quot;X-wing&quot;, &quot;Imperial shuttle&quot;&gt;, &lt;&gt;, &lt;&gt;, &quot;TIE Advanced x1&quot;, &lt;&gt;,~</code></pre>
 <p><strong>IMPORTANT!</strong> Now that we’ve looked at our data, we might want to access certain columns in that data frame; this is what the <code>$</code> operator does in R. Explicitly, <code>df$columnName</code> yields the column with name <code>columnName</code> as a list, as in the example below. We’re using the head function because the list of characters is long.</p>
 <div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="rstudio-basics.html#cb161-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(starwars<span class="sc">$</span>name)</span></code></pre></div>
 <pre><code>## [1] 87</code></pre>
@@ -795,19 +801,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## [5] &quot;Leia Organa&quot;    &quot;Owen Lars&quot;</code></pre>
 <p>Just as with lists, you can pick out particular elements or ranges of elements in a data frame using bracket notation. In general, the syntax is <code>df[rowRange , columnRange]</code> where <code>rowRange</code> and <code>columnRange</code> can be lists or single numbers. Using <code>starwars</code> as an example:</p>
 <div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="rstudio-basics.html#cb165-1" aria-hidden="true" tabindex="-1"></a>starwars[<span class="dv">2</span>, <span class="dv">5</span>] <span class="co">#second row, 5th column</span></span></code></pre></div>
-<pre><code>## # A tibble: 1 × 1
+<pre><code>## # A tibble: 1 x 1
 ##   skin_color
 ##   &lt;chr&gt;     
 ## 1 gold</code></pre>
 <div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="rstudio-basics.html#cb167-1" aria-hidden="true" tabindex="-1"></a>starwars[<span class="dv">2</span>,] <span class="co">#all columns and only second row</span></span></code></pre></div>
-<pre><code>## # A tibble: 1 × 14
+<pre><code>## # A tibble: 1 x 14
 ##   name  height  mass hair_color skin_color eye_color birth_year sex   gender   
 ##   &lt;chr&gt;  &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;    
 ## 1 C-3PO    167    75 &lt;NA&gt;       gold       yellow           112 none  masculine
-## # … with 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
+## # ... with 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
 ## #   vehicles &lt;list&gt;, starships &lt;list&gt;</code></pre>
 <div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="rstudio-basics.html#cb169-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(starwars[,<span class="dv">5</span>]) <span class="co">#head of 5th column </span></span></code></pre></div>
-<pre><code>## # A tibble: 6 × 1
+<pre><code>## # A tibble: 6 x 1
 ##   skin_color 
 ##   &lt;chr&gt;      
 ## 1 fair       
@@ -928,7 +934,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

@@ -1,5 +1,185 @@
 # Wrangling data
 
-TODO 
+"Wrangling data" is a term used to describe the processes of manipulating or transforming raw data into a format that is easier to analyze and use. Data professionals often spend large chunks of time on the data wrangling phase of a project since the analysis and use flows much more smoothly when the wrangling is done appropriately. Like most chapters in this book, we won't go too in depth into this subject, but we will cover enough to get you started. In particular, this section aims to 
+
+- help you understand what the end goal of data wrangling might look like. In other words, start understanding what a good, easy to use data set might look like. 
+
+- be able to use R's `tidyverse` package to perform some basic data wrangling tasks. 
+
+This section of notes will can be thought of as a condensed version of the *Wrangle* and *Program* sections of [R for Data Science](https://r4ds.had.co.nz/tidy-data.html) and references this book substantially. 
+
+Remember, since we're using the `tidyverse` package in this section, you have to load the package with 
+
+```{r, message = F}
+library(tidyverse)
+```
+
+## The goal: "tidy" data.
+
+In the early days of STAT216, we stipulated that data sets should contain variables in columns and observations in rows. This is the common convention in data science, but this convention is not always followed, especially when you're collecting data from out in the wild. This can come about for a myriad of reasons, but one common reason you'll encounter "unconventional data organization" is that the data enter prioritizes human-readability over machine-readability and ease of analysis. 
+
+For example, suppose you were giving a blind taste test of three types of diet cola: diet Coke, diet Pepsi, and diet RC.  You give 3 groups of 10 random people a drink and ask them to rate their preference on a scale of 1-5 with 5 being great and 1 being awful.  A natural way to organize the data from your experiment may look something like the table below (the numbers are randomly generated). 
+
+```{r}
+set.seed(1123)
+df <- tibble( coke = sample(1:5, 10, replace = T), 
+        pepsi = sample(1:5, 10, replace = T), 
+        rc = sample(1:5, 10, replace = T))  #generate table of random numbers.
+
+df %>% knitr::kable()
+```
+
+Note, however, that the drink someone is tasting is actually a variable! This means our data set doesn't have variables  in columns, it splits one variable up into three different columns.  This type of thing is quite common.  Fortunately, R gives us a way to easily transform such data sets as we'll see. The appropriate format for our convention of variables in columns, observations in rows would be 
+
+```{r}
+set.seed(1123) # make sure random numbers generated above are the same. 
+
+dfTidy <- tibble( #first a column of the drink participants had
+  drink =  c( rep("coke", 10), rep("pepsi", 10), rep("rc", 10)), 
+  # then a column of their scores
+  score = c(sample(1:5, 10, replace = T), 
+                            sample(1:5, 10, replace = T),
+                            sample(1:5, 10, replace = T) ))
+head(dfTidy)
+```
+
+This data set is less easy to read as a human (since it has 30 rows and two columns), but is much easier to analyze in R (and pretty much all other available software).
+
+This example typifies our goal of **tidy data**: 
+
+1. Each variable should have its own column. 
+
+2. Each observation/observational unit should have its own row. 
+
+Again, the purpose of **tidy data** is to streamline and make  the analysis stage of your data journey easier. Most functionality in R is substantially easier to implement when you start with a tidy data set.
+
+As an example, if we'd like to make side-by-side box plots of the results of our cola taste test using the original data set `df` in `ggplot2`, we might try something like
+
+```{r, eval = F}
+ggplot(df, aes(x = ???, y = ???)) + geom_boxplot()
+```
+
+but run into an immediate problem. What is the $x$ variable? What is the $y$? If we use the tidy version of the same data, the answer is clear however: $x$ is the drink, $y$ is the score, since drink is the explanatory variable and taste preference is the response. Using `dfTidy` from above instead, we'd simply use the following. 
+
+```{r}
+ggplot(dfTidy, aes(x = drink, y = score)) + 
+  geom_boxplot()
+```
+
+Essentially *all* tools in the `tidyverse` package are designed around having tidy data. In the next section, we'll learn about one of the main functions from the `tidyverse` package used in tidying and analyzing data, the pipe. 
+
+## The pipe
+
+The pipe, typed as `%>%`, is a function from the `tidyverse` package whose intention is to make a sequence of transformations or operations on a data set more clear and easier for humans to follow and write. In some sense, you can think of it as adding layers of transformations to a data set, just like you use the `+` function to add layers to a graph in `ggplot2`. Note: this analogy is by design from the nice folks who created the `tidyverse`!
+
+In essence, the pipe tells R to do the operation on the *right* side of the pipe to the data set on the left of it; if there are multiple pipes in a sequence, they are evaluated left to right/top to bottom.  Let's try an example to see how it works. 
+
+We'll start with the `dfTidy` data from above. Suppose we forgot to add the results from a blind taste test of Diet Dr. Pepper.  We load that data into R (simulating it of course in this case)
+
+```{r}
+set.seed(1123)
+dp <- tibble(drink = rep("dp", 10),
+             score = sample(1:5, 10, replace = TRUE))
+```
+
+Now suppose want to 
+
+1. Add this data to `dfTidy`. 
+
+2. Add a new column that rescales the scores so that they're between 0 and 1 instead of 1 and 5.  
+
+We can do this quickly using the following
+
+```{r}
+newDf <- dfTidy %>% #start with dfTidy
+  bind_rows(dp) %>% #adds dp to the bottom of dfTidy
+  mutate(newScale = .25*score - .25) #add new column to whole dataset. 
+```
+
+To see that this did what we hope, let's look at a random sample of 10 rows using the `slice_sample` function
+
+```{r}
+set.seed(1123) 
+#more piping!
+newDf %>% 
+  slice_sample(n = 10)
+```
+
+It does as we'd hoped! Great. You may be wondering *why* piping exists. Earlier we said it was to make code easier to read and intuitive to write. But with respect to what?   There are two older programming conventions that piping is trying to clarify: "overwriting the original" and "function composition". Let's create `dfTidy` using these two strategies.
+
+**Overwriting the original**: At each stage, overwrite what you did at the previous stage.  It's not too bad in this example, but can be tedious if you have say 10 different transformations to make. It is especially inconvenient if you need to make changes since you have to track those changes through all your steps.  
+
+```{r}
+newDf1 <- bind_rows(dfTidy, dp)
+newDf1 <- mutate(newDf1, newScale = .25*score - .25)
+#check to see we got the same thing
+all.equal(newDf, newDf1)
+```
+
+**Function composition**: This is probably the least human readable way to write create our new data set, but it also makes explicit what the computer is doing and it looks shorter. Notice that you have to read from the inside out and right to left. Once again, this isn't too bad with only two transformations, but you could imagine how much of a nightmare this could be with 10 transformations, especially in terms of reading the code. 
+
+```{r}
+newDf2 <- mutate( bind_rows(dfTidy, dp), newScale = .25*score - .25)
+#are they equal? 
+all.equal(newDf, newDf2)
+```
+
+Hopefully you think the piped sequence of transformations is more straightforward to read and write than the other two options. 
+
+Now that we're more comfortable with the pipe, let's use it to implement some common forms of transformations!
+
+## Common tidying operations
+
+If you're dealing with a data set that isn't tidy, it typically violates our *tidy* criteria in one of two ways:
+
+1.  Variables can be split across several columns. In this case, the column names are not variable names, but *values* of a variable like the original data set for our diet cola blind taste test `df` above.
+
+2.  Observations can be split across several rows. 
+
+There are two functions in the `tidyverse` used to handle these cases: `pivot_longer(...)` and `pivot_wider(...)`. **Caution**: it can take a little bit of time get these functions to do exactly what you want. Have a bit of patience and you'll improve with time!
+
+The function `pivot_longer(...)` is used to tidy a data set when variables are split across several columns; it takes the *values* of the variable that are the untidy column names, makes a new column for them, then organizes the values of the columns appropriately. This is best observed in an example: instead of reentering the data in our cola example, we could instead use pivot longer.
+
+```{r}
+dfTidy1 <- df %>% 
+  #specify the columns are actually values
+  pivot_longer(cols = c("coke", "pepsi", "rc"),  
+               #then specify column/variable name
+               names_to = "drink",
+               #finally specify the name of the values
+               values_to = "score"
+               )
+glimpse(dfTidy1)
+```
+At first it doesn't seem like this data set is the same as `dfTidy`, but notice that R arranged the values as "coke", "pepsi", "rc". If we rearrange the rows alphabetically by drink, we'll see that they are in fact that same data sets. 
+
+```{r}
+all.equal( dfTidy %>% 
+             arrange(drink), 
+           dfTidy1%>% 
+             arrange(drink))
+```
+
+The function `pivot_wider(...)` is used to tidy a data set when observations are split across several rows. The `tidyverse` has a data set simply called `table2` that provides an example of observations being split across several rows.  This table shows "the number of TB cases documented by the World Health Organization in Afghanistan, Brazil, and China between 1999 and 2000" (from the documentation). 
+
+```{r}
+table2
+```
+
+In this example, the observations are a country in a year, so `cases` and `population` are not *values*. Instead, they are variables, since in a given year each country has a population and a certain number of TB cases. 
+
+```{r}
+table2 %>%
+  #first specify where the new column names are coming from
+  pivot_wider(names_from = "type", 
+              #next specify where the new column values are coming from
+              values_from = "count")
+```
+
+Much better! Notice that the same information is displayed in both tables. The latter option is simply easier to work with. 
+
+## Mutate, group by, and summarize
+
+Once you're working with a tidy data set, you may want to add columns to it, create a summary of the data, or both!  
 
 

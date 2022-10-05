@@ -8,7 +8,7 @@
   <meta name="description" content="<p>This is a minimal example of using the bookdown package to write a book.
 The HTML output format for this example is bookdown::gitbook,
 set in the _output.yml file.</p>" />
-  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 4 Wrangling data | R and RStudio for STAT216" />
   <meta property="og:type" content="book" />
@@ -189,7 +189,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.2.3" data-path="cross.html"><a href="cross.html#saving-plots"><i class="fa fa-check"></i><b>3.2.3</b> Saving plots</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="wrangling-data.html"><a href="wrangling-data.html"><i class="fa fa-check"></i><b>4</b> Wrangling data</a></li>
+<li class="chapter" data-level="4" data-path="wrangling-data.html"><a href="wrangling-data.html"><i class="fa fa-check"></i><b>4</b> Wrangling data</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="wrangling-data.html"><a href="wrangling-data.html#the-goal-tidy-data."><i class="fa fa-check"></i><b>4.1</b> The goal: “tidy” data.</a></li>
+<li class="chapter" data-level="4.2" data-path="wrangling-data.html"><a href="wrangling-data.html#the-pipe"><i class="fa fa-check"></i><b>4.2</b> The pipe</a></li>
+<li class="chapter" data-level="4.3" data-path="wrangling-data.html"><a href="wrangling-data.html#common-tidying-operations"><i class="fa fa-check"></i><b>4.3</b> Common tidying operations</a></li>
+<li class="chapter" data-level="4.4" data-path="wrangling-data.html"><a href="wrangling-data.html#mutate-group-by-and-summarize"><i class="fa fa-check"></i><b>4.4</b> Mutate, group by, and summarize</a></li>
+</ul></li>
 <li class="chapter" data-level="5" data-path="distribution-calculations.html"><a href="distribution-calculations.html"><i class="fa fa-check"></i><b>5</b> Distribution calculations</a></li>
 <li class="chapter" data-level="6" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html"><i class="fa fa-check"></i><b>6</b> Inferential statistics, take 1</a></li>
 <li class="chapter" data-level="7" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html"><i class="fa fa-check"></i><b>7</b> Inferential statistics, take 2</a>
@@ -209,13 +215,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.2.4" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#analysis-of-variance-anova"><i class="fa fa-check"></i><b>7.2.4</b> Analysis of variance (ANOVA)</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="chapter" data-level="8" data-path="modeling-relationships.html"><a href="modeling-relationships.html"><i class="fa fa-check"></i><b>8</b> Modeling relationships</a>
 <ul>
 <li class="chapter" data-level="8.1" data-path="modeling-relationships.html"><a href="modeling-relationships.html#simple-linear-regression"><i class="fa fa-check"></i><b>8.1</b> Simple linear regression</a></li>
 <li class="chapter" data-level="8.2" data-path="modeling-relationships.html"><a href="modeling-relationships.html#multiple-linear-regression"><i class="fa fa-check"></i><b>8.2</b> Multiple linear regression</a></li>
 <li class="chapter" data-level="8.3" data-path="modeling-relationships.html"><a href="modeling-relationships.html#bonus-topic-logistic-regression"><i class="fa fa-check"></i><b>8.3</b> Bonus topic: logistic regression</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -238,8 +244,236 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="wrangling-data" class="section level1 hasAnchor" number="4">
 <h1><span class="header-section-number">Chapter 4</span> Wrangling data<a href="wrangling-data.html#wrangling-data" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>TODO</p>
+<p>“Wrangling data” is a term used to describe the processes of manipulating or transforming raw data into a format that is easier to analyze and use. Data professionals often spend large chunks of time on the data wrangling phase of a project since the analysis and use flows much more smoothly when the wrangling is done appropriately. Like most chapters in this book, we won’t go too in depth into this subject, but we will cover enough to get you started. In particular, this section aims to</p>
+<ul>
+<li><p>help you understand what the end goal of data wrangling might look like. In other words, start understanding what a good, easy to use data set might look like.</p></li>
+<li><p>be able to use R’s <code>tidyverse</code> package to perform some basic data wrangling tasks.</p></li>
+</ul>
+<p>This section of notes will can be thought of as a condensed version of the <em>Wrangle</em> and <em>Program</em> sections of <a href="https://r4ds.had.co.nz/tidy-data.html">R for Data Science</a> and references this book substantially.</p>
+<p>Remember, since we’re using the <code>tidyverse</code> package in this section, you have to load the package with</p>
+<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="wrangling-data.html#cb242-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
+<div id="the-goal-tidy-data." class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> The goal: “tidy” data.<a href="wrangling-data.html#the-goal-tidy-data." class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In the early days of STAT216, we stipulated that data sets should contain variables in columns and observations in rows. This is the common convention in data science, but this convention is not always followed, especially when you’re collecting data from out in the wild. This can come about for a myriad of reasons, but one common reason you’ll encounter “unconventional data organization” is that the data enter prioritizes human-readability over machine-readability and ease of analysis.</p>
+<p>For example, suppose you were giving a blind taste test of three types of diet cola: diet Coke, diet Pepsi, and diet RC. You give 3 groups of 10 random people a drink and ask them to rate their preference on a scale of 1-5 with 5 being great and 1 being awful. A natural way to organize the data from your experiment may look something like the table below (the numbers are randomly generated).</p>
+<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="wrangling-data.html#cb243-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1123</span>)</span>
+<span id="cb243-2"><a href="wrangling-data.html#cb243-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>( <span class="at">coke =</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">10</span>, <span class="at">replace =</span> T), </span>
+<span id="cb243-3"><a href="wrangling-data.html#cb243-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">pepsi =</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">10</span>, <span class="at">replace =</span> T), </span>
+<span id="cb243-4"><a href="wrangling-data.html#cb243-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">rc =</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">10</span>, <span class="at">replace =</span> T))  <span class="co">#generate table of random numbers.</span></span>
+<span id="cb243-5"><a href="wrangling-data.html#cb243-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb243-6"><a href="wrangling-data.html#cb243-6" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">coke</th>
+<th align="right">pepsi</th>
+<th align="right">rc</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">5</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">5</td>
+</tr>
+</tbody>
+</table>
+<p>Note, however, that the drink someone is tasting is actually a variable! This means our data set doesn’t have variables in columns, it splits one variable up into three different columns. This type of thing is quite common. Fortunately, R gives us a way to easily transform such data sets as we’ll see. The appropriate format for our convention of variables in columns, observations in rows would be</p>
+<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="wrangling-data.html#cb244-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1123</span>) <span class="co"># make sure random numbers generated above are the same. </span></span>
+<span id="cb244-2"><a href="wrangling-data.html#cb244-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb244-3"><a href="wrangling-data.html#cb244-3" aria-hidden="true" tabindex="-1"></a>dfTidy <span class="ot">&lt;-</span> <span class="fu">tibble</span>( <span class="co">#first a column of the drink participants had</span></span>
+<span id="cb244-4"><a href="wrangling-data.html#cb244-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">drink =</span>  <span class="fu">c</span>( <span class="fu">rep</span>(<span class="st">&quot;coke&quot;</span>, <span class="dv">10</span>), <span class="fu">rep</span>(<span class="st">&quot;pepsi&quot;</span>, <span class="dv">10</span>), <span class="fu">rep</span>(<span class="st">&quot;rc&quot;</span>, <span class="dv">10</span>)), </span>
+<span id="cb244-5"><a href="wrangling-data.html#cb244-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># then a column of their scores</span></span>
+<span id="cb244-6"><a href="wrangling-data.html#cb244-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">score =</span> <span class="fu">c</span>(<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">10</span>, <span class="at">replace =</span> T), </span>
+<span id="cb244-7"><a href="wrangling-data.html#cb244-7" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">10</span>, <span class="at">replace =</span> T),</span>
+<span id="cb244-8"><a href="wrangling-data.html#cb244-8" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">10</span>, <span class="at">replace =</span> T) ))</span>
+<span id="cb244-9"><a href="wrangling-data.html#cb244-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dfTidy)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 2
+##   drink score
+##   &lt;chr&gt; &lt;int&gt;
+## 1 coke      3
+## 2 coke      4
+## 3 coke      4
+## 4 coke      1
+## 5 coke      3
+## 6 coke      4</code></pre>
+<p>This data set is less easy to read as a human (since it has 30 rows and two columns), but is much easier to analyze in R (and pretty much all other available software).</p>
+<p>This example typifies our goal of <strong>tidy data</strong>:</p>
+<ol style="list-style-type: decimal">
+<li><p>Each variable should have its own column.</p></li>
+<li><p>Each observation/observational unit should have its own row.</p></li>
+</ol>
+<p>Again, the purpose of <strong>tidy data</strong> is to streamline and make the analysis stage of your data journey easier. Most functionality in R is substantially easier to implement when you start with a tidy data set.</p>
+<p>As an example, if we’d like to make side-by-side box plots of the results of our cola taste test using the original data set <code>df</code> in <code>ggplot2</code>, we might try something like</p>
+<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="wrangling-data.html#cb246-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> ???, <span class="at">y =</span> ???)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>()</span></code></pre></div>
+<p>but run into an immediate problem. What is the <span class="math inline">\(x\)</span> variable? What is the <span class="math inline">\(y\)</span>? If we use the tidy version of the same data, the answer is clear however: <span class="math inline">\(x\)</span> is the drink, <span class="math inline">\(y\)</span> is the score, since drink is the explanatory variable and taste preference is the response. Using <code>dfTidy</code> from above instead, we’d simply use the following.</p>
+<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="wrangling-data.html#cb247-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dfTidy, <span class="fu">aes</span>(<span class="at">x =</span> drink, <span class="at">y =</span> score)) <span class="sc">+</span> </span>
+<span id="cb247-2"><a href="wrangling-data.html#cb247-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-90-1.png" width="672" /></p>
+<p>Essentially <em>all</em> tools in the <code>tidyverse</code> package are designed around having tidy data. In the next section, we’ll learn about one of the main functions from the <code>tidyverse</code> package used in tidying and analyzing data, the pipe.</p>
+</div>
+<div id="the-pipe" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> The pipe<a href="wrangling-data.html#the-pipe" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The pipe, typed as <code>%&gt;%</code>, is a function from the <code>tidyverse</code> package whose intention is to make a sequence of transformations or operations on a data set more clear and easier for humans to follow and write. In some sense, you can think of it as adding layers of transformations to a data set, just like you use the <code>+</code> function to add layers to a graph in <code>ggplot2</code>. Note: this analogy is by design from the nice folks who created the <code>tidyverse</code>!</p>
+<p>In essence, the pipe tells R to do the operation on the <em>right</em> side of the pipe to the data set on the left of it; if there are multiple pipes in a sequence, they are evaluated left to right/top to bottom. Let’s try an example to see how it works.</p>
+<p>We’ll start with the <code>dfTidy</code> data from above. Suppose we forgot to add the results from a blind taste test of Diet Dr. Pepper. We load that data into R (simulating it of course in this case)</p>
+<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="wrangling-data.html#cb248-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1123</span>)</span>
+<span id="cb248-2"><a href="wrangling-data.html#cb248-2" aria-hidden="true" tabindex="-1"></a>dp <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">drink =</span> <span class="fu">rep</span>(<span class="st">&quot;dp&quot;</span>, <span class="dv">10</span>),</span>
+<span id="cb248-3"><a href="wrangling-data.html#cb248-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">score =</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">10</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+<p>Now suppose want to</p>
+<ol style="list-style-type: decimal">
+<li><p>Add this data to <code>dfTidy</code>.</p></li>
+<li><p>Add a new column that rescales the scores so that they’re between 0 and 1 instead of 1 and 5.</p></li>
+</ol>
+<p>We can do this quickly using the following</p>
+<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="wrangling-data.html#cb249-1" aria-hidden="true" tabindex="-1"></a>newDf <span class="ot">&lt;-</span> dfTidy <span class="sc">%&gt;%</span> <span class="co">#start with dfTidy</span></span>
+<span id="cb249-2"><a href="wrangling-data.html#cb249-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(dp) <span class="sc">%&gt;%</span> <span class="co">#adds dp to the bottom of dfTidy</span></span>
+<span id="cb249-3"><a href="wrangling-data.html#cb249-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">newScale =</span> .<span class="dv">25</span><span class="sc">*</span>score <span class="sc">-</span> .<span class="dv">25</span>) <span class="co">#add new column to whole dataset. </span></span></code></pre></div>
+<p>To see that this did what we hope, let’s look at a random sample of 10 rows using the <code>slice_sample</code> function</p>
+<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="wrangling-data.html#cb250-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1123</span>) </span>
+<span id="cb250-2"><a href="wrangling-data.html#cb250-2" aria-hidden="true" tabindex="-1"></a><span class="co">#more piping!</span></span>
+<span id="cb250-3"><a href="wrangling-data.html#cb250-3" aria-hidden="true" tabindex="-1"></a>newDf <span class="sc">%&gt;%</span> </span>
+<span id="cb250-4"><a href="wrangling-data.html#cb250-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">10</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 10 x 3
+##    drink score newScale
+##    &lt;chr&gt; &lt;int&gt;    &lt;dbl&gt;
+##  1 dp        2     0.25
+##  2 coke      1     0   
+##  3 pepsi     1     0   
+##  4 dp        4     0.75
+##  5 dp        3     0.5 
+##  6 dp        3     0.5 
+##  7 rc        3     0.5 
+##  8 rc        2     0.25
+##  9 coke      2     0.25
+## 10 dp        1     0</code></pre>
+<p>It does as we’d hoped! Great. You may be wondering <em>why</em> piping exists. Earlier we said it was to make code easier to read and intuitive to write. But with respect to what? There are two older programming conventions that piping is trying to clarify: “overwriting the original” and “function composition”. Let’s create <code>dfTidy</code> using these two strategies.</p>
+<p><strong>Overwriting the original</strong>: At each stage, overwrite what you did at the previous stage. It’s not too bad in this example, but can be tedious if you have say 10 different transformations to make. It is especially inconvenient if you need to make changes since you have to track those changes through all your steps.</p>
+<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb252-1"><a href="wrangling-data.html#cb252-1" aria-hidden="true" tabindex="-1"></a>newDf1 <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(dfTidy, dp)</span>
+<span id="cb252-2"><a href="wrangling-data.html#cb252-2" aria-hidden="true" tabindex="-1"></a>newDf1 <span class="ot">&lt;-</span> <span class="fu">mutate</span>(newDf1, <span class="at">newScale =</span> .<span class="dv">25</span><span class="sc">*</span>score <span class="sc">-</span> .<span class="dv">25</span>)</span>
+<span id="cb252-3"><a href="wrangling-data.html#cb252-3" aria-hidden="true" tabindex="-1"></a><span class="co">#check to see we got the same thing</span></span>
+<span id="cb252-4"><a href="wrangling-data.html#cb252-4" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(newDf, newDf1)</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p><strong>Function composition</strong>: This is probably the least human readable way to write create our new data set, but it also makes explicit what the computer is doing and it looks shorter. Notice that you have to read from the inside out and right to left. Once again, this isn’t too bad with only two transformations, but you could imagine how much of a nightmare this could be with 10 transformations, especially in terms of reading the code.</p>
+<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb254-1"><a href="wrangling-data.html#cb254-1" aria-hidden="true" tabindex="-1"></a>newDf2 <span class="ot">&lt;-</span> <span class="fu">mutate</span>( <span class="fu">bind_rows</span>(dfTidy, dp), <span class="at">newScale =</span> .<span class="dv">25</span><span class="sc">*</span>score <span class="sc">-</span> .<span class="dv">25</span>)</span>
+<span id="cb254-2"><a href="wrangling-data.html#cb254-2" aria-hidden="true" tabindex="-1"></a><span class="co">#are they equal? </span></span>
+<span id="cb254-3"><a href="wrangling-data.html#cb254-3" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(newDf, newDf2)</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>Hopefully you think the piped sequence of transformations is more straightforward to read and write than the other two options.</p>
+<p>Now that we’re more comfortable with the pipe, let’s use it to implement some common forms of transformations!</p>
+</div>
+<div id="common-tidying-operations" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Common tidying operations<a href="wrangling-data.html#common-tidying-operations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>If you’re dealing with a data set that isn’t tidy, it typically violates our <em>tidy</em> criteria in one of two ways:</p>
+<ol style="list-style-type: decimal">
+<li><p>Variables can be split across several columns. In this case, the column names are not variable names, but <em>values</em> of a variable like the original data set for our diet cola blind taste test <code>df</code> above.</p></li>
+<li><p>Observations can be split across several rows.</p></li>
+</ol>
+<p>There are two functions in the <code>tidyverse</code> used to handle these cases: <code>pivot_longer(...)</code> and <code>pivot_wider(...)</code>. <strong>Caution</strong>: it can take a little bit of time get these functions to do exactly what you want. Have a bit of patience and you’ll improve with time!</p>
+<p>The function <code>pivot_longer(...)</code> is used to tidy a data set when variables are split across several columns; it takes the <em>values</em> of the variable that are the untidy column names, makes a new column for them, then organizes the values of the columns appropriately. This is best observed in an example: instead of reentering the data in our cola example, we could instead use pivot longer.</p>
+<div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb256-1"><a href="wrangling-data.html#cb256-1" aria-hidden="true" tabindex="-1"></a>dfTidy1 <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb256-2"><a href="wrangling-data.html#cb256-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#specify the columns are actually values</span></span>
+<span id="cb256-3"><a href="wrangling-data.html#cb256-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(<span class="st">&quot;coke&quot;</span>, <span class="st">&quot;pepsi&quot;</span>, <span class="st">&quot;rc&quot;</span>),  </span>
+<span id="cb256-4"><a href="wrangling-data.html#cb256-4" aria-hidden="true" tabindex="-1"></a>               <span class="co">#then specify column/variable name</span></span>
+<span id="cb256-5"><a href="wrangling-data.html#cb256-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">&quot;drink&quot;</span>,</span>
+<span id="cb256-6"><a href="wrangling-data.html#cb256-6" aria-hidden="true" tabindex="-1"></a>               <span class="co">#finally specify the name of the values</span></span>
+<span id="cb256-7"><a href="wrangling-data.html#cb256-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">&quot;score&quot;</span></span>
+<span id="cb256-8"><a href="wrangling-data.html#cb256-8" aria-hidden="true" tabindex="-1"></a>               )</span>
+<span id="cb256-9"><a href="wrangling-data.html#cb256-9" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(dfTidy1)</span></code></pre></div>
+<pre><code>## Rows: 30
+## Columns: 2
+## $ drink &lt;chr&gt; &quot;coke&quot;, &quot;pepsi&quot;, &quot;rc&quot;, &quot;coke&quot;, &quot;pepsi&quot;, &quot;rc&quot;, &quot;coke&quot;, &quot;pepsi&quot;, &quot;rc&quot;,~
+## $ score &lt;int&gt; 3, 3, 1, 4, 2, 1, 4, 3, 2, 1, 4, 3, 3, 4, 5, 4, 1, 2, 1, 5, 3, 2, 3,~</code></pre>
+<p>At first it doesn’t seem like this data set is the same as <code>dfTidy</code>, but notice that R arranged the values as “coke”, “pepsi”, “rc”. If we rearrange the rows alphabetically by drink, we’ll see that they are in fact that same data sets.</p>
+<div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb258-1"><a href="wrangling-data.html#cb258-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>( dfTidy <span class="sc">%&gt;%</span> </span>
+<span id="cb258-2"><a href="wrangling-data.html#cb258-2" aria-hidden="true" tabindex="-1"></a>             <span class="fu">arrange</span>(drink), </span>
+<span id="cb258-3"><a href="wrangling-data.html#cb258-3" aria-hidden="true" tabindex="-1"></a>           dfTidy1<span class="sc">%&gt;%</span> </span>
+<span id="cb258-4"><a href="wrangling-data.html#cb258-4" aria-hidden="true" tabindex="-1"></a>             <span class="fu">arrange</span>(drink))</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>The function <code>pivot_wider(...)</code> is used to tidy a data set when observations are split across several rows. The <code>tidyverse</code> has a data set simply called <code>table2</code> that provides an example of observations being split across several rows. This table shows “the number of TB cases documented by the World Health Organization in Afghanistan, Brazil, and China between 1999 and 2000” (from the documentation).</p>
+<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb260-1"><a href="wrangling-data.html#cb260-1" aria-hidden="true" tabindex="-1"></a>table2</span></code></pre></div>
+<pre><code>## # A tibble: 12 x 4
+##    country      year type            count
+##    &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;           &lt;int&gt;
+##  1 Afghanistan  1999 cases             745
+##  2 Afghanistan  1999 population   19987071
+##  3 Afghanistan  2000 cases            2666
+##  4 Afghanistan  2000 population   20595360
+##  5 Brazil       1999 cases           37737
+##  6 Brazil       1999 population  172006362
+##  7 Brazil       2000 cases           80488
+##  8 Brazil       2000 population  174504898
+##  9 China        1999 cases          212258
+## 10 China        1999 population 1272915272
+## 11 China        2000 cases          213766
+## 12 China        2000 population 1280428583</code></pre>
+<p>In this example, the observations are a country in a year, so <code>cases</code> and <code>population</code> are not <em>values</em>. Instead, they are variables, since in a given year each country has a population and a certain number of TB cases.</p>
+<div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb262-1"><a href="wrangling-data.html#cb262-1" aria-hidden="true" tabindex="-1"></a>table2 <span class="sc">%&gt;%</span></span>
+<span id="cb262-2"><a href="wrangling-data.html#cb262-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#first specify where the new column names are coming from</span></span>
+<span id="cb262-3"><a href="wrangling-data.html#cb262-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">&quot;type&quot;</span>, </span>
+<span id="cb262-4"><a href="wrangling-data.html#cb262-4" aria-hidden="true" tabindex="-1"></a>              <span class="co">#next specify where the new column values are coming from</span></span>
+<span id="cb262-5"><a href="wrangling-data.html#cb262-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_from =</span> <span class="st">&quot;count&quot;</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 4
+##   country      year  cases population
+##   &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;      &lt;int&gt;
+## 1 Afghanistan  1999    745   19987071
+## 2 Afghanistan  2000   2666   20595360
+## 3 Brazil       1999  37737  172006362
+## 4 Brazil       2000  80488  174504898
+## 5 China        1999 212258 1272915272
+## 6 China        2000 213766 1280428583</code></pre>
+<p>Much better! Notice that the same information is displayed in both tables. The latter option is simply easier to work with.</p>
+</div>
+<div id="mutate-group-by-and-summarize" class="section level2 hasAnchor" number="4.4">
+<h2><span class="header-section-number">4.4</span> Mutate, group by, and summarize<a href="wrangling-data.html#mutate-group-by-and-summarize" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Once you’re working with a tidy data set, you may want to add columns to it, create a summary of the data, or both!</p>
 
+</div>
 </div>
             </section>
 
@@ -307,7 +541,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

@@ -8,7 +8,7 @@
   <meta name="description" content="<p>This is a minimal example of using the bookdown package to write a book.
 The HTML output format for this example is bookdown::gitbook,
 set in the _output.yml file.</p>" />
-  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
   <meta property="og:title" content="R and RStudio for STAT216" />
   <meta property="og:type" content="book" />
@@ -189,7 +189,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.2.3" data-path="cross.html"><a href="cross.html#saving-plots"><i class="fa fa-check"></i><b>3.2.3</b> Saving plots</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="wrangling-data.html"><a href="wrangling-data.html"><i class="fa fa-check"></i><b>4</b> Wrangling data</a></li>
+<li class="chapter" data-level="4" data-path="wrangling-data.html"><a href="wrangling-data.html"><i class="fa fa-check"></i><b>4</b> Wrangling data</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="wrangling-data.html"><a href="wrangling-data.html#the-goal-tidy-data."><i class="fa fa-check"></i><b>4.1</b> The goal: “tidy” data.</a></li>
+<li class="chapter" data-level="4.2" data-path="wrangling-data.html"><a href="wrangling-data.html#the-pipe"><i class="fa fa-check"></i><b>4.2</b> The pipe</a></li>
+<li class="chapter" data-level="4.3" data-path="wrangling-data.html"><a href="wrangling-data.html#common-tidying-operations"><i class="fa fa-check"></i><b>4.3</b> Common tidying operations</a></li>
+<li class="chapter" data-level="4.4" data-path="wrangling-data.html"><a href="wrangling-data.html#mutate-group-by-and-summarize"><i class="fa fa-check"></i><b>4.4</b> Mutate, group by, and summarize</a></li>
+</ul></li>
 <li class="chapter" data-level="5" data-path="distribution-calculations.html"><a href="distribution-calculations.html"><i class="fa fa-check"></i><b>5</b> Distribution calculations</a></li>
 <li class="chapter" data-level="6" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html"><i class="fa fa-check"></i><b>6</b> Inferential statistics, take 1</a></li>
 <li class="chapter" data-level="7" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html"><i class="fa fa-check"></i><b>7</b> Inferential statistics, take 2</a>
@@ -209,13 +215,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.2.4" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#analysis-of-variance-anova"><i class="fa fa-check"></i><b>7.2.4</b> Analysis of variance (ANOVA)</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="chapter" data-level="8" data-path="modeling-relationships.html"><a href="modeling-relationships.html"><i class="fa fa-check"></i><b>8</b> Modeling relationships</a>
 <ul>
 <li class="chapter" data-level="8.1" data-path="modeling-relationships.html"><a href="modeling-relationships.html#simple-linear-regression"><i class="fa fa-check"></i><b>8.1</b> Simple linear regression</a></li>
 <li class="chapter" data-level="8.2" data-path="modeling-relationships.html"><a href="modeling-relationships.html#multiple-linear-regression"><i class="fa fa-check"></i><b>8.2</b> Multiple linear regression</a></li>
 <li class="chapter" data-level="8.3" data-path="modeling-relationships.html"><a href="modeling-relationships.html#bonus-topic-logistic-regression"><i class="fa fa-check"></i><b>8.3</b> Bonus topic: logistic regression</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -239,7 +245,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">R and RStudio for STAT216</h1>
 <p class="author"><em>Charles Katerba</em></p>
-<p class="date"><em>Last update: 2022-09-29</em></p>
+<p class="date"><em>Last update: 2022-10-05</em></p>
 </div>
 <div id="about" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">Chapter 1</span> About<a href="index.html#about" class="anchor-section" aria-label="Anchor link to header"></a></h1>
@@ -410,7 +416,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');
