@@ -8,7 +8,7 @@
   <meta name="description" content="<p>This is a minimal example of using the bookdown package to write a book.
 The HTML output format for this example is bookdown::gitbook,
 set in the _output.yml file.</p>" />
-  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 3 Summary statistics and data visualization | R and RStudio for STAT216" />
   <meta property="og:type" content="book" />
@@ -248,7 +248,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Up to this point you may feel like R has made your life harder; the point of this chapter is to convince you that, at least for doing statistics, R can make your life much, much easier.</p>
 <p>In all of the examples below we will be using the <code>teacher</code> data set from the <code>openintro</code> package in R which contains salary data for 71 teachers in the St. Louis Public Schools and other variables that may influence salary. For more information, evaluate <code>?teacher</code> in the console.</p>
 <div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="cross.html#cb172-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(teacher)</span></code></pre></div>
-<pre><code>## # A tibble: 6 x 8
+<pre><code>## # A tibble: 6 × 8
 ##   id    degree fte   years  base  fica retirement  total
 ##   &lt;fct&gt; &lt;fct&gt;  &lt;fct&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;
 ## 1 01    BA     1       5   45388 3472.      7689. 56549.
@@ -390,7 +390,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="cross.html#cb220-1" aria-hidden="true" tabindex="-1"></a><span class="fu">by</span>(fullTime<span class="sc">$</span>base, fullTime<span class="sc">$</span>degree, mean)</span></code></pre></div>
 <pre><code>## fullTime$degree: BA
 ## [1] 56257.1
-## --------------------------------------------------------------- 
+## --------------------------------------------------------------------- 
 ## fullTime$degree: MA
 ## [1] 57793.74</code></pre>
 <p>As a final example, we will give a preview of creating the same table in using <code>tidyverse</code>syntax and grammar. Check out the next chapter for much more information, starting with the original <code>teacher</code> data set.</p>
@@ -399,7 +399,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb222-3"><a href="cross.html#cb222-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(degree) <span class="sc">%&gt;%</span> <span class="co">#specify variables to group by</span></span>
 <span id="cb222-4"><a href="cross.html#cb222-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>( <span class="at">n =</span> <span class="fu">n</span>(), <span class="co">#create summary table, first column is a count</span></span>
 <span id="cb222-5"><a href="cross.html#cb222-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">avgSal =</span> <span class="fu">mean</span>(base)) <span class="co">#second column is average salary</span></span></code></pre></div>
-<pre><code>## # A tibble: 2 x 3
+<pre><code>## # A tibble: 2 × 3
 ##   degree     n avgSal
 ##   &lt;fct&gt;  &lt;int&gt;  &lt;dbl&gt;
 ## 1 BA        39 56257.
@@ -417,7 +417,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><strong>Histograms</strong>: When trying to visualize the distribution of a single numerical variable you often want to start with a histogram. The basic command for this is <code>hist(...)</code>. The first histogram below just gives you a rough idea of what the histograms look like, the second demonstrates the types of options you can specify.</p>
 <div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="cross.html#cb224-1" aria-hidden="true" tabindex="-1"></a><span class="co">#no options specified</span></span>
 <span id="cb224-2"><a href="cross.html#cb224-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(teacher<span class="sc">$</span>base)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-71-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-125-1.png" width="672" /></p>
 <div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="cross.html#cb225-1" aria-hidden="true" tabindex="-1"></a><span class="co">#vs many options specified</span></span>
 <span id="cb225-2"><a href="cross.html#cb225-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(teacher<span class="sc">$</span>base, <span class="co">#variable to make a histogram of</span></span>
 <span id="cb225-3"><a href="cross.html#cb225-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">breaks =</span> <span class="dv">11</span>, <span class="co">#number of cells, can be left blank</span></span>
@@ -426,19 +426,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb225-6"><a href="cross.html#cb225-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Base salary (USD)&quot;</span>, <span class="co">#x-axis label</span></span>
 <span id="cb225-7"><a href="cross.html#cb225-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Frequency&quot;</span> <span class="co">#y-axis label, can be left blank in this case</span></span>
 <span id="cb225-8"><a href="cross.html#cb225-8" aria-hidden="true" tabindex="-1"></a>     )</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-71-2.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-125-2.png" width="672" /></p>
 <p><strong>Scatter plots</strong>: when checking for an association between two numerical variables you will often want to start your analysis with a scatter plot. The function <code>plot(x,y)</code> creates a scatter plot of <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>. Make sure these lists have the same length!</p>
 <p>As above, we’ll make a basic scatter plot, then play around with the labels and options of the same graph.</p>
 <div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="cross.html#cb226-1" aria-hidden="true" tabindex="-1"></a><span class="co">#basic plot of years experience vs total teacher salary</span></span>
 <span id="cb226-2"><a href="cross.html#cb226-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(teacher<span class="sc">$</span>years, teacher<span class="sc">$</span>total)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-72-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-126-1.png" width="672" /></p>
 <div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="cross.html#cb227-1" aria-hidden="true" tabindex="-1"></a><span class="co">#same plot with updated options</span></span>
 <span id="cb227-2"><a href="cross.html#cb227-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( teacher<span class="sc">$</span>years, teacher<span class="sc">$</span>total,</span>
 <span id="cb227-3"><a href="cross.html#cb227-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">pch =</span> <span class="dv">16</span>, <span class="co">#change mark to filled in circle</span></span>
 <span id="cb227-4"><a href="cross.html#cb227-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">main =</span> <span class="st">&quot;Teacher experience vs total salary&quot;</span>,</span>
 <span id="cb227-5"><a href="cross.html#cb227-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">xlab =</span> <span class="st">&quot;Teaching experience (in years)&quot;</span>, </span>
 <span id="cb227-6"><a href="cross.html#cb227-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab =</span> <span class="st">&quot;Total annual salary (USD)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-72-2.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-126-2.png" width="672" /></p>
 <p><strong>Bar charts</strong>: bar charts help visualize one or two categorical variables; you can think of them as a visualization of one-way and two way tables. The basic function is, no surprise, <code>barplot(...)</code>, but you must input a table instead of vectors.</p>
 <div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="cross.html#cb228-1" aria-hidden="true" tabindex="-1"></a><span class="co">#define our tables</span></span>
 <span id="cb228-2"><a href="cross.html#cb228-2" aria-hidden="true" tabindex="-1"></a>tbl1 <span class="ot">&lt;-</span> <span class="fu">prop.table</span>(<span class="fu">table</span>(teacher<span class="sc">$</span>degree)) <span class="co"># one-way rel. freq. table </span></span>
@@ -448,7 +448,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb228-6"><a href="cross.html#cb228-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">&quot;Relative frequency of teacher degrees&quot;</span>, </span>
 <span id="cb228-7"><a href="cross.html#cb228-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">&quot;Degree&quot;</span>, </span>
 <span id="cb228-8"><a href="cross.html#cb228-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab =</span> <span class="st">&quot;Proportion&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-73-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-127-1.png" width="672" /></p>
 <div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="cross.html#cb229-1" aria-hidden="true" tabindex="-1"></a><span class="co">#visualize two-way table</span></span>
 <span id="cb229-2"><a href="cross.html#cb229-2" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(tbl2, </span>
 <span id="cb229-3"><a href="cross.html#cb229-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">&quot;Teacher employment employment by degree&quot;</span>,</span>
@@ -457,19 +457,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb229-6"><a href="cross.html#cb229-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>), <span class="co">#set colors for degree types, alphabetically</span></span>
 <span id="cb229-7"><a href="cross.html#cb229-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend =</span> <span class="fu">rownames</span>(tbl2) <span class="co">#create legend with rows from the table</span></span>
 <span id="cb229-8"><a href="cross.html#cb229-8" aria-hidden="true" tabindex="-1"></a>        )</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-73-2.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-127-2.png" width="672" /></p>
 <p><strong>Box plots</strong>: Box plots help us visualize a the distribution of a numerical variable; stacking box plots side by side help us compare the distribution of a numerical variable over several values of a categorical variable. No suprise, both it is easy to make these plots in both situations using the function <code>boxplot</code>.</p>
 <p>The syntax for creating a box plot for a single numerical variable is simple, as the next example shows.</p>
 <div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="cross.html#cb230-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(teacher<span class="sc">$</span>base, </span>
 <span id="cb230-2"><a href="cross.html#cb230-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab =</span> <span class="st">&quot;Base salary (USD)&quot;</span>, </span>
 <span id="cb230-3"><a href="cross.html#cb230-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">&quot;Distribution of MI teacher salaries&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-74-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-128-1.png" width="672" /></p>
 <p>When creating a box plot for a numerical variable over several values of a categorical variable, you need to use R’s formula syntax. This syntax will appear a few more times throughout the course since it is used often when looking at relationships between two variables. The basic notation is <code>Response variable ~ explanatory variables</code> or, if your response variable is <code>y</code> and your explanatory variable is <code>x</code>, simply <code>y ~ x</code>. Note the <code>~</code> symbol is to the left of the <code>1</code> key on your keyboard. The next examples shows a breakdown of teacher salary by highest degree.</p>
 <div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="cross.html#cb231-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(base <span class="sc">~</span> degree, <span class="at">data =</span> fullTime, </span>
 <span id="cb231-2"><a href="cross.html#cb231-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">&quot;Degree&quot;</span>, </span>
 <span id="cb231-3"><a href="cross.html#cb231-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab =</span> <span class="st">&quot;Base salary (USD)&quot;</span>,</span>
 <span id="cb231-4"><a href="cross.html#cb231-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">&quot;MI teacher base salary by degree&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-75-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-129-1.png" width="672" /></p>
 <p>Before moving on to plotting with <code>ggplot2</code>, we remind the reader that this is by no means a comprehensive list of all plotting features in R. Moreover, each of the plotting functions used above have many more features and are very customizable; you can go down a deep rabbit hole making plots look just how you want them to.</p>
 </div>
 <div id="ggplot2" class="section level3 hasAnchor" number="3.2.2">
@@ -489,7 +489,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb232-6"><a href="cross.html#cb232-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>( <span class="at">title =</span> <span class="st">&quot;Distribution of MI teacher base salary&quot;</span>) <span class="sc">+</span></span>
 <span id="cb232-7"><a href="cross.html#cb232-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># changes x-axis label</span></span>
 <span id="cb232-8"><a href="cross.html#cb232-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Base salary (USD)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-76-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-130-1.png" width="672" /></p>
 <p><strong>Scatter plots</strong>: The <code>geom</code> for a scatter plot is <code>geom_point(...)</code>. You can tweak the appearance quite a bit using different arguments inside this (and all!) <code>geom</code>s. For instance the option <code>alpha</code> sets the transparency, <code>color</code> the color of each point, <code>shape</code> the shape, etc.</p>
 <div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="cross.html#cb233-1" aria-hidden="true" tabindex="-1"></a><span class="co">#open empty plot and specify explanatory (x) and response (y) variables</span></span>
 <span id="cb233-2"><a href="cross.html#cb233-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(teacher, <span class="fu">aes</span>(<span class="at">x =</span> years, <span class="at">y =</span> total))  <span class="sc">+</span> </span>
@@ -497,7 +497,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb233-4"><a href="cross.html#cb233-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Teacher salary vs years experience&quot;</span>) <span class="sc">+</span> </span>
 <span id="cb233-5"><a href="cross.html#cb233-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Experience (years)&quot;</span>) <span class="sc">+</span></span>
 <span id="cb233-6"><a href="cross.html#cb233-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Total salary (USD)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-77-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-131-1.png" width="672" /></p>
 <p>Adding a line of best fit (see Chapter 8 for more information on modeling) to a scatter plot is straightforward with a <code>geom_smooth(...)</code> layer, setting <code>method = 'lm'</code> (this means add a linear model to your plot)</p>
 <div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="cross.html#cb234-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(teacher, <span class="fu">aes</span>(<span class="at">x =</span> years, <span class="at">y =</span> total))  <span class="sc">+</span> </span>
 <span id="cb234-2"><a href="cross.html#cb234-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
@@ -505,14 +505,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb234-4"><a href="cross.html#cb234-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Teacher salary vs years experience&quot;</span>) <span class="sc">+</span> </span>
 <span id="cb234-5"><a href="cross.html#cb234-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Experience (years)&quot;</span>) <span class="sc">+</span></span>
 <span id="cb234-6"><a href="cross.html#cb234-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Total salary (USD)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-78-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-132-1.png" width="672" /></p>
 <p>We can make the same plot, but color the points by each teacher’s degree and change the shape of each point by full/part time status.</p>
 <div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="cross.html#cb235-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(teacher, <span class="fu">aes</span>(<span class="at">x =</span> years, <span class="at">y =</span> total, <span class="at">color =</span> degree))  <span class="sc">+</span> </span>
 <span id="cb235-2"><a href="cross.html#cb235-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">shape =</span> fte)) <span class="sc">+</span> </span>
 <span id="cb235-3"><a href="cross.html#cb235-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Teacher salary vs years experience, by highest degree&quot;</span>) <span class="sc">+</span> </span>
 <span id="cb235-4"><a href="cross.html#cb235-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Experience (years)&quot;</span>) <span class="sc">+</span></span>
 <span id="cb235-5"><a href="cross.html#cb235-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Total salary (USD)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-79-1.png" width="672" />
+<p><img src="_main_files/figure-html/unnamed-chunk-133-1.png" width="672" />
 This school district’s pay scale becomes much more apparent! Teachers with masters degrees earn a little bit more, but everyone’s salary increases at roughly the same rate during their first 11 years, then flattens out. We also see that the outlier with minimal experience and low pay is also the only part-time employee.</p>
 <p>As a final example of tweaking scatter plots, we can even add a line of best fit for each degree group!</p>
 <div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="cross.html#cb236-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(teacher, <span class="fu">aes</span>(<span class="at">x =</span> years, <span class="at">y =</span> total, <span class="at">color =</span> degree))  <span class="sc">+</span> </span>
@@ -521,7 +521,7 @@ This school district’s pay scale becomes much more apparent! Teachers with mas
 <span id="cb236-4"><a href="cross.html#cb236-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Teacher salary vs years experience, by highest degree&quot;</span>) <span class="sc">+</span> </span>
 <span id="cb236-5"><a href="cross.html#cb236-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Experience (years)&quot;</span>) <span class="sc">+</span></span>
 <span id="cb236-6"><a href="cross.html#cb236-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Total salary (USD)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-80-1.png" width="672" />
+<p><img src="_main_files/figure-html/unnamed-chunk-134-1.png" width="672" />
 You can see that it is easy to start adding a lot of information to a plot! Be careful, however; there is a fine line between a detailed, informative visualization, and a confusing, overly busy one.</p>
 <p><strong>Bar graphs</strong>: We can make bar graphs easily with <code>ggplot2</code> using the <code>geom_bar(...)</code> layer. The first two plots below look identical at first pass, but the one on the left is a frequency bar chart, so displays the raw count on the <span class="math inline">\(y\)</span>-axis, but the chart on the right is a relative bar chart. To make the relative frequency bar chart, we include the option <code>y = ..prop..</code> in the aesthetic. We also have to specify the number of groups to ensure that our proportions are out of the total.</p>
 <div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="cross.html#cb237-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first load a package for side by side plots</span></span>
@@ -536,7 +536,7 @@ You can see that it is easy to start adding a lot of information to a plot! Be c
 <span id="cb237-10"><a href="cross.html#cb237-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>( <span class="at">title =</span> <span class="st">&quot;MI teacher education (proportion)&quot;</span>)</span>
 <span id="cb237-11"><a href="cross.html#cb237-11" aria-hidden="true" tabindex="-1"></a><span class="co">#display both plots side by side. </span></span>
 <span id="cb237-12"><a href="cross.html#cb237-12" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(p1,p2, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-81-1.png" width="672" />
+<p><img src="_main_files/figure-html/unnamed-chunk-135-1.png" width="672" />
 Next we’ll make stacked and side by side box plots.</p>
 <div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="cross.html#cb238-1" aria-hidden="true" tabindex="-1"></a><span class="co">#stacked</span></span>
 <span id="cb238-2"><a href="cross.html#cb238-2" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(teacher, <span class="fu">aes</span>(<span class="at">x =</span> degree, <span class="at">fill =</span> fte)) <span class="sc">+</span> </span>
@@ -548,7 +548,7 @@ Next we’ll make stacked and side by side box plots.</p>
 <span id="cb238-8"><a href="cross.html#cb238-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;MI teacher education&quot;</span>)</span>
 <span id="cb238-9"><a href="cross.html#cb238-9" aria-hidden="true" tabindex="-1"></a><span class="co">#display both plots side by side</span></span>
 <span id="cb238-10"><a href="cross.html#cb238-10" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(p1, p2, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-82-1.png" width="672" />
+<p><img src="_main_files/figure-html/unnamed-chunk-136-1.png" width="672" />
 One could combine our first and second examples of box plots to get side-by-side and stacked relative frequency plots. This takes a little bit of extra fuss that can be avoided by first manipulating the data you input into <code>ggplot2</code>. In other words, to make these types of plots, make the summary calculations on your own earlier, then feed those into the appropriate <code>geom</code>.</p>
 <p><strong>Box plots</strong>: We will finish up our brief tour of <code>ggplot2</code> by making a few box plots. The <code>geom</code> for box plots is, no surprise, <code>geom_boxplot(...)</code>. Let’s first look at a box plot of the teacher’s total salary.</p>
 <div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="cross.html#cb239-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(teacher, <span class="fu">aes</span>(<span class="at">y =</span> total)) <span class="sc">+</span> </span>
@@ -556,7 +556,7 @@ One could combine our first and second examples of box plots to get side-by-side
 <span id="cb239-3"><a href="cross.html#cb239-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x=</span><span class="fu">element_blank</span>(), <span class="co">#this layer just removes the scale on the x-axis</span></span>
 <span id="cb239-4"><a href="cross.html#cb239-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks.x=</span><span class="fu">element_blank</span>()) <span class="sc">+</span></span>
 <span id="cb239-5"><a href="cross.html#cb239-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Total MI teacher salary&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-83-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-137-1.png" width="672" /></p>
 <p>By adding an <code>x</code> value to our aesthetic, we can produce boxplots of the range of values of a categorical variable. The example below also adds a point representing the mean of each group and colors the outlier red.</p>
 <div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="cross.html#cb240-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(teacher, <span class="fu">aes</span>(<span class="at">x =</span> degree, <span class="at">y =</span> total)) <span class="sc">+</span> </span>
 <span id="cb240-2"><a href="cross.html#cb240-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.color =</span> <span class="st">&quot;red&quot;</span>, </span>
@@ -566,7 +566,7 @@ One could combine our first and second examples of box plots to get side-by-side
 <span id="cb240-6"><a href="cross.html#cb240-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>, </span>
 <span id="cb240-7"><a href="cross.html#cb240-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
 <span id="cb240-8"><a href="cross.html#cb240-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;MI teacher salaries by degree&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-84-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-138-1.png" width="672" /></p>
 <p>There are many, many more <code>geoms</code>, options, and possible visualizations you can make with <code>ggplot2</code>; this section should give you enough to get started and make some high quality graphics. For more information, check out the <a href="https://ggplot2-book.org/individual-geoms.html">official <code>ggplot2</code> guide</a>.</p>
 </div>
 <div id="saving-plots" class="section level3 hasAnchor" number="3.2.3">
@@ -655,7 +655,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

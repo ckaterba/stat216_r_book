@@ -1,2 +1,6 @@
 h1:wrangling-data Wrangling data
+h2:the-goal-tidy-data. The goal:  data.
+h2:the-pipe The pipe
+h2:common-tidying-operations Common tidying operations
+h2:mutate-group-by-and-summarize Mutate, group by, and summarize
 

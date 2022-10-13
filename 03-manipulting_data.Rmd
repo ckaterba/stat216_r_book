@@ -180,6 +180,94 @@ Much better! Notice that the same information is displayed in both tables. The l
 
 ## Mutate, group by, and summarize
 
-Once you're working with a tidy data set, you may want to add columns to it, create a summary of the data, or both!  
+Once you're working with a tidy data set, you may want to add columns to it, create a summary of the data, or both. The key functions for performing these operations are `mutate(...)`, `group_by(...)`,  `summarize(...)`, and `transmute(...)`, all of which are from the `dplyr` package, which is part of the `tidyverse`.  Before looking at specific examples of these functions in action, we'll define what they do. 
 
+- `mutate(...)` adds columns to an existing data set and keeps the old columns. 
+
+- `transmute(...)` creates new columns from a data set, but drops the old existing columns.
+
+- `group_by(...)` takes column names as input and converts your data set to a "grouped" table. This means all operations and summary/aggregate functions are performed by group. The groups are defined by the values in the columns you specified.
+
+- `summarize(...)` creates a new data set giving a customized summary of your data set. All operations are done by the grouping variables. 
+
+For examples of each function, we will use the `gss2010` data set, which is part of the `openintro` package. As a reminder, to follow along you need to attach this package with 
+
+```{r}
+library(openintro)
+data(gss2010)
+```
+
+The `gss2010` data set has 2044 measurements of 5 varibles: 
+
+- `hrsrelax`: hours relaxed after work on an average work day. 
+
+- `mntlhlth`: number of days in the last month where mental health was not good. 
+
+- `hrs1`: weekly hours worked. 
+
+- `degree`: highest educational attainment or degree. 
+
+- `grass`: Should marijuana be legalized?
+
+Working with this data set provides an obstacle that we haven't encountered much so far in these notes: `NA` values.  A quick glimpse at the data reveals that there are quite a few missing values. In learning how to use the functions listed above, we'll also see a few strategies for dealing with missing values. 
+
+```{r}
+glimpse(gss2010)
+```
+
+First, let's add a new column to our data set that gives the total number of hours each person in this survey spend at work or relaxing and another column that reports the proportion of their time spent working or relaxing Monday through Friday. Note that since `hrsrelax` gives the number of hours they relax in a day, we should add 5 times that amount for total time spent relaxing during the work work. 
+
+```{r}
+new_gss <- gss2010 %>%
+  mutate(totalHours = 5*hrsrelax + hrs1, #hours spent working and relaxing
+         propTimeWorking = totalHours/(5*24)) #proportion of time spent working/relaxing
+# random sample of 7 rows from the data set
+glimpse( slice_sample(new_gss, n = 7) ) 
+``` 
+
+Note that whenever one of our variables was unavailable, both of our new columns gave an `NA` value as well. 
+
+Suppose now that we wanted the same information, but we wanted to exclude all rows with `NA` values, and we only wanted to see our new columns and the respondent's degree. This is a perfect situation for `transmute(...)`. 
+
+```{r}
+new_gss <- gss2010 %>%
+  transmute(degree = degree, #keeps the degree column
+            totalHours = 5*hrsrelax + hrs1, #hours spent working and relaxing
+         propTimeWorking = totalHours/(5*24)) %>% 
+  drop_na() #drops all rows with an NA
+
+slice_sample(new_gss, n = 7)
+```
+
+Next up, let's start making some summary tables.  First, let's see if there's a correlation between educational attainment and hours worked, hours relaxing, or days with mental health struggles. To do  this, we want to group our dataset by the `degree` variable so that all of our summary functions are applied to the groups of respondents with the same degrees. 
+
+```{r}
+gss2010 %>% 
+  group_by(degree) %>% 
+  summarize( meanHrsWrk = mean(hrs1, na.rm = TRUE),  # avg hours worked, removing NA
+             sdHrsWrk = sd(hrs1, na.rm = TRUE), # sd of hours worked, removing NA
+             meanHrsRlx = mean(hrsrelax, na.rm = TRUE), 
+             meanMntlHlth = mean(mntlhlth, na.rm = TRUE)
+             ) %>%
+  arrange(desc(meanHrsWrk)) # arrange results in descending order
+```
+
+So everyone works fairly similarly and relax a similar number of hours every night, but we observe that the number of days per month with mental health struggles seems to *decrease* with an increase in educational attainment. 
+
+We could also see if there's any sort of relationship between degree and stance on marijuana legalization. First, let's throw out all the rows with an `NA` for the `grass` variable and see how many people have type of degree. 
+
+```{r}
+gss2010 %>%
+  filter( !is.na(grass) ) %>% #selects all rows where grass is *not* NA
+  group_by(degree) %>%
+  summarize( degCount = n(), # special function to count the number in each group
+             legalCount = sum(grass == "LEGAL" ),
+             legalProp = legalCount / degCount
+             )  %>%
+  arrange(desc(legalProp))
+```
+
+So, roughly speaking, the percentage of people who believe marijuana should be legalized *increases* with educational attainment.  This is likely not too surprising, but interesting to see shake out in the summary table none the less!
+
+As usual, one can (and should!), do quite a bit more with these functions, but these examples should give you a reasonable idea about how they work and what they can do for you. 
 
