@@ -1,3 +1,139 @@
 # Distribution calculations
 
-TO DO: describe how to make distribution calcs 
+The second module of STAT216 at FVCC focuses on the basics of probability theory. We start out learning the foundations: interpretations of probability (frequentist vs Bayesian) along with the notions of independence, mutually exclusive events, conditional probability, and Bayes' Theorem.  
+
+We then move on to thinking about **random variables**. Recall that a **random variable** is simply the assignment of a *number* to every element of the sample space for the random process in question. From this assignment we can assign probabilities to the values our random variable can take on. Random variables also give us a way to define the average outcome of a random process and measure the spread of outcomes around that average.  
+
+Recall that random variables come in two primary flavors, *discrete* and *continuous*.  Continuous random variables can take on at least some interval worth of real numbers. Discrete random variables, on the other hand, can only take on values with sufficiently large gaps in between.  For example, the height of a STAT216 student is a continuous random variable, but the number of books a STAT216 student owns in discrete. Distinguishing between these two types of random variables is important because the flavor dictates quite a bit about how we use and make calculations associated with a given random variable.  The probability distribution of a discrete random variable can be represented in a tabular form, but the probability distribution of a continuous random variable must be represented by a *function*.  The table below helps compare and contrast discrete and continuous probability distributions.
+
+| Discrete | Continuous 
+| :---:|  :---:|
+| all probabilities $\geq 0$ | graph of function above or on $x$-axis | 
+| sum of probabilities is 1 | area between graph of function and $x$-axis is one| 
+
+**Short technical note**: Using the right mathematical perspective you do not actually treat discrete and continuous random variables any differently, but this perspective takes a lot of technical machinery and isn't necessary. Suffice it to say that the analogies above are more than just analogies. 
+
+
+There are many, many different types of each flavor of random variable - too many to name or describe - but statisticians and mathematicians have studied many *families* of random variables that have commonalities. In STAT216, we learn about a handful of these families, discussed below. You can skip the details for now and come back to these as we learn more about them in class.
+
+**Discrete distributions**:
+
+- Bernoulli random variables: only two outcomes, typically 0 and 1 with 0 corresponding to failure and 1 to success for the random process you're studying. 
+
+|$x_i$ |  0 | 1 | 
+|:---: | :---: | :---: |
+|$P(X = x_i)$ | $1-p$ | $p$ | 
+
+- Geometric random variables: repeat independent identical (iid) trials of a Bernoulli random variable until the first success and count the *number of trials*. If $p$ is the probability of success in a single trial,
+
+\[ P(X = k) = (1-p)^{k-1}p \]
+
+- Binomial random variables: repeat a fixed number $n$ of iid trials of a Bernoulli random variable and *count the number of successes*, $k$.
+
+\[ P(X = k) = {n \choose k} p^k (1-p)^{n-k}\]
+
+
+**Continuous distributions**:
+
+- Normal distributions: a family of symmetric, unimodal continuous distributions determined by an average and standard deviation. 
+
+- Student's $t$-distribution: a family of symmetric, unimondal continuous distributions determined by a single quantity: degrees of freedom, $df$.  These distributions have fatter tails than standard normal distribution. 
+
+- $\chi_^2$-distributions: a family of right-skewed distributions determined by a single parameter, $df$, or degrees of freedom. A $\chi^2$-distribution is a sum of $df$ squared standard normal distributions. 
+
+- $F$-distributions; a family of right-skewed distributions determined by two degrees of freedom $df_1$ and $df_2$. Roughly speaking, an $F$-distribution is the ratio of two $\chi^2$ distributions 
+
+The remainder of this chapter focuses on how to make calculations for each of these distributions in R. This may come as a welcome relief from the last few chapters because we'll be using R more as a big calculator again for a bit. 
+
+## Finite discrte distribution calculations
+
+This short section will describe how to calculate the expected value, variance, and standard deviation of a finite, discrete probability distribution.  The key is to remember that R performs all list calculations component-wise. With this in mind, recall that the expected value and variance of a finite discrete random variable $X$ are
+
+\[ E(X) = \sum_{i= 1}^n x_i P(X = x_i) 
+\quad \text{and} \quad
+V(X) = \sum_{i = 1}^n P(X = x_i)\left(x_i - E(X) \right)^2\]
+
+so $E(X)$ is just the average outcome of $X$, weighted by the probabilities associated to each value of $X$.  Similarly $V(X)$ is just the average squared deviation of the values of $X$ from the mean. 
+Let's learn how to make these calculations in R from an example.  Suppose you and your friends invent a silly game to pass the time based on flipping a coin and rolling a standard six-sided die.  
+
+- If you flip a heads and roll an even number, you win a dollar. 
+
+- If you flip a heads and roll an *odd prime*, you win two dollars. 
+
+- If you flip a tails and roll a 6, you win five dollars. 
+
+- Otherwise, you win nothing. 
+
+**Question** How much should you and your friends charge to play the game? 
+
+To answer this, we need to know the expected winnings since expected value gives us the average outcome.  You and your friends need to charge at least the expected winnings. To make this calculation in R we need to store the values of our random variable and the associated probabilities in lists.  
+
+The sample space for our game has size 12; you can think about is as the collection of ordered pairs \(\{ (x,y) | x \in \{H, T\}, y \in \{1,2,\ldots, 6\} \} \). There are 3 ways to flip a heads and roll an even number, two ways to flip a heads and roll an odd prime, and only one way to flip a tails and roll a six. Thus the probability distribution of our winnings is 
+
+| $x_i$ | 1 | 2 | 5 | 0 |
+|:---: | :---: |:---: |:---: |:---: |
+| $P(X = x_i)$ | 3/12 | 2/12 | 1/12 | 6/12|
+
+Storing this in R
+
+```{r}
+val <- c(1,2,5,0)
+prob <- c(3/12, 2/12, 1/12, 6/12)
+```
+
+Now, to calculate the expected value, we just need to add up the product of `val` and `prob`:
+
+```{r}
+exp_val <- sum(val*prob)
+exp_val
+```
+So on average, a player of this game will win one dollar. This means you and your friends should charge *at least* one dollar to play the game. 
+
+Let's also calculate the variance and standard deviation of the winnings for this game. The strategy for calculating variance is exactly the same as with the expected value. 
+
+```{r}
+varX <- sum(prob*(val - exp_val)^2)
+varX
+```
+
+As usual, the standard deviation is just the square root of the variance so
+
+```{r}
+sdX <- sqrt(varX)
+sdX
+```
+
+This means, on average, someone playing this game will win \$1 with an average change between games of about \$1.41.  
+
+Next up, we'll learn about making probability calculations for some of the named distributions discussed in the beginning of this chapter.
+
+## Named distribution calculations
+
+R has a robust library of probability distribution calculators built in. The functions are organized so that they behave similarly for all of the families of distributions.  The basic syntax is 
+
+\[ \text{function type} +  \text{distribution} \]
+
+The table below describes the type of function and describes what they do for both continuous and discrete probability distributions
+
+| Function | input | Continuous | Discrete |
+|:---: | :---: | :---: |:---: |
+| `d` (density) | value of random variable | value of function / height of graph of probability density function at a given $x$-value | Probability that random variable takes on a specific value | 
+| `p` (percentile) | value of random variable| returns a percentile, ie a lower tail probability of associated to a value of the random variable, $P(X \leq x)$. | Same as continuous | 
+| `q` (quantile) | a percentile |returns a quantile, ie the value of a random variable corresponding to the percentile input| Same as continuous|
+| `r` (random) | whole number $n$ |$n$ randomly sampled numbers from the distribution | Same as continuous |
+
+Note that the biggest difference lies in the the density functions. This is because probabilities correspond to areas under the graph of the probability density function for continuous random variables, so the probability of observing any particular value is zero in this case. For a discrete probability distribution, however, the density function actually returns probabilities. 
+
+We will see how each of these functions is used for all of the distributions in this course in the sections to follow.
+
+### Discrete random variables
+
+Let's start off with discrete random variables.  
+
+START WRITING HERE!
+
+#### Binomial distribution
+
+#### Geometric distribution
+
+### Continuous random variables

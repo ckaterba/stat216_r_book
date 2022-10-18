@@ -8,7 +8,7 @@
   <meta name="description" content="<p>This is a minimal example of using the bookdown package to write a book.
 The HTML output format for this example is bookdown::gitbook,
 set in the _output.yml file.</p>" />
-  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 5 Distribution calculations | R and RStudio for STAT216" />
   <meta property="og:type" content="book" />
@@ -196,7 +196,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.3" data-path="wrangling-data.html"><a href="wrangling-data.html#common-tidying-operations"><i class="fa fa-check"></i><b>4.3</b> Common tidying operations</a></li>
 <li class="chapter" data-level="4.4" data-path="wrangling-data.html"><a href="wrangling-data.html#mutate-group-by-and-summarize"><i class="fa fa-check"></i><b>4.4</b> Mutate, group by, and summarize</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="distribution-calculations.html"><a href="distribution-calculations.html"><i class="fa fa-check"></i><b>5</b> Distribution calculations</a></li>
+<li class="chapter" data-level="5" data-path="distribution-calculations.html"><a href="distribution-calculations.html"><i class="fa fa-check"></i><b>5</b> Distribution calculations</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="distribution-calculations.html"><a href="distribution-calculations.html#finite-discrte-distribution-calculations"><i class="fa fa-check"></i><b>5.1</b> Finite discrte distribution calculations</a></li>
+<li class="chapter" data-level="5.2" data-path="distribution-calculations.html"><a href="distribution-calculations.html#named-distribution-calculations"><i class="fa fa-check"></i><b>5.2</b> Named distribution calculations</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="distribution-calculations.html"><a href="distribution-calculations.html#discrete-random-variables"><i class="fa fa-check"></i><b>5.2.1</b> Discrete random variables</a></li>
+<li class="chapter" data-level="5.2.2" data-path="distribution-calculations.html"><a href="distribution-calculations.html#continuous-random-variables"><i class="fa fa-check"></i><b>5.2.2</b> Continuous random variables</a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="6" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html"><i class="fa fa-check"></i><b>6</b> Inferential statistics, take 1</a></li>
 <li class="chapter" data-level="7" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html"><i class="fa fa-check"></i><b>7</b> Inferential statistics, take 2</a>
 <ul>
@@ -244,8 +252,190 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="distribution-calculations" class="section level1 hasAnchor" number="5">
 <h1><span class="header-section-number">Chapter 5</span> Distribution calculations<a href="distribution-calculations.html#distribution-calculations" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>TO DO: describe how to make distribution calcs</p>
+<p>The second module of STAT216 at FVCC focuses on the basics of probability theory. We start out learning the foundations: interpretations of probability (frequentist vs Bayesian) along with the notions of independence, mutually exclusive events, conditional probability, and Bayes’ Theorem.</p>
+<p>We then move on to thinking about <strong>random variables</strong>. Recall that a <strong>random variable</strong> is simply the assignment of a <em>number</em> to every element of the sample space for the random process in question. From this assignment we can assign probabilities to the values our random variable can take on. Random variables also give us a way to define the average outcome of a random process and measure the spread of outcomes around that average.</p>
+<p>Recall that random variables come in two primary flavors, <em>discrete</em> and <em>continuous</em>. Continuous random variables can take on at least some interval worth of real numbers. Discrete random variables, on the other hand, can only take on values with sufficiently large gaps in between. For example, the height of a STAT216 student is a continuous random variable, but the number of books a STAT216 student owns in discrete. Distinguishing between these two types of random variables is important because the flavor dictates quite a bit about how we use and make calculations associated with a given random variable. The probability distribution of a discrete random variable can be represented in a tabular form, but the probability distribution of a continuous random variable must be represented by a <em>function</em>. The table below helps compare and contrast discrete and continuous probability distributions.</p>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Discrete</th>
+<th align="center">Continuous</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">all probabilities <span class="math inline">\(\geq 0\)</span></td>
+<td align="center">graph of function above or on <span class="math inline">\(x\)</span>-axis</td>
+</tr>
+<tr class="even">
+<td align="center">sum of probabilities is 1</td>
+<td align="center">area between graph of function and <span class="math inline">\(x\)</span>-axis is one</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Short technical note</strong>: Using the right mathematical perspective you do not actually treat discrete and continuous random variables any differently, but this perspective takes a lot of technical machinery and isn’t necessary. Suffice it to say that the analogies above are more than just analogies.</p>
+<p>There are many, many different types of each flavor of random variable - too many to name or describe - but statisticians and mathematicians have studied many <em>families</em> of random variables that have commonalities. In STAT216, we learn about a handful of these families, discussed below. You can skip the details for now and come back to these as we learn more about them in class.</p>
+<p><strong>Discrete distributions</strong>:</p>
+<ul>
+<li>Bernoulli random variables: only two outcomes, typically 0 and 1 with 0 corresponding to failure and 1 to success for the random process you’re studying.</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><span class="math inline">\(x_i\)</span></th>
+<th align="center">0</th>
+<th align="center">1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(P(X = x_i)\)</span></td>
+<td align="center"><span class="math inline">\(1-p\)</span></td>
+<td align="center"><span class="math inline">\(p\)</span></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Geometric random variables: repeat independent identical (iid) trials of a Bernoulli random variable until the first success and count the <em>number of trials</em>. If <span class="math inline">\(p\)</span> is the probability of success in a single trial,</li>
+</ul>
+<p><span class="math display">\[ P(X = k) = (1-p)^{k-1}p \]</span></p>
+<ul>
+<li>Binomial random variables: repeat a fixed number <span class="math inline">\(n\)</span> of iid trials of a Bernoulli random variable and <em>count the number of successes</em>, <span class="math inline">\(k\)</span>.</li>
+</ul>
+<p><span class="math display">\[ P(X = k) = {n \choose k} p^k (1-p)^{n-k}\]</span></p>
+<p><strong>Continuous distributions</strong>:</p>
+<ul>
+<li><p>Normal distributions: a family of symmetric, unimodal continuous distributions determined by an average and standard deviation.</p></li>
+<li><p>Student’s <span class="math inline">\(t\)</span>-distribution: a family of symmetric, unimondal continuous distributions determined by a single quantity: degrees of freedom, <span class="math inline">\(df\)</span>. These distributions have fatter tails than standard normal distribution.</p></li>
+<li><p><span class="math inline">\(\chi_^2\)</span>-distributions: a family of right-skewed distributions determined by a single parameter, <span class="math inline">\(df\)</span>, or degrees of freedom. A <span class="math inline">\(\chi^2\)</span>-distribution is a sum of <span class="math inline">\(df\)</span> squared standard normal distributions.</p></li>
+<li><p><span class="math inline">\(F\)</span>-distributions; a family of right-skewed distributions determined by two degrees of freedom <span class="math inline">\(df_1\)</span> and <span class="math inline">\(df_2\)</span>. Roughly speaking, an <span class="math inline">\(F\)</span>-distribution is the ratio of two <span class="math inline">\(\chi^2\)</span> distributions</p></li>
+</ul>
+<p>The remainder of this chapter focuses on how to make calculations for each of these distributions in R. This may come as a welcome relief from the last few chapters because we’ll be using R more as a big calculator again for a bit.</p>
+<div id="finite-discrte-distribution-calculations" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Finite discrte distribution calculations<a href="distribution-calculations.html#finite-discrte-distribution-calculations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>This short section will describe how to calculate the expected value, variance, and standard deviation of a finite, discrete probability distribution. The key is to remember that R performs all list calculations component-wise. With this in mind, recall that the expected value and variance of a finite discrete random variable <span class="math inline">\(X\)</span> are</p>
+<p><span class="math display">\[ E(X) = \sum_{i= 1}^n x_i P(X = x_i)
+\quad \text{and} \quad
+V(X) = \sum_{i = 1}^n P(X = x_i)\left(x_i - E(X) \right)^2\]</span></p>
+<p>so <span class="math inline">\(E(X)\)</span> is just the average outcome of <span class="math inline">\(X\)</span>, weighted by the probabilities associated to each value of <span class="math inline">\(X\)</span>. Similarly <span class="math inline">\(V(X)\)</span> is just the average squared deviation of the values of <span class="math inline">\(X\)</span> from the mean.
+Let’s learn how to make these calculations in R from an example. Suppose you and your friends invent a silly game to pass the time based on flipping a coin and rolling a standard six-sided die.</p>
+<ul>
+<li><p>If you flip a heads and roll an even number, you win a dollar.</p></li>
+<li><p>If you flip a heads and roll an <em>odd prime</em>, you win two dollars.</p></li>
+<li><p>If you flip a tails and roll a 6, you win five dollars.</p></li>
+<li><p>Otherwise, you win nothing.</p></li>
+</ul>
+<p><strong>Question</strong> How much should you and your friends charge to play the game?</p>
+<p>To answer this, we need to know the expected winnings since expected value gives us the average outcome. You and your friends need to charge at least the expected winnings. To make this calculation in R we need to store the values of our random variable and the associated probabilities in lists.</p>
+<p>The sample space for our game has size 12; you can think about is as the collection of ordered pairs <span class="math inline">\(\{ (x,y) | x \in \{H, T\}, y \in \{1,2,\ldots, 6\} \}\)</span>. There are 3 ways to flip a heads and roll an even number, two ways to flip a heads and roll an odd prime, and only one way to flip a tails and roll a six. Thus the probability distribution of our winnings is</p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><span class="math inline">\(x_i\)</span></th>
+<th align="center">1</th>
+<th align="center">2</th>
+<th align="center">5</th>
+<th align="center">0</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(P(X = x_i)\)</span></td>
+<td align="center">3/12</td>
+<td align="center">2/12</td>
+<td align="center">1/12</td>
+<td align="center">6/12</td>
+</tr>
+</tbody>
+</table>
+<p>Storing this in R</p>
+<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb276-1"><a href="distribution-calculations.html#cb276-1" aria-hidden="true" tabindex="-1"></a>val <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">5</span>,<span class="dv">0</span>)</span>
+<span id="cb276-2"><a href="distribution-calculations.html#cb276-2" aria-hidden="true" tabindex="-1"></a>prob <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3</span><span class="sc">/</span><span class="dv">12</span>, <span class="dv">2</span><span class="sc">/</span><span class="dv">12</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">12</span>, <span class="dv">6</span><span class="sc">/</span><span class="dv">12</span>)</span></code></pre></div>
+<p>Now, to calculate the expected value, we just need to add up the product of <code>val</code> and <code>prob</code>:</p>
+<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb277-1"><a href="distribution-calculations.html#cb277-1" aria-hidden="true" tabindex="-1"></a>exp_val <span class="ot">&lt;-</span> <span class="fu">sum</span>(val<span class="sc">*</span>prob)</span>
+<span id="cb277-2"><a href="distribution-calculations.html#cb277-2" aria-hidden="true" tabindex="-1"></a>exp_val</span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<p>So on average, a player of this game will win one dollar. This means you and your friends should charge <em>at least</em> one dollar to play the game.</p>
+<p>Let’s also calculate the variance and standard deviation of the winnings for this game. The strategy for calculating variance is exactly the same as with the expected value.</p>
+<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb279-1"><a href="distribution-calculations.html#cb279-1" aria-hidden="true" tabindex="-1"></a>varX <span class="ot">&lt;-</span> <span class="fu">sum</span>(prob<span class="sc">*</span>(val <span class="sc">-</span> exp_val)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb279-2"><a href="distribution-calculations.html#cb279-2" aria-hidden="true" tabindex="-1"></a>varX</span></code></pre></div>
+<pre><code>## [1] 2</code></pre>
+<p>As usual, the standard deviation is just the square root of the variance so</p>
+<div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb281-1"><a href="distribution-calculations.html#cb281-1" aria-hidden="true" tabindex="-1"></a>sdX <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(varX)</span>
+<span id="cb281-2"><a href="distribution-calculations.html#cb281-2" aria-hidden="true" tabindex="-1"></a>sdX</span></code></pre></div>
+<pre><code>## [1] 1.414214</code></pre>
+<p>This means, on average, someone playing this game will win $1 with an average change between games of about $1.41.</p>
+<p>Next up, we’ll learn about making probability calculations for some of the named distributions discussed in the beginning of this chapter.</p>
+</div>
+<div id="named-distribution-calculations" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Named distribution calculations<a href="distribution-calculations.html#named-distribution-calculations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>R has a robust library of probability distribution calculators built in. The functions are organized so that they behave similarly for all of the families of distributions. The basic syntax is</p>
+<p><span class="math display">\[ \text{function type} +  \text{distribution} \]</span></p>
+<p>The table below describes the type of function and describes what they do for both continuous and discrete probability distributions</p>
+<table>
+<colgroup>
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Function</th>
+<th align="center">input</th>
+<th align="center">Continuous</th>
+<th align="center">Discrete</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><code>d</code> (density)</td>
+<td align="center">value of random variable</td>
+<td align="center">value of function / height of graph of probability density function at a given <span class="math inline">\(x\)</span>-value</td>
+<td align="center">Probability that random variable takes on a specific value</td>
+</tr>
+<tr class="even">
+<td align="center"><code>p</code> (percentile)</td>
+<td align="center">value of random variable</td>
+<td align="center">returns a percentile, ie a lower tail probability of associated to a value of the random variable, <span class="math inline">\(P(X \leq x)\)</span>.</td>
+<td align="center">Same as continuous</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>q</code> (quantile)</td>
+<td align="center">a percentile</td>
+<td align="center">returns a quantile, ie the value of a random variable corresponding to the percentile input</td>
+<td align="center">Same as continuous</td>
+</tr>
+<tr class="even">
+<td align="center"><code>r</code> (random)</td>
+<td align="center">whole number <span class="math inline">\(n\)</span></td>
+<td align="center"><span class="math inline">\(n\)</span> randomly sampled numbers from the distribution</td>
+<td align="center">Same as continuous</td>
+</tr>
+</tbody>
+</table>
+<p>Note that the biggest difference lies in the the density functions. This is because probabilities correspond to areas under the graph of the probability density function for continuous random variables, so the probability of observing any particular value is zero in this case. For a discrete probability distribution, however, the density function actually returns probabilities.</p>
+<p>We will see how each of these functions is used for all of the distributions in this course in the sections to follow.</p>
+<div id="discrete-random-variables" class="section level3 hasAnchor" number="5.2.1">
+<h3><span class="header-section-number">5.2.1</span> Discrete random variables<a href="distribution-calculations.html#discrete-random-variables" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Let’s start off with discrete random variables.</p>
+<p>START WRITING HERE!</p>
+<div id="binomial-distribution" class="section level4 hasAnchor" number="5.2.1.1">
+<h4><span class="header-section-number">5.2.1.1</span> Binomial distribution<a href="distribution-calculations.html#binomial-distribution" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+</div>
+<div id="geometric-distribution" class="section level4 hasAnchor" number="5.2.1.2">
+<h4><span class="header-section-number">5.2.1.2</span> Geometric distribution<a href="distribution-calculations.html#geometric-distribution" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+</div>
+</div>
+<div id="continuous-random-variables" class="section level3 hasAnchor" number="5.2.2">
+<h3><span class="header-section-number">5.2.2</span> Continuous random variables<a href="distribution-calculations.html#continuous-random-variables" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 
+</div>
+</div>
 </div>
             </section>
 
@@ -313,7 +503,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

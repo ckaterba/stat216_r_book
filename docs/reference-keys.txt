@@ -39,6 +39,12 @@ the-pipe
 common-tidying-operations
 mutate-group-by-and-summarize
 distribution-calculations
+finite-discrte-distribution-calculations
+named-distribution-calculations
+discrete-random-variables
+binomial-distribution
+geometric-distribution
+continuous-random-variables
 inferential-statistics-take-1
 inferential-statistics-take-2
 analyzing-categorical-variables
