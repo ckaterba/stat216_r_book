@@ -39,7 +39,7 @@ the-pipe
 common-tidying-operations
 mutate-group-by-and-summarize
 distribution-calculations
-finite-discrte-distribution-calculations
+finite-discrete-distribution-calculations
 named-distribution-calculations
 discrete-random-variables
 binomial-distribution

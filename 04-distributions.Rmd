@@ -1,5 +1,10 @@
 # Distribution calculations
 
+```{r, echo = F}
+library(tidyverse)
+```
+
+
 The second module of STAT216 at FVCC focuses on the basics of probability theory. We start out learning the foundations: interpretations of probability (frequentist vs Bayesian) along with the notions of independence, mutually exclusive events, conditional probability, and Bayes' Theorem.  
 
 We then move on to thinking about **random variables**. Recall that a **random variable** is simply the assignment of a *number* to every element of the sample space for the random process in question. From this assignment we can assign probabilities to the values our random variable can take on. Random variables also give us a way to define the average outcome of a random process and measure the spread of outcomes around that average.  
@@ -45,7 +50,7 @@ There are many, many different types of each flavor of random variable - too man
 
 The remainder of this chapter focuses on how to make calculations for each of these distributions in R. This may come as a welcome relief from the last few chapters because we'll be using R more as a big calculator again for a bit. 
 
-## Finite discrte distribution calculations
+## Finite discrete distribution calculations
 
 This short section will describe how to calculate the expected value, variance, and standard deviation of a finite, discrete probability distribution.  The key is to remember that R performs all list calculations component-wise. With this in mind, recall that the expected value and variance of a finite discrete random variable $X$ are
 
@@ -124,16 +129,192 @@ The table below describes the type of function and describes what they do for bo
 
 Note that the biggest difference lies in the the density functions. This is because probabilities correspond to areas under the graph of the probability density function for continuous random variables, so the probability of observing any particular value is zero in this case. For a discrete probability distribution, however, the density function actually returns probabilities. 
 
-We will see how each of these functions is used for all of the distributions in this course in the sections to follow.
+The percentile `p` and the quantile `q` functions both have an option called `lower.tail` that is a logical, so either `TRUE` or `FALSE`.  
+
+- If `lower.tail=TRUE`, the percentile functions return $P(X \leq x)$ and the quantile functions return the value $x$ such that $P(X \leq x)$.
+
+- If `lower.tail=FALSE`, the percentile functions return $P(X > x)$ and the quantile functions return the value $x$ such that $P(X > x)$.
+
+We will look at examples in what follows that will clarify these functions and their arguments. 
 
 ### Discrete random variables
 
-Let's start off with discrete random variables.  
-
-START WRITING HERE!
+Let's start off with some named families of discrete random variables. We'll only look at binomial and geometric distributions, but once you have these down, you should be be able to figure out how to use any other discrete random variable distribution functions such as those associated to Poisson or hypergeometric random variables. Note: we do not cover Poisson on or hypergeometric distributions in this class!
 
 #### Binomial distribution
 
+We'll start with the definition and a motivating example. 
+
+**Definition:** Suppose you repeat independent and identical trials of a Bernoulli experiment a fixed number $n$ times. The random variable $X$ counting the *number of successes $k$* is called a **binomial random variable**.  If the probability of success in each trial is $p$, then the probability of failure is $1-p$ and A little work shows 
+
+\[ P(X = k) = { n \choose k } p^k (1-p)^{n-k}. \]
+
+In class we learn formulas for the expected value and variance of geometric random variables:
+
+\[ E(X) = np \quad \text{and} \quad V(X) = np(1-p). \]
+
+The R shorthand for binomial distributions is `binom`, so the primary functions for binomial calculations and their outputs are:
+
+- `dbinom(k, n, p)` \( = P( X = k) = { n \choose k } p^k (1-p)^{n-k}\)
+
+- `pbinom(k, n, p)` \(= P( X \leq k) = \sum_{i=0}^k { n \choose i } p^i (1-p)^{n-i}\)
+
+- `pbinom(k, n, p, lower.tail = FALSE)`  \( = P( X > k) = \sum_{i=k+1}^n { n \choose i } p^i (1-p)^{n-i}\)
+
+- `qbinom(prob, n, p)` is the integer $k$ such that \(P(X \leq k) = \) `prob`.
+
+- `qbinom(prob, n, p, lower.tail = FALSE)` is the integer $k$ such that \( P(X > k) = \) `prob`.
+
+- `rbinom(N, n, p)` generates `N` numbers between $0$ and $n$ by repeating the binomial experiment `N` times. 
+
+Now let's look at an example to see how we can use these functions in practice. 
+
+**Example:** A [Gallup poll](https://news.gallup.com/poll/15370/party-affiliation.aspx) showed that roughly 43\% of all voters in the USA identify as politically independent as of September 16, 2022.  You decide to loosely test this claim in the Flathead Valley by polling a random sample of 15 people about their political ideology. 
+
+Assuming the distribution of political party affiliation in the Flathead is the same as the nation, counting the number of independents in your poll determines a binomial random variable. 
+
+We can get a feel for the distribution of this variable with a bar chart.
+
+```{r}
+bf <- tibble(k = 0:15, 
+             prob = dbinom(k, 15, .43))
+
+ ggplot(bf, aes(x = as.factor(k), y = prob)) + 
+   geom_col(color = "black", fill = "steelblue") +
+   xlab("k") +
+   ylab("P(X=k)") +
+   labs(title = "Binomial Prob dist w/ p = .43 and n = 15")
+```
+
+Now let's use R to answer the following questions: 
+
+1. What is the probability of exactly 4 independents in your poll?
+
+    We want $P(X = 4)$, with $n = 15$, $k = 4$ and $p = .43$, so
+    
+    ```{r}
+    dbinom(4, 15, .43)
+    ```
+
+2.  What is the probability of at most 4 independents in your poll?  
+
+    We want $P(X \leq 4)$, with $n = 15$, $k = 4$ and $p = .43$, so
+    
+    ```{r}
+    pbinom(4, 15, .43)
+    ```
+
+3. What is the probability of at least 4 independents in your poll? 
+
+    We want $P(X \geq 4) = P(X > 3)$, with $n = 15$, $k = 4$ and $p = .43$, so
+    
+    ```{r}
+    pbinom(3, 15, .43, lower.tail= FALSE)
+    #or
+    1 - pbinom(3, 15, .43)
+    ```
+
+4. What is the third quartile of this distribution? 
+
+    We want to find the value $k$ so that $P(X \leq k) = .75$, so
+    
+    ```{r}
+    qbinom(.75, 15, .43)
+    ```
+    
+    Now note:
+    
+    ```{r}
+    pbinom(8, 15, .43)
+    ```
+
+
+    which is greater than .75; R finds the closest integer valued quantile without going under the given percentile.
+
 #### Geometric distribution
 
+As above, we'll start with a definition then move to a motivating example.
+
+**Definition:** Suppose you repeat independent and identical trials of a Bernoulli experiment *until your first success*.  The random variable $X$ counting the number of trials you perform is a **geometric random variable**.  If the probability of success in each trial is $p$, then the probability of failure is $1-p$ and some work shows 
+
+\[ P(X = k ) = p(1-p)^{k-1}\]
+
+In class we learn formulas for the expected value and variance of geometric random variables:
+
+\[ E(X) = \frac{1}{p} \quad \text{and} \quad V(X) = \frac{1-p}{p^2}. \]
+
+The R shorthand for binomial distributions is `geom`. R requires that you enter *the number of failures before your first success*, so the primary functions for binomial calculations and their outputs are:
+
+- `dgeom(k-1, n, p)` \( = P(X = k ) = p(1-p)^{k-1}\)
+
+- `pgeom(k-1, n, p)` \(= P( X \leq k) = \sum_{i=1}^{k} p (1-p)^{i-1}\)
+
+- `pgeom(k-1, n, p, lower.tail = FALSE)`  \( = P( X > k) = \sum_{i=k+1}^\infty p (1-p)^{i-1}\)
+
+- `qgeom(prob, n, p)` is the integer $k$ such that \(P(X \leq k) = \) `prob`.
+
+- `qgeom(prob, n, p, lower.tail = FALSE)` is the integer $k$ such that \( P(X > k) = \) `prob`.
+
+- `rbinom(N, n, p)` generates `N` integers by performing the experiment $N$ times and count the number of trials until the first success. 
+
+Let's use the same example, but in a slightly different context to help differentiate between binomial and geometric random variables. 
+
+**Example:** A [Gallup poll](https://news.gallup.com/poll/15370/party-affiliation.aspx) showed that roughly 43\% of all voters in the USA identify as politically independent as of September 16, 2022.  You decide to loosely test this claim in the Flathead Valley by polling random people until you find someone who identify as politically independent. You count the number of people you survey. 
+
+Assuming the distribution of political party affiliation in the Flathead is the same as the nation, counting the number of people you survey until your first independent determines a geometric random variable.  
+
+We can get a feel for the distribution of this variable with a bar chart.
+
+```{r}
+gf <- tibble(k = 1:15, 
+             prob = dgeom(k-1,.43))
+
+ggplot(gf, aes(x = as.factor(k), y = prob)) + 
+  geom_col(color = "black", fill = "steelblue") +
+  xlab("k") +
+  ylab("P(X=k)") +
+  labs(title = "Geometric Prob. dist. w/ p = .43 for k = 1 to 15")
+```
+
+1. What is the probability you the 6th person you poll is the first independent? 
+
+    We're trying to find $P(X = 6)$, so
+    
+    ```{r}
+    dgeom(5, .43)
+    # or
+    (1-.43)^5*.43
+    ```
+2. What is the probability you will survey at most 6 people before meeting your first independent? 
+
+    We're trying to find $P(X \leq 6)$ so
+    
+    ```{r}
+    pgeom(5, .43)
+    ```
+    
+3. What is the probability  you will survey at least 6 people before meeting your first independent?
+
+    We're trying to find $P(X \geq 6) = P(X > 5)$ so
+    
+    ```{r}
+    pgeom(4, .43, lower.tail = FALSE) # 1 - P(X <= 5) = P(X >5) = P(X >=6)
+    # or
+    1 - (dgeom(0, .43) + dgeom(1, .43) + dgeom(2, .43) + dgeom(3, .43)
+         + dgeom(4, .43))
+    ```
+    
+4. What is the third quartile of this distribution? 
+
+    ```{r}
+    qgeom(.75, .43)
+    ```
+  As with a binomial random variable, note that
+  
+    ```{r}
+    pgeom(2, .43)
+    ```
+    
+    is greater than .75; R finds the nearest integer yielding a larger percentile. 
+    
 ### Continuous random variables

@@ -198,7 +198,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="5" data-path="distribution-calculations.html"><a href="distribution-calculations.html"><i class="fa fa-check"></i><b>5</b> Distribution calculations</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="distribution-calculations.html"><a href="distribution-calculations.html#finite-discrte-distribution-calculations"><i class="fa fa-check"></i><b>5.1</b> Finite discrte distribution calculations</a></li>
+<li class="chapter" data-level="5.1" data-path="distribution-calculations.html"><a href="distribution-calculations.html#finite-discrete-distribution-calculations"><i class="fa fa-check"></i><b>5.1</b> Finite discrete distribution calculations</a></li>
 <li class="chapter" data-level="5.2" data-path="distribution-calculations.html"><a href="distribution-calculations.html#named-distribution-calculations"><i class="fa fa-check"></i><b>5.2</b> Named distribution calculations</a>
 <ul>
 <li class="chapter" data-level="5.2.1" data-path="distribution-calculations.html"><a href="distribution-calculations.html#discrete-random-variables"><i class="fa fa-check"></i><b>5.2.1</b> Discrete random variables</a></li>
@@ -315,8 +315,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p><span class="math inline">\(F\)</span>-distributions; a family of right-skewed distributions determined by two degrees of freedom <span class="math inline">\(df_1\)</span> and <span class="math inline">\(df_2\)</span>. Roughly speaking, an <span class="math inline">\(F\)</span>-distribution is the ratio of two <span class="math inline">\(\chi^2\)</span> distributions</p></li>
 </ul>
 <p>The remainder of this chapter focuses on how to make calculations for each of these distributions in R. This may come as a welcome relief from the last few chapters because we’ll be using R more as a big calculator again for a bit.</p>
-<div id="finite-discrte-distribution-calculations" class="section level2 hasAnchor" number="5.1">
-<h2><span class="header-section-number">5.1</span> Finite discrte distribution calculations<a href="distribution-calculations.html#finite-discrte-distribution-calculations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="finite-discrete-distribution-calculations" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Finite discrete distribution calculations<a href="distribution-calculations.html#finite-discrete-distribution-calculations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This short section will describe how to calculate the expected value, variance, and standard deviation of a finite, discrete probability distribution. The key is to remember that R performs all list calculations component-wise. With this in mind, recall that the expected value and variance of a finite discrete random variable <span class="math inline">\(X\)</span> are</p>
 <p><span class="math display">\[ E(X) = \sum_{i= 1}^n x_i P(X = x_i)
 \quad \text{and} \quad
@@ -353,20 +353,20 @@ Let’s learn how to make these calculations in R from an example. Suppose you a
 </tbody>
 </table>
 <p>Storing this in R</p>
-<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb276-1"><a href="distribution-calculations.html#cb276-1" aria-hidden="true" tabindex="-1"></a>val <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">5</span>,<span class="dv">0</span>)</span>
-<span id="cb276-2"><a href="distribution-calculations.html#cb276-2" aria-hidden="true" tabindex="-1"></a>prob <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3</span><span class="sc">/</span><span class="dv">12</span>, <span class="dv">2</span><span class="sc">/</span><span class="dv">12</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">12</span>, <span class="dv">6</span><span class="sc">/</span><span class="dv">12</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb275-1"><a href="distribution-calculations.html#cb275-1" aria-hidden="true" tabindex="-1"></a>val <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">5</span>,<span class="dv">0</span>)</span>
+<span id="cb275-2"><a href="distribution-calculations.html#cb275-2" aria-hidden="true" tabindex="-1"></a>prob <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3</span><span class="sc">/</span><span class="dv">12</span>, <span class="dv">2</span><span class="sc">/</span><span class="dv">12</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">12</span>, <span class="dv">6</span><span class="sc">/</span><span class="dv">12</span>)</span></code></pre></div>
 <p>Now, to calculate the expected value, we just need to add up the product of <code>val</code> and <code>prob</code>:</p>
-<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb277-1"><a href="distribution-calculations.html#cb277-1" aria-hidden="true" tabindex="-1"></a>exp_val <span class="ot">&lt;-</span> <span class="fu">sum</span>(val<span class="sc">*</span>prob)</span>
-<span id="cb277-2"><a href="distribution-calculations.html#cb277-2" aria-hidden="true" tabindex="-1"></a>exp_val</span></code></pre></div>
+<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb276-1"><a href="distribution-calculations.html#cb276-1" aria-hidden="true" tabindex="-1"></a>exp_val <span class="ot">&lt;-</span> <span class="fu">sum</span>(val<span class="sc">*</span>prob)</span>
+<span id="cb276-2"><a href="distribution-calculations.html#cb276-2" aria-hidden="true" tabindex="-1"></a>exp_val</span></code></pre></div>
 <pre><code>## [1] 1</code></pre>
 <p>So on average, a player of this game will win one dollar. This means you and your friends should charge <em>at least</em> one dollar to play the game.</p>
 <p>Let’s also calculate the variance and standard deviation of the winnings for this game. The strategy for calculating variance is exactly the same as with the expected value.</p>
-<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb279-1"><a href="distribution-calculations.html#cb279-1" aria-hidden="true" tabindex="-1"></a>varX <span class="ot">&lt;-</span> <span class="fu">sum</span>(prob<span class="sc">*</span>(val <span class="sc">-</span> exp_val)<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb279-2"><a href="distribution-calculations.html#cb279-2" aria-hidden="true" tabindex="-1"></a>varX</span></code></pre></div>
+<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb278-1"><a href="distribution-calculations.html#cb278-1" aria-hidden="true" tabindex="-1"></a>varX <span class="ot">&lt;-</span> <span class="fu">sum</span>(prob<span class="sc">*</span>(val <span class="sc">-</span> exp_val)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb278-2"><a href="distribution-calculations.html#cb278-2" aria-hidden="true" tabindex="-1"></a>varX</span></code></pre></div>
 <pre><code>## [1] 2</code></pre>
 <p>As usual, the standard deviation is just the square root of the variance so</p>
-<div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb281-1"><a href="distribution-calculations.html#cb281-1" aria-hidden="true" tabindex="-1"></a>sdX <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(varX)</span>
-<span id="cb281-2"><a href="distribution-calculations.html#cb281-2" aria-hidden="true" tabindex="-1"></a>sdX</span></code></pre></div>
+<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb280-1"><a href="distribution-calculations.html#cb280-1" aria-hidden="true" tabindex="-1"></a>sdX <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(varX)</span>
+<span id="cb280-2"><a href="distribution-calculations.html#cb280-2" aria-hidden="true" tabindex="-1"></a>sdX</span></code></pre></div>
 <pre><code>## [1] 1.414214</code></pre>
 <p>This means, on average, someone playing this game will win $1 with an average change between games of about $1.41.</p>
 <p>Next up, we’ll learn about making probability calculations for some of the named distributions discussed in the beginning of this chapter.</p>
@@ -419,16 +419,128 @@ Let’s learn how to make these calculations in R from an example. Suppose you a
 </tbody>
 </table>
 <p>Note that the biggest difference lies in the the density functions. This is because probabilities correspond to areas under the graph of the probability density function for continuous random variables, so the probability of observing any particular value is zero in this case. For a discrete probability distribution, however, the density function actually returns probabilities.</p>
-<p>We will see how each of these functions is used for all of the distributions in this course in the sections to follow.</p>
+<p>The percentile <code>p</code> and the quantile <code>q</code> functions both have an option called <code>lower.tail</code> that is a logical, so either <code>TRUE</code> or <code>FALSE</code>.</p>
+<ul>
+<li><p>If <code>lower.tail=TRUE</code>, the percentile functions return <span class="math inline">\(P(X \leq x)\)</span> and the quantile functions return the value <span class="math inline">\(x\)</span> such that <span class="math inline">\(P(X \leq x)\)</span>.</p></li>
+<li><p>If <code>lower.tail=FALSE</code>, the percentile functions return <span class="math inline">\(P(X &gt; x)\)</span> and the quantile functions return the value <span class="math inline">\(x\)</span> such that <span class="math inline">\(P(X &gt; x)\)</span>.</p></li>
+</ul>
+<p>We will look at examples in what follows that will clarify these functions and their arguments.</p>
 <div id="discrete-random-variables" class="section level3 hasAnchor" number="5.2.1">
 <h3><span class="header-section-number">5.2.1</span> Discrete random variables<a href="distribution-calculations.html#discrete-random-variables" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Let’s start off with discrete random variables.</p>
-<p>START WRITING HERE!</p>
+<p>Let’s start off with some named families of discrete random variables. We’ll only look at binomial and geometric distributions, but once you have these down, you should be be able to figure out how to use any other discrete random variable distribution functions such as those associated to Poisson or hypergeometric random variables. Note: we do not cover Poisson on or hypergeometric distributions in this class!</p>
 <div id="binomial-distribution" class="section level4 hasAnchor" number="5.2.1.1">
 <h4><span class="header-section-number">5.2.1.1</span> Binomial distribution<a href="distribution-calculations.html#binomial-distribution" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>We’ll start with the definition and a motivating example.</p>
+<p><strong>Definition:</strong> Suppose you repeat independent and identical trials of a Bernoulli experiment a fixed number <span class="math inline">\(n\)</span> times. The random variable <span class="math inline">\(X\)</span> counting the <em>number of successes <span class="math inline">\(k\)</span></em> is called a <strong>binomial random variable</strong>. If the probability of success in each trial is <span class="math inline">\(p\)</span>, then the probability of failure is <span class="math inline">\(1-p\)</span> and A little work shows</p>
+<p><span class="math display">\[ P(X = k) = { n \choose k } p^k (1-p)^{n-k}. \]</span></p>
+<p>In class we learn formulas for the expected value and variance of geometric random variables:</p>
+<p><span class="math display">\[ E(X) = np \quad \text{and} \quad V(X) = np(1-p). \]</span></p>
+<p>The R shorthand for binomial distributions is <code>binom</code>, so the primary functions for binomial calculations and their outputs are:</p>
+<ul>
+<li><p><code>dbinom(k, n, p)</code> <span class="math inline">\(= P( X = k) = { n \choose k } p^k (1-p)^{n-k}\)</span></p></li>
+<li><p><code>pbinom(k, n, p)</code> <span class="math inline">\(= P( X \leq k) = \sum_{i=0}^k { n \choose i } p^i (1-p)^{n-i}\)</span></p></li>
+<li><p><code>pbinom(k, n, p, lower.tail = FALSE)</code> <span class="math inline">\(= P( X &gt; k) = \sum_{i=k+1}^n { n \choose i } p^i (1-p)^{n-i}\)</span></p></li>
+<li><p><code>qbinom(prob, n, p)</code> is the integer <span class="math inline">\(k\)</span> such that <span class="math inline">\(P(X \leq k) =\)</span> <code>prob</code>.</p></li>
+<li><p><code>qbinom(prob, n, p, lower.tail = FALSE)</code> is the integer <span class="math inline">\(k\)</span> such that <span class="math inline">\(P(X &gt; k) =\)</span> <code>prob</code>.</p></li>
+<li><p><code>rbinom(N, n, p)</code> generates <code>N</code> numbers between <span class="math inline">\(0\)</span> and <span class="math inline">\(n\)</span> by repeating the binomial experiment <code>N</code> times.</p></li>
+</ul>
+<p>Now let’s look at an example to see how we can use these functions in practice.</p>
+<p><strong>Example:</strong> A <a href="https://news.gallup.com/poll/15370/party-affiliation.aspx">Gallup poll</a> showed that roughly 43% of all voters in the USA identify as politically independent as of September 16, 2022. You decide to loosely test this claim in the Flathead Valley by polling a random sample of 15 people about their political ideology.</p>
+<p>Assuming the distribution of political party affiliation in the Flathead is the same as the nation, counting the number of independents in your poll determines a binomial random variable.</p>
+<p>We can get a feel for the distribution of this variable with a bar chart.</p>
+<div class="sourceCode" id="cb282"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb282-1"><a href="distribution-calculations.html#cb282-1" aria-hidden="true" tabindex="-1"></a>bf <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">k =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">15</span>, </span>
+<span id="cb282-2"><a href="distribution-calculations.html#cb282-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">prob =</span> <span class="fu">dbinom</span>(k, <span class="dv">15</span>, .<span class="dv">43</span>))</span>
+<span id="cb282-3"><a href="distribution-calculations.html#cb282-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb282-4"><a href="distribution-calculations.html#cb282-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">ggplot</span>(bf, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.factor</span>(k), <span class="at">y =</span> prob)) <span class="sc">+</span> </span>
+<span id="cb282-5"><a href="distribution-calculations.html#cb282-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_col</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;steelblue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb282-6"><a href="distribution-calculations.html#cb282-6" aria-hidden="true" tabindex="-1"></a>   <span class="fu">xlab</span>(<span class="st">&quot;k&quot;</span>) <span class="sc">+</span></span>
+<span id="cb282-7"><a href="distribution-calculations.html#cb282-7" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ylab</span>(<span class="st">&quot;P(X=k)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb282-8"><a href="distribution-calculations.html#cb282-8" aria-hidden="true" tabindex="-1"></a>   <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Binomial Prob dist w/ p = .43 and n = 15&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-112-1.png" width="672" /></p>
+<p>Now let’s use R to answer the following questions:</p>
+<ol style="list-style-type: decimal">
+<li><p>What is the probability of exactly 4 independents in your poll?</p>
+<p>We want <span class="math inline">\(P(X = 4)\)</span>, with <span class="math inline">\(n = 15\)</span>, <span class="math inline">\(k = 4\)</span> and <span class="math inline">\(p = .43\)</span>, so</p>
+<div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb283-1"><a href="distribution-calculations.html#cb283-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbinom</span>(<span class="dv">4</span>, <span class="dv">15</span>, .<span class="dv">43</span>)</span></code></pre></div>
+<pre><code>## [1] 0.0963008</code></pre></li>
+<li><p>What is the probability of at most 4 independents in your poll?</p>
+<p>We want <span class="math inline">\(P(X \leq 4)\)</span>, with <span class="math inline">\(n = 15\)</span>, <span class="math inline">\(k = 4\)</span> and <span class="math inline">\(p = .43\)</span>, so</p>
+<div class="sourceCode" id="cb285"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb285-1"><a href="distribution-calculations.html#cb285-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pbinom</span>(<span class="dv">4</span>, <span class="dv">15</span>, .<span class="dv">43</span>)</span></code></pre></div>
+<pre><code>## [1] 0.1545517</code></pre></li>
+<li><p>What is the probability of at least 4 independents in your poll?</p>
+<p>We want <span class="math inline">\(P(X \geq 4) = P(X &gt; 3)\)</span>, with <span class="math inline">\(n = 15\)</span>, <span class="math inline">\(k = 4\)</span> and <span class="math inline">\(p = .43\)</span>, so</p>
+<div class="sourceCode" id="cb287"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb287-1"><a href="distribution-calculations.html#cb287-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pbinom</span>(<span class="dv">3</span>, <span class="dv">15</span>, .<span class="dv">43</span>, <span class="at">lower.tail=</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## [1] 0.9417491</code></pre>
+<div class="sourceCode" id="cb289"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb289-1"><a href="distribution-calculations.html#cb289-1" aria-hidden="true" tabindex="-1"></a><span class="co">#or</span></span>
+<span id="cb289-2"><a href="distribution-calculations.html#cb289-2" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">pbinom</span>(<span class="dv">3</span>, <span class="dv">15</span>, .<span class="dv">43</span>)</span></code></pre></div>
+<pre><code>## [1] 0.9417491</code></pre></li>
+<li><p>What is the third quartile of this distribution?</p>
+<p>We want to find the value <span class="math inline">\(k\)</span> so that <span class="math inline">\(P(X \leq k) = .75\)</span>, so</p>
+<div class="sourceCode" id="cb291"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb291-1"><a href="distribution-calculations.html#cb291-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qbinom</span>(.<span class="dv">75</span>, <span class="dv">15</span>, .<span class="dv">43</span>)</span></code></pre></div>
+<pre><code>## [1] 8</code></pre>
+<p>Now note:</p>
+<div class="sourceCode" id="cb293"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb293-1"><a href="distribution-calculations.html#cb293-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pbinom</span>(<span class="dv">8</span>, <span class="dv">15</span>, .<span class="dv">43</span>)</span></code></pre></div>
+<pre><code>## [1] 0.857269</code></pre>
+<p>which is greater than .75; R finds the closest integer valued quantile without going under the given percentile.</p></li>
+</ol>
 </div>
 <div id="geometric-distribution" class="section level4 hasAnchor" number="5.2.1.2">
 <h4><span class="header-section-number">5.2.1.2</span> Geometric distribution<a href="distribution-calculations.html#geometric-distribution" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>As above, we’ll start with a definition then move to a motivating example.</p>
+<p><strong>Definition:</strong> Suppose you repeat independent and identical trials of a Bernoulli experiment <em>until your first success</em>. The random variable <span class="math inline">\(X\)</span> counting the number of trials you perform is a <strong>geometric random variable</strong>. If the probability of success in each trial is <span class="math inline">\(p\)</span>, then the probability of failure is <span class="math inline">\(1-p\)</span> and some work shows</p>
+<p><span class="math display">\[ P(X = k ) = p(1-p)^{k-1}\]</span></p>
+<p>In class we learn formulas for the expected value and variance of geometric random variables:</p>
+<p><span class="math display">\[ E(X) = \frac{1}{p} \quad \text{and} \quad V(X) = \frac{1-p}{p^2}. \]</span></p>
+<p>The R shorthand for binomial distributions is <code>geom</code>. R requires that you enter <em>the number of failures before your first success</em>, so the primary functions for binomial calculations and their outputs are:</p>
+<ul>
+<li><p><code>dgeom(k-1, n, p)</code> <span class="math inline">\(= P(X = k ) = p(1-p)^{k-1}\)</span></p></li>
+<li><p><code>pgeom(k-1, n, p)</code> <span class="math inline">\(= P( X \leq k) = \sum_{i=1}^{k} p (1-p)^{i-1}\)</span></p></li>
+<li><p><code>pgeom(k-1, n, p, lower.tail = FALSE)</code> <span class="math inline">\(= P( X &gt; k) = \sum_{i=k+1}^\infty p (1-p)^{i-1}\)</span></p></li>
+<li><p><code>qgeom(prob, n, p)</code> is the integer <span class="math inline">\(k\)</span> such that <span class="math inline">\(P(X \leq k) =\)</span> <code>prob</code>.</p></li>
+<li><p><code>qgeom(prob, n, p, lower.tail = FALSE)</code> is the integer <span class="math inline">\(k\)</span> such that <span class="math inline">\(P(X &gt; k) =\)</span> <code>prob</code>.</p></li>
+<li><p><code>rbinom(N, n, p)</code> generates <code>N</code> integers by performing the experiment <span class="math inline">\(N\)</span> times and count the number of trials until the first success.</p></li>
+</ul>
+<p>Let’s use the same example, but in a slightly different context to help differentiate between binomial and geometric random variables.</p>
+<p><strong>Example:</strong> A <a href="https://news.gallup.com/poll/15370/party-affiliation.aspx">Gallup poll</a> showed that roughly 43% of all voters in the USA identify as politically independent as of September 16, 2022. You decide to loosely test this claim in the Flathead Valley by polling random people until you find someone who identify as politically independent. You count the number of people you survey.</p>
+<p>Assuming the distribution of political party affiliation in the Flathead is the same as the nation, counting the number of people you survey until your first independent determines a geometric random variable.</p>
+<p>We can get a feel for the distribution of this variable with a bar chart.</p>
+<div class="sourceCode" id="cb295"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb295-1"><a href="distribution-calculations.html#cb295-1" aria-hidden="true" tabindex="-1"></a>gf <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">k =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>, </span>
+<span id="cb295-2"><a href="distribution-calculations.html#cb295-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">prob =</span> <span class="fu">dgeom</span>(k<span class="dv">-1</span>,.<span class="dv">43</span>))</span>
+<span id="cb295-3"><a href="distribution-calculations.html#cb295-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb295-4"><a href="distribution-calculations.html#cb295-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gf, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.factor</span>(k), <span class="at">y =</span> prob)) <span class="sc">+</span> </span>
+<span id="cb295-5"><a href="distribution-calculations.html#cb295-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;steelblue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb295-6"><a href="distribution-calculations.html#cb295-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;k&quot;</span>) <span class="sc">+</span></span>
+<span id="cb295-7"><a href="distribution-calculations.html#cb295-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;P(X=k)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb295-8"><a href="distribution-calculations.html#cb295-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Geometric Prob. dist. w/ p = .43 for k = 1 to 15&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-118-1.png" width="672" /></p>
+<ol style="list-style-type: decimal">
+<li><p>What is the probability you the 6th person you poll is the first independent?</p>
+<p>We’re trying to find <span class="math inline">\(P(X = 6)\)</span>, so</p>
+<div class="sourceCode" id="cb296"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb296-1"><a href="distribution-calculations.html#cb296-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dgeom</span>(<span class="dv">5</span>, .<span class="dv">43</span>)</span></code></pre></div>
+<pre><code>## [1] 0.02587276</code></pre>
+<div class="sourceCode" id="cb298"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb298-1"><a href="distribution-calculations.html#cb298-1" aria-hidden="true" tabindex="-1"></a><span class="co"># or</span></span>
+<span id="cb298-2"><a href="distribution-calculations.html#cb298-2" aria-hidden="true" tabindex="-1"></a>(<span class="dv">1</span><span class="fl">-.43</span>)<span class="sc">^</span><span class="dv">5</span><span class="sc">*</span>.<span class="dv">43</span></span></code></pre></div>
+<pre><code>## [1] 0.02587276</code></pre></li>
+<li><p>What is the probability you will survey at most 6 people before meeting your first independent?</p>
+<p>We’re trying to find <span class="math inline">\(P(X \leq 6)\)</span> so</p>
+<div class="sourceCode" id="cb300"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb300-1"><a href="distribution-calculations.html#cb300-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pgeom</span>(<span class="dv">5</span>, .<span class="dv">43</span>)</span></code></pre></div>
+<pre><code>## [1] 0.9657036</code></pre></li>
+<li><p>What is the probability you will survey at least 6 people before meeting your first independent?</p>
+<p>We’re trying to find <span class="math inline">\(P(X \geq 6) = P(X &gt; 5)\)</span> so</p>
+<div class="sourceCode" id="cb302"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb302-1"><a href="distribution-calculations.html#cb302-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pgeom</span>(<span class="dv">4</span>, .<span class="dv">43</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>) <span class="co"># 1 - P(X &lt;= 5) = P(X &gt;5) = P(X &gt;=6)</span></span></code></pre></div>
+<pre><code>## [1] 0.06016921</code></pre>
+<div class="sourceCode" id="cb304"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb304-1"><a href="distribution-calculations.html#cb304-1" aria-hidden="true" tabindex="-1"></a><span class="co"># or</span></span>
+<span id="cb304-2"><a href="distribution-calculations.html#cb304-2" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> (<span class="fu">dgeom</span>(<span class="dv">0</span>, .<span class="dv">43</span>) <span class="sc">+</span> <span class="fu">dgeom</span>(<span class="dv">1</span>, .<span class="dv">43</span>) <span class="sc">+</span> <span class="fu">dgeom</span>(<span class="dv">2</span>, .<span class="dv">43</span>) <span class="sc">+</span> <span class="fu">dgeom</span>(<span class="dv">3</span>, .<span class="dv">43</span>)</span>
+<span id="cb304-3"><a href="distribution-calculations.html#cb304-3" aria-hidden="true" tabindex="-1"></a>     <span class="sc">+</span> <span class="fu">dgeom</span>(<span class="dv">4</span>, .<span class="dv">43</span>))</span></code></pre></div>
+<pre><code>## [1] 0.06016921</code></pre></li>
+<li><p>What is the third quartile of this distribution?</p>
+<div class="sourceCode" id="cb306"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb306-1"><a href="distribution-calculations.html#cb306-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qgeom</span>(.<span class="dv">75</span>, .<span class="dv">43</span>)</span></code></pre></div>
+<pre><code>## [1] 2</code></pre>
+<p>As with a binomial random variable, note that</p>
+<div class="sourceCode" id="cb308"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb308-1"><a href="distribution-calculations.html#cb308-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pgeom</span>(<span class="dv">2</span>, .<span class="dv">43</span>)</span></code></pre></div>
+<pre><code>## [1] 0.814807</code></pre>
+<p>is greater than .75; R finds the nearest integer yielding a larger percentile.</p></li>
+</ol>
 </div>
 </div>
 <div id="continuous-random-variables" class="section level3 hasAnchor" number="5.2.2">
