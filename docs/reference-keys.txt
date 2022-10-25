@@ -45,6 +45,10 @@ discrete-random-variables
 binomial-distribution
 geometric-distribution
 continuous-random-variables
+normal-distributions
+chi-squared-or-chi2-distributions
+students-t-distribution
+f-distributions
 inferential-statistics-take-1
 inferential-statistics-take-2
 analyzing-categorical-variables

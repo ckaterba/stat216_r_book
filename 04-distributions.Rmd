@@ -2,6 +2,7 @@
 
 ```{r, echo = F}
 library(tidyverse)
+library(openintro)
 ```
 
 
@@ -318,3 +319,238 @@ ggplot(gf, aes(x = as.factor(k), y = prob)) +
     is greater than .75; R finds the nearest integer yielding a larger percentile. 
     
 ### Continuous random variables
+
+As mentioned earlier in this Chapter, we will encounter numerous families of continuous distributions throughout this course. The normal distributions are likely the most important for our purposes. Moreover, once you get a feel for making normal distribution calculations in R, you'll be in a great place for understanding and making calculations using any of the remaining distributions. Thus, we will mostly focus on normal distributions in this section. 
+
+We remind the reader that if $X$ is a continuous random variable, then $X$ has an associated function called a *probability density function* $f$.  An area between the graph of $f$ and the horizontal axis represents a probability. With this in mind 
+
+- $P(X = k) = 0$ for any value $k$ since the area of a line is 0.  
+- Thus: $P(X \leq k ) = P(X < k)$ and $P(X \geq k ) = P(X > k)$
+
+For us, from a calculation perspective, this is one of the main differences between discrete and continuous random variables. 
+
+#### Normal distributions
+
+Long before you enrolled in this class you likely interacted with normal distributions: they are the famous "bell-shaped curves." In more mathematical language, they are symmetric, unimodal distributions. Note that they are not the only distributions with these properties, but in some sense, they are the most common. Normal distributions arise often in practice because 
+
+- many naturally observed quantities follow approximately normal distributions (eg height, weight, etc of populations of critters) and 
+
+- the distributions of many sample statistics are approximately normal. For instance, imagine all possible random samples of 1000 Flathead county residents. For each of these samples, record the proportion of people who identify as politically Republican. This is a random variable that is approximately normally distributed. More on this in later chapters - this is a quick example of a *sampling distribution* which a key tool for statistical inference. 
+
+From an intuitive perspective, a bell shaped curve should be determined by two quantities: its center (determining the line of symmetry) and its spread.  In fact, these two quantities are the parameters determining a normal distribution! We call the center the *mean* $\mu$ and the spread standard deviation $\sigma$. If a random variable $X$ we may sometimes write
+
+\[ X \sim N( \mu, \sigma ) \]
+
+to indicate that $X$ is normally distributed with mean $\mu$ and standard deviation $\sigma$. 
+
+There is one special distinguished normal distribution that we call the standard normal distribution: it has a mean of $\mu = 0$ and a standard deviation of $\sigma = 1$.  We call this the **standard normal distribution** and typically denote it with $Z$, so 
+
+\[ Z \sim N(\mu = 0, \sigma = 1). \]
+
+The plot below shows the standard normal curve. 
+
+```{r}
+ggplot( tibble( x = c(-3,3)), 
+        aes(x = x)) + 
+  stat_function(fun = dnorm) +
+  xlab("Z") +
+  ylab("") + 
+  labs(title = "Prob. Density Fun. of Std. Normal Dist.")
+```
+
+The standard normal is distinguished because any normal distribution $X$ can be transformed into the standard normal by taking **Z-scores**. The $Z$-score of a measurement $x$ from a normal distribution $ X \sim N( \mu, \sigma)$ is
+
+\[ z = \frac{x - \mu}{\sigma}.\]
+
+Notice that if
+
+- $x = \mu$, then $z = 0$, 
+
+- $x = \mu \pm \sigma$, then $z = \pm 1$.
+
+From this we see that $X$ in fact is transformed into the standard normal distribution. 
+
+Now that we've  reviewed the basics of normal distributions, let's see how we can make some probability calculations using R. It should be no surprise that the main functions are `pnom(...)` and `qnorm(...)`.  If $X \sim N(m, s)$
+
+- `dnorm(k, m, s)` is the height of the graph of the probability density function at $X = k$. **!Caution!** this is not a probability! 
+
+- `pnorm(k, m, s)` \(= P( X \leq k)\) 
+
+- `pnorm(k, m, s, lower.tail = FALSE)` \(= P( X >  k) = P(X \geq k)\)
+
+- `qnorm(p, m, s) = k` is the value $k$ such that $P(X \leq k) = p$. 
+
+- `qnorm(p, m, s, lower.tail = FALSE) = k` is the value $k$ such that $P(X > k) = p$. 
+
+- `rnorm(n, m, s)` returns a list of $n$ randomly sampled numbers from $N(m, s)$. 
+
+**Note:** if you don't specify a mean or standard deviation, R will default to the standard normal distribution. 
+
+Let's close this section with an example, starting with a sample and approximating the sample's distribution with a normal distribution to make some probability estimates.
+
+The data  we'll use is the `bdims` data set from the `openintro` package. This data set gives many measurements of 507 physically active individuals; we will investigate the height variable `hgt`, which records a participant's height in centimeters. 
+
+The sample contains data on both men and women; let's focus on men in this sample.
+
+```{r}
+maleBdim <- bdims %>% 
+  filter(sex == 1)
+```
+
+Male height is approximately normally distributed as evidenced by the histogram below.
+
+```{r}
+ggplot(maleBdim, aes(x = hgt)) +
+  geom_histogram(bins = 14, 
+                 color = "black", 
+                 fill = "steelblue") +
+  labs(x = "height (cm)", 
+       title = "Height of active men")
+```
+
+the mean and standard deviation of this sample are
+
+```{r}
+m <- mean(maleBdim$hgt)
+s <- sd(maleBdim$hgt)
+c(m, s)
+```
+
+and we can overlay a normal curve onto our histogram to heuristically assess the fit. 
+
+```{r}
+ggplot(maleBdim, aes(x = hgt)) +
+  # scales y-axis to a probability density
+  geom_histogram(aes(y = ..density..), 
+                 bins = 14, 
+                 color = "black", 
+                 fill = "steelblue") +
+  # adds our normal curve
+  stat_function(fun = dnorm, 
+                args = list(mean = m, 
+                            sd = s), 
+                color = "red") +
+  labs(x = "height (cm)", 
+       title = "Height of active men")
+```
+
+It's not a perfect fit, of course, but it's looking pretty good! If we think of our sample as an approximation of the population we're sampling from, we can use the normal distribution above to make probability calculations for the population. 
+
+Below we'll answer these questions and plot the regions corresponding to the probabilities in question. 
+
+1.  What is the probability a randomly sampled active male is shorter than 185 centimeters?
+
+    First we'll plot the region.
+    
+    ```{r}
+    ggplot(tibble(height = c(155,200)), 
+           aes(x = height)) +
+      stat_function(
+        fun = dnorm,
+        args = list(mean = m, 
+                    sd = s),
+        geom = "area", 
+        xlim = c(155, 185), #define fill region
+        fill = "steelblue") +
+      stat_function(
+        fun = dnorm,
+        args = list(mean = m, 
+                    sd = s),
+        geom = "line", 
+        color = "black") +
+  labs(x = "height (cm)", y = "density",
+       title = "Height of active men, P(H <= 185)")
+    ```
+    
+    From the image above, we infer that the probability better be greater than .5. To make this calculation exactly we use 
+    
+    ```{r}
+    pnorm(185, mean = m, sd = s)
+    ```
+    
+    recalling that we stored the mean as `m` and the standard deviation as `s` above. 
+
+2.  What is the probability a randomly sampled active male is taller than 175 cm?
+
+    Again we'll plot the region.
+    
+    ```{r}
+    ggplot(tibble(height = c(155,200)), 
+           aes(x = height)) +
+      stat_function(
+        fun = dnorm,
+        args = list(mean = m, 
+                    sd = s),
+        geom = "area", 
+        xlim = c(175, 200),  #define fill region 
+        fill = "steelblue") +
+      stat_function(
+        fun = dnorm,
+        args = list(mean = m, 
+                    sd = s),
+        geom = "line", 
+        color = "black") +
+  labs(x = "height (cm)", y = "density",
+       title = "Height of active men, P(H >= 175)")
+    ```
+    
+    The exact probablity can be calculated as 
+    
+    ```{r}
+    pnorm(175, mean = m, sd = s, lower.tail = FALSE)
+    ```
+
+3. What is the probability a randomly sampled active male is between 165 and 175 cm? 
+
+    Again we'll plot the region.
+    
+    ```{r}
+    ggplot(tibble(height = c(155,200)), 
+           aes(x = height)) +
+      stat_function(
+        fun = dnorm,
+        args = list(mean = m, 
+                    sd = s),
+        geom = "area", 
+        xlim = c(165, 175),  #define fill region 
+        fill = "steelblue") +
+      stat_function(
+        fun = dnorm,
+        args = list(mean = m, 
+                    sd = s),
+        geom = "line", 
+        color = "black") +
+  labs(x = "height (cm)", y = "density",
+       title = "Height of active men, P(165 <= H <= 175)")
+    ```
+    
+    To calculate the probability, observe that \( P(165 \leq H \leq 175) = P(H \leq 175) - P(H \leq 165) \). In other words, we take the larger lower tail and subtract off the smaller lower tail. Making this calculation in R:
+    
+    ```{r}
+    pnorm(175, mean = m, sd = s) - pnorm(165, mean = m, sd = s)
+    ```
+
+4. You meet someone online and they say that they're an active guy in the 80th percentile for height. How tall is this person?
+
+    We are given a probability/percentile and want the value associated to that, so we need to use the `qnorm(...)` function. In particular, 
+    
+    ```{r}
+    qnorm(.8, mean = m, sd = s)
+    ```
+
+    We can check this calculation with `pnorm(...)`. 
+    
+    ```{r}
+    pnorm(183.7912, mean = m, sd = s)
+    ```
+   
+    Pretty good!  This means if you're about 183.8 cm tall (about 6ft.) you'd be in the 80th percentile for active adult US men. 
+    
+These calculations and visuals should help you get started in calculating normal distribution probabilities. It is crucial to visualize or even actually sketch out the probability you're trying to calculate, especially when you're getting started. Visualizing these probabilities helps you figure out exactly what combination of R functions you need to use. 
+    
+#### Chi-squared (or \(\chi^2\) ) distributions
+
+#### Student's $t$-distribution
+
+#### \(F\)-distributions
+
