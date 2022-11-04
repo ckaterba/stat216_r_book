@@ -1,3 +1,177 @@
 # Inferential statistics, take 1
 
-TO DO: basically calculations "by hand"
+This chapter and the next are going to introduce inferential statistics in R, but from two different perspectives.  This chapter will focus on doing all of the calculations involved in statistical inference "by hand" (where here we really mean using R to implement the formulas/ideas).  The next chapter will show you how to perform many of the same calculations using functions native to R. It is valuable knowing how to do both so that you can check one or the other or possibly write your own type of statistical test one day! 
+
+Both chapters will be organized according to the type of variables we will be analyzing.  So, for example, we'll start with statistical inference for a single categorical variable. One can (and probably should) read the "by hand" section of this chapter in tandem with the corresponding native function section of the next chapter.  This chapter will include a brief summary of the ideas involved in statistical inference, but the next will just go straight into the details. 
+
+The code chunk below attaches all packages we'll use in this chapter and sets a *seed* which basically determines a starting point for some of the randomization we'll employ in the chapter. Setting a seed insures that the same random samples will be drawn every time the code is run. 
+
+```{r}
+library(tidyverse)
+library(openintro)
+library(infer)
+set.seed(1187)
+```
+
+## Basics of statistical inference
+
+We will learn about three primary types of statistical inference in this class, each aimed at answering different types of questions. To illustrate the types of questions we endeavor to answer, think about analyzing the political landscape in America. You could ask:
+
+1. What proportion of Americans identify as politically independent? 
+
+2. Are there more politically independent people in Montana than in Idaho?
+
+3. How what proportion of voters will identify as politically independent in the future? 
+
+The first question is asking for an estimate of a population parameter (the true proportion of independents in America). The second question, on the other hand, is asking about a difference between two population parameters. The third requires a prediction based on past data. These types of questions are certainly related (for instance, you could answer the second question by estimating each of the two population parameters), but the most common tools for answering them are slightly different. 
+
+Our main tool for answering the first question above is a **confidence interval**, which uses an estimate of the amount of variable we expect between *samples* to provided a range of plausible values for the population parameter. The tool we use to answer the second question is called a **hypothesis test**; these test assess how likely or unlikely your *sample* is if there were no differences. Hypothesis tests involve understanding the amount of variability we expect to see between samples. We access this this quantity by understanding the distribution of possible samples. The probability distribution associated to all possible samples is called a **sampling distribution**, which we discuss more in the next section.   
+
+### Sampling distributions
+
+Taking a simple random sample is, of course, a random process. Assigning a number like the sample proportion or sample average to this sample, then, naturally turns sample statistics into random variables. Since we can think of each sample statistic as a random variable, each sample statistic has an associated probability distribution called a **sampling distribution**! The overall population under consideration determines the sampling distribution and we almost never have access to population-level data, so you may wonder how or if we have any hope of understanding the sampling distribution of our statistic of interest. In particular, we hope to understand the shape, the center, and the spread of the sampling distribution. There are two primary was of doing this: through simulation and through theory. This class touches briefly on the simulation approach, but focuses mostly on the theoretical approach to accessing sampling distributions.  
+
+Before moving on to describe these approaches, we need a quick definition that helps us differentiate from talking about a population distribution and talking about a sampling distribution.  The **standard error**, abbreviated SE,  of a sampling distribution is simply its standard deviation.
+
+One of the miracles of statistics([^1]: Note: it is not a *real* miracle since it is a mathematical theorem, but it amazes the author to this day.) is the **Central Limit Theorem**. We will state the Central Limit Theorem in a few different ways throughout this chapter, but each version essentially says the same thing. Namely, if you have a sufficiently large([^2]: caution: this means different things in different contexts) and high quality sample([^3]: IE a sample with independent observations, usually obtained through random sampling), the sampling distribution will be symmetric and unimodal with its center at the true population parameter. Moreover, as the sample size increases, the standard error decreases.  In other words, all sample statistics will cluster around the true population parameter and observing a sample stat above the population parameter is just as likely as observing one below.  The fact that the standard error decreases as the sample size increases codifies our intuition that "large samples are usually better," since it implies that a sample statistic calculated from a larger sample is more likely to be close to the true population parameter than one calculated from a smaller sample. 
+
+Before moving on to discuss how we use sampling distributions, let's try to make this a bit more concrete by simulating a sampling distribution using a technique called [**bootstrapping**](https://en.wikipedia.org/wiki/Bootstrapping_(statistics)) which takes a large, random sample, and resamples it many times *with replacement* to  simulate the process of taking many different samples.  We'll use the `gss2010` data set from the `openintro` package which records the highest educational attainment (among other things) of 2044 randomly sampled Americans in 2010. 
+
+Suppose we're interested in knowing more about the proportion of all Americans who do not have a high school diploma.  The `gss2010` data set serves as our sample and we can use the sample proportion \( \hat{p}\), read as "p hat", as a **point estimate** for the true population proportion \(p \).  
+
+```{r}
+pHat <- sum(gss2010$degree == "LT HIGH SCHOOL") / length(gss2010$degree)
+pHat
+```
+
+So our sample indicates that in 2010, about 15\% of the American population had less than a high school diploma.  But this is only a sample of 2044 Americans. If we took another sample of 2044 people and calculated the same proportion, how different do we expect that proportion to be? We can simulate this by drawing from our original sample, but doing so *with replacement*. 
+
+```{r}
+# Take sample 
+sample2 <- sample( gss2010$degree, size = 2044, replace = TRUE)
+#Find proportion of high school dropouts
+pHat2 <- sum(sample2 == "LT HIGH SCHOOL") / length(sample2)
+pHat2
+```
+
+This sample proportion is different, but not by too much. Of course, 2 different samples don't provide enough evidence to make any conclusions about the amount of variability we should expect among *all* possible samples. To estimate the standard error, we need to simulate many more samples. We'll use the following code, using commands from the `infer` package, to do this.  The code below takes 5000 samples of size 2044 from our original sample again with replacement, changes the degree column in each sample to a binary outcome (no HS diploma, or other), counts the number of people in each sample without a high school diploma, then calculates the corresponding sample proportion. 
+
+```{r}
+simulated_sampling_distr <- gss2010 %>%
+  rep_sample_n(size = 2044, reps = 5000, replace = TRUE) %>%
+  mutate( degree = if_else(degree == "LT HIGH SCHOOL", "LT HIGH SCHOOL", "other")) %>%
+  count(degree) %>%
+  mutate(p_hat = n / sum(n)) %>% 
+  filter( degree == "LT HIGH SCHOOL")
+
+head(simulated_sampling_distr)
+```
+We've simulated a sampling distribution! Let's look at a histogram of this simulated distribution to assess it's shape and spread. Remember, the Central Limit Theorem says this distribution should likely by symmetric and unimodal.  
+
+```{r}
+ggplot(simulated_sampling_distr, aes(x = p_hat)) + 
+  geom_histogram(bins = 15, color = "black", fill = "steelblue") + 
+  labs(main = "Distribution of sample proportions, n = 2044", 
+       subtitle = "Estimating SE for 2010 proportion of Americans without a HS diploma",
+       x = "Sample proportion, p-hat")
+```
+
+Voila! Our sampling distribution does seem to be symmetric and unimodal.  Where precisely is the center?
+
+```{r}
+#average sample proportion
+mean(simulated_sampling_distr$p_hat)
+```
+
+What, approximately, is the **standard error**? Simply the standard deviation of the column `p_hat`!
+
+```{r}
+sd(simulated_sampling_distr$p_hat)
+```
+
+This means if we were to repeatedly sample 2044 Americans and record the proportion of people with less than a college degree, we should expect to see a difference of about `r round(sd(simulated_sampling_distr$p_hat), 3)*100`\% between the proportions on average.  As will see in the next two sections, **understanding the standard error is the key to performing inferential statistics**. However, before we move on to using sampling distributions, let's simulate the Central Limit Theorem's other main claim: the standard error decreases as the sample size increases. 
+
+To show this, we'll go the opposite direction and take smaller samples from the `gss2010` data set. We should see the standard error of this simulated distribution *increase*. The code below simulates a sampling distribution with sample size \(n = 100\). 
+
+```{r}
+sampling_dist2 <- gss2010 %>%
+  rep_sample_n(size = 100, reps = 5000, replace = TRUE) %>%
+  mutate( degree = if_else(degree == "LT HIGH SCHOOL", "LT HIGH SCHOOL", "other")) %>%
+  count(degree) %>%
+  mutate(p_hat = n / sum(n)) %>% 
+  filter( degree == "LT HIGH SCHOOL")
+
+head(sampling_dist2)
+```
+
+Note that just looking at the first 6 sample proportions we can already see more variability than our first distribution.  Let's visualize this one. 
+
+```{r}
+ggplot(sampling_dist2, aes(x = p_hat)) + 
+  geom_histogram(bins = 15, color = "black", fill = "steelblue") + 
+  labs(main = "Distribution of sample proportions, n = 100", 
+       subtitle = "Estimating SE for 2010 proportion of Americans without a HS diploma",
+       x = "Sample proportion, p-hat")
+```
+
+Notice that the center is about the same as our first sampling distribution, but our second is more spread out as we claimed above! To check these claims, let's look at the average sample proportion and the estimated standard error. 
+
+```{r}
+mean(sampling_dist2$p_hat)
+sd(sampling_dist2$p_hat)
+```
+
+The average sample proportions are super close, but the standard error of our distribution with \(n = 100\) is about 5 times as large as the standard error of the distribution with \(n = 2044\). This fits our intuition: small samples are less reliable because they have more variability around the population parameter. 
+
+Now that we have a feel for sampling distributions, let's use these simulated sampling distributions to make some inferences. 
+
+### Confidence intervals
+
+### Hypothesis tests
+
+## Analyzing categorical variables
+
+Now we will move in to using theoretical sampling distributions to calculate confidence intervals and perform hypothesis tests.  
+
+### Single sample proportion
+
+#### Confidence intervals
+
+#### Hypothesis testing
+
+
+
+
+### Two sample proportion
+
+data set: openintro::burger
+
+#### Confidence intervals
+
+#### Hypothesis testing
+
+### Chi-squared goodness of fit test
+
+### Chi-squared test of independence
+
+## Analyzing numerical variables 
+
+### Single sample mean
+
+#### Confidence intervals
+
+#### Hypothesis testing
+
+### Two sample mean
+
+#### Confidence intervals
+
+#### Hypothesis testing
+
+### Paired data
+
+#### Confidence intervals
+
+#### Hypothesis testing
+
+### Analysis of variance (ANOVA)

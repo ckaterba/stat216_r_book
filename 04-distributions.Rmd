@@ -547,10 +547,20 @@ Below we'll answer these questions and plot the regions corresponding to the pro
     Pretty good!  This means if you're about 183.8 cm tall (about 6ft.) you'd be in the 80th percentile for active adult US men. 
     
 These calculations and visuals should help you get started in calculating normal distribution probabilities. It is crucial to visualize or even actually sketch out the probability you're trying to calculate, especially when you're getting started. Visualizing these probabilities helps you figure out exactly what combination of R functions you need to use. 
+
+The next distributions will be used later in this course when we discuss more involved types of sample statistics.
     
 #### Chi-squared (or \(\chi^2\) ) distributions
 
+This section will be completed later in the semester when these distributions are needed.
+
 #### Student's $t$-distribution
+
+This section will be completed later in the semester when these distributions are needed.
 
 #### \(F\)-distributions
 
+This section will be completed later in the semester when these distributions are needed.
+
+
+Now that we've finished up the basics of of probability, we're ready to move on to inferential statistics!

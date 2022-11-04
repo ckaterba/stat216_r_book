@@ -5,4 +5,8 @@ h3:discrete-random-variables Discrete random variables
 h4:binomial-distribution Binomial distribution
 h4:geometric-distribution Geometric distribution
 h3:continuous-random-variables Continuous random variables
+h4:normal-distributions Normal distributions
+h4:chi-squared-or-2-distributions Chi-squared (or (^2) ) distributions
+h4:students-t-distribution Student’s -distribution
+h4:f-distributions (F)-distributions
 
