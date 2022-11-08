@@ -384,7 +384,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>but run into an immediate problem. What is the <span class="math inline">\(x\)</span> variable? What is the <span class="math inline">\(y\)</span>? If we use the tidy version of the same data, the answer is clear however: <span class="math inline">\(x\)</span> is the drink, <span class="math inline">\(y\)</span> is the score, since drink is the explanatory variable and taste preference is the response. Using <code>dfTidy</code> from above instead, we’d simply use the following.</p>
 <div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="wrangling-data.html#cb247-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dfTidy, <span class="fu">aes</span>(<span class="at">x =</span> drink, <span class="at">y =</span> score)) <span class="sc">+</span> </span>
 <span id="cb247-2"><a href="wrangling-data.html#cb247-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-108-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-138-1.png" width="672" /></p>
 <p>Essentially <em>all</em> tools in the <code>tidyverse</code> package are designed around having tidy data. In the next section, we’ll learn about one of the main functions from the <code>tidyverse</code> package used in tidying and analyzing data, the pipe.</p>
 </div>
 <div id="the-pipe" class="section level2 hasAnchor" number="4.2">
@@ -457,8 +457,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb256-9"><a href="wrangling-data.html#cb256-9" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(dfTidy1)</span></code></pre></div>
 <pre><code>## Rows: 30
 ## Columns: 2
-## $ drink &lt;chr&gt; &quot;coke&quot;, &quot;pepsi&quot;, &quot;rc&quot;, &quot;coke&quot;, &quot;pepsi&quot;, &quot;rc&quot;, &quot;coke&quot;, &quot;pepsi&quot;, &quot;rc&quot;, &quot;coke&quot;, &quot;…
-## $ score &lt;int&gt; 3, 3, 1, 4, 2, 1, 4, 3, 2, 1, 4, 3, 3, 4, 5, 4, 1, 2, 1, 5, 3, 2, 3, 3, 3, 5, …</code></pre>
+## $ drink &lt;chr&gt; &quot;coke&quot;, &quot;pepsi&quot;, &quot;rc&quot;, &quot;coke&quot;, &quot;pepsi&quot;, &quot;rc&quot;, &quot;coke&quot;, &quot;pepsi&quot;, &quot;rc&quot;, &quot;coke&quot;…
+## $ score &lt;int&gt; 3, 3, 1, 4, 2, 1, 4, 3, 2, 1, 4, 3, 3, 4, 5, 4, 1, 2, 1, 5, 3, 2, 3, 3, 3, …</code></pre>
 <p>At first it doesn’t seem like this data set is the same as <code>dfTidy</code>, but notice that R arranged the values as “coke”, “pepsi”, “rc”. If we rearrange the rows alphabetically by drink, we’ll see that they are in fact that same data sets.</p>
 <div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb258-1"><a href="wrangling-data.html#cb258-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>( dfTidy <span class="sc">%&gt;%</span> </span>
 <span id="cb258-2"><a href="wrangling-data.html#cb258-2" aria-hidden="true" tabindex="-1"></a>             <span class="fu">arrange</span>(drink), </span>
@@ -523,11 +523,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="wrangling-data.html#cb265-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(gss2010)</span></code></pre></div>
 <pre><code>## Rows: 2,044
 ## Columns: 5
-## $ hrsrelax &lt;int&gt; 2, 4, NA, NA, NA, NA, 3, NA, 0, 5, 5, NA, 3, NA, NA, NA, NA, NA, NA, 2, 5, …
-## $ mntlhlth &lt;int&gt; 3, 6, NA, NA, NA, NA, 0, NA, 0, 10, 0, NA, 0, NA, NA, NA, NA, NA, NA, 5, 0,…
-## $ hrs1     &lt;int&gt; 55, 45, NA, NA, NA, NA, 45, NA, 40, 48, 26, NA, 40, NA, NA, NA, NA, NA, NA,…
-## $ degree   &lt;fct&gt; BACHELOR, BACHELOR, LT HIGH SCHOOL, LT HIGH SCHOOL, LT HIGH SCHOOL, LT HIGH…
-## $ grass    &lt;fct&gt; NA, LEGAL, NA, NOT LEGAL, NOT LEGAL, LEGAL, NA, NA, NOT LEGAL, NA, NA, NA, …</code></pre>
+## $ hrsrelax &lt;int&gt; 2, 4, NA, NA, NA, NA, 3, NA, 0, 5, 5, NA, 3, NA, NA, NA, NA, NA, NA, 2, …
+## $ mntlhlth &lt;int&gt; 3, 6, NA, NA, NA, NA, 0, NA, 0, 10, 0, NA, 0, NA, NA, NA, NA, NA, NA, 5,…
+## $ hrs1     &lt;int&gt; 55, 45, NA, NA, NA, NA, 45, NA, 40, 48, 26, NA, 40, NA, NA, NA, NA, NA, …
+## $ degree   &lt;fct&gt; BACHELOR, BACHELOR, LT HIGH SCHOOL, LT HIGH SCHOOL, LT HIGH SCHOOL, LT H…
+## $ grass    &lt;fct&gt; NA, LEGAL, NA, NOT LEGAL, NOT LEGAL, LEGAL, NA, NA, NOT LEGAL, NA, NA, N…</code></pre>
 <p>First, let’s add a new column to our data set that gives the total number of hours each person in this survey spend at work or relaxing and another column that reports the proportion of their time spent working or relaxing Monday through Friday. Note that since <code>hrsrelax</code> gives the number of hours they relax in a day, we should add 5 times that amount for total time spent relaxing during the work work.</p>
 <div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="wrangling-data.html#cb267-1" aria-hidden="true" tabindex="-1"></a>new_gss <span class="ot">&lt;-</span> gss2010 <span class="sc">%&gt;%</span></span>
 <span id="cb267-2"><a href="wrangling-data.html#cb267-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">totalHours =</span> <span class="dv">5</span><span class="sc">*</span>hrsrelax <span class="sc">+</span> hrs1, <span class="co">#hours spent working and relaxing</span></span>
@@ -539,7 +539,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## $ hrsrelax        &lt;int&gt; 4, 6, 6, NA, NA, 7, NA
 ## $ mntlhlth        &lt;int&gt; 0, 0, 2, NA, NA, 0, NA
 ## $ hrs1            &lt;int&gt; 55, 35, 9, NA, NA, 20, NA
-## $ degree          &lt;fct&gt; LT HIGH SCHOOL, HIGH SCHOOL, LT HIGH SCHOOL, HIGH SCHOOL, HIGH SCHOO…
+## $ degree          &lt;fct&gt; LT HIGH SCHOOL, HIGH SCHOOL, LT HIGH SCHOOL, HIGH SCHOOL, HIGH SC…
 ## $ grass           &lt;fct&gt; NOT LEGAL, NA, LEGAL, NA, NA, NA, LEGAL
 ## $ totalHours      &lt;dbl&gt; 75, 65, 39, NA, NA, 55, NA
 ## $ propTimeWorking &lt;dbl&gt; 0.6250000, 0.5416667, 0.3250000, NA, NA, 0.4583333, NA</code></pre>

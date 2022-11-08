@@ -6,7 +6,7 @@ Both chapters will be organized according to the type of variables we will be an
 
 The code chunk below attaches all packages we'll use in this chapter and sets a *seed* which basically determines a starting point for some of the randomization we'll employ in the chapter. Setting a seed insures that the same random samples will be drawn every time the code is run. 
 
-```{r}
+```{r, message = F, warning = F}
 library(tidyverse)
 library(openintro)
 library(infer)
@@ -33,7 +33,7 @@ Taking a simple random sample is, of course, a random process. Assigning a numbe
 
 Before moving on to describe these approaches, we need a quick definition that helps us differentiate from talking about a population distribution and talking about a sampling distribution.  The **standard error**, abbreviated SE,  of a sampling distribution is simply its standard deviation.
 
-One of the miracles of statistics([^1]: Note: it is not a *real* miracle since it is a mathematical theorem, but it amazes the author to this day.) is the **Central Limit Theorem**. We will state the Central Limit Theorem in a few different ways throughout this chapter, but each version essentially says the same thing. Namely, if you have a sufficiently large([^2]: caution: this means different things in different contexts) and high quality sample([^3]: IE a sample with independent observations, usually obtained through random sampling), the sampling distribution will be symmetric and unimodal with its center at the true population parameter. Moreover, as the sample size increases, the standard error decreases.  In other words, all sample statistics will cluster around the true population parameter and observing a sample stat above the population parameter is just as likely as observing one below.  The fact that the standard error decreases as the sample size increases codifies our intuition that "large samples are usually better," since it implies that a sample statistic calculated from a larger sample is more likely to be close to the true population parameter than one calculated from a smaller sample. 
+One of the miracles of statistics (Note: it is not a *real* miracle since it is a mathematical theorem, but it amazes the author to this day.) is the **Central Limit Theorem**. We will state the Central Limit Theorem in a few different ways throughout this chapter, but each version essentially says the same thing. Namely, if you have a sufficiently large (caution: this means different things in different contexts) and high quality sample (IE a sample with independent observations, usually obtained through random sampling), the sampling distribution will be symmetric and unimodal with its center at the true population parameter. Moreover, as the sample size increases, the standard error decreases.  In other words, all sample statistics will cluster around the true population parameter and observing a sample stat above the population parameter is just as likely as observing one below.  The fact that the standard error decreases as the sample size increases codifies our intuition that "large samples are usually better," since it implies that a sample statistic calculated from a larger sample is more likely to be close to the true population parameter than one calculated from a smaller sample. 
 
 Before moving on to discuss how we use sampling distributions, let's try to make this a bit more concrete by simulating a sampling distribution using a technique called [**bootstrapping**](https://en.wikipedia.org/wiki/Bootstrapping_(statistics)) which takes a large, random sample, and resamples it many times *with replacement* to  simulate the process of taking many different samples.  We'll use the `gss2010` data set from the `openintro` package which records the highest educational attainment (among other things) of 2044 randomly sampled Americans in 2010. 
 
@@ -71,7 +71,7 @@ We've simulated a sampling distribution! Let's look at a histogram of this simul
 ```{r}
 ggplot(simulated_sampling_distr, aes(x = p_hat)) + 
   geom_histogram(bins = 15, color = "black", fill = "steelblue") + 
-  labs(main = "Distribution of sample proportions, n = 2044", 
+  labs(title = "Distribution of sample proportions, n = 2044", 
        subtitle = "Estimating SE for 2010 proportion of Americans without a HS diploma",
        x = "Sample proportion, p-hat")
 ```
@@ -109,7 +109,7 @@ Note that just looking at the first 6 sample proportions we can already see more
 ```{r}
 ggplot(sampling_dist2, aes(x = p_hat)) + 
   geom_histogram(bins = 15, color = "black", fill = "steelblue") + 
-  labs(main = "Distribution of sample proportions, n = 100", 
+  labs(title = "Distribution of sample proportions, n = 100", 
        subtitle = "Estimating SE for 2010 proportion of Americans without a HS diploma",
        x = "Sample proportion, p-hat")
 ```
@@ -127,7 +127,197 @@ Now that we have a feel for sampling distributions, let's use these simulated sa
 
 ### Confidence intervals
 
+Recall that a **confidence interval** provides a range of plausible values for a population parameter. For example, we will use our point estimates from the previous section to estimate the true proportion of Americans without a high school diploma. The width of a confidence level depends on two quantities:
+
+- the **confidence level**: a measure of the likelihood that our interval contains to true population parameter. Typical confidence levels are 90\%, 95\%, and 99\%. 
+
+- the **standard error**: the standard deviation of the sampling distribution. 
+
+Your confidence level determines a *critical value* $CV$. If your confidence level is $CL$, then $CL$\% of all sample proportions will fall without $CV$ standard deviations of the true population parameter within the sampling distribution. Thus, as your confidence level increase, the critical value increases, and so your confidence interval ends up getting wider. This makes sense: to be more confident in your estimate, your range of plausible values better be "larger." 
+
+Now we can describe the general formula for confidence intervals:
+
+\[ \text{point estimate} \pm CV \cdot SE\]
+
+In the sections to come, the details of your point estimates along with the procedure to calculate the standard error and critical value will change, but the general formula for a confidence interval is always the same.  With this in mind, it becomes much more important to be able to correctly interpret confidence intervals. Before closing out this section, let's use our simulated sampling distribution from the previous  section to estimate the proportion of Americans without a high school diploma in 2010. In particular, we'll calculate a 95\% confidence interval. 
+
+Looking back at the histogram of `simulated_sampling_distr`, we see that it is approximately normally distributed.  Recall that roughly 95\% of all observations in a normal distribution fall within two standard deviations from the center. Thus, as a rough approximation, our critical value is $CV = 2$. 
+
+We've also already found our point estimate, the sample proportion of Americans without a high school diploma `pHat`, and our standard error, the standard deviation of the sampling distribution. 
+
+```{r}
+pHat
+SE <- sd(simulated_sampling_distr$p_hat)
+SE
+```
+
+Using the formula, $\text{point estimate} \pm CV \cdot SE$, our 95\% confidence interval is
+
+```{r}
+CI <- pHat + c(-1,1)*2*SE
+CI
+```
+
+In other words, with 95\% confidence, we estimate that between `r round(CI[1],3)*100`\% and `r round(CI[2],3)*100`\% of all Americans in 2010 did not have a high school diploma.  
+
 ### Hypothesis tests
+
+We use confidence intervals to estimate population parameters, but sometimes we only want to figure out if a population parameter differs from some value. This situation arises when you ask questions like "Will a majority of American Republicans vote for Donald Trump in the 2024 presidential election primary?" or "Do more than 10\% of Americans fail to graduate high school?" To answer these types of questions statistically, we perform **hypothesis tests**. Every hypothesis test has two competing claims:
+
+- $H_0$, the null hypothesis. This typically represents the status quo, that there is no difference, that there is no effect, or that the variables independent. 
+
+- $H_a$: the research or alternative hypothesis. This represents, well, your research question. There is a difference, or an effect, or the variables in question are dependent.  
+
+We always express the null and alternative hypothesis as statements involving population parameters.  For instance, if $p$ represents the proportion of Americans without a high school diploma in 2010, we would turn the question "Do more than 10\% of Americans fail to graduate high school?"  into a hypothesis test as
+
+- $H_0 : p = .1$ (or $p \leq .1$)
+
+- $H_a : p > .1$
+
+We use sample data to evaluate hypothesis tests and do so by determining how likely or unlikely our sample data would be *if the null hypothesis were true*.  This is called the $p$-value of a sample. More precisely, the **$p$-value** of a sample is the probability of observing a sample at least as a favorable for the alternative hypothesis as your own, assuming the null hypothesis is true. 
+
+Let's think about what a $p$-value tells is. If you have a relatively small $p$-value, say .01, then there would be a 1\% chance of observing the data you have (or data that's even more extreme) if the null were true.  We have two competing possibilities here: either the null hypothesis is true and we have witnessed a rare event simply by chance or the alternative hypothesis is true. Unfortunately (and this is especially if you only have a single sample) there's no way to tell which world you're living in! As an attempt to remedy this dilemma, we must set a **significance level** *before* performing our hypothesis test.  The most common significance levels are $\alpha = .01, .05, \text{ and } .1$. You use the significance level $\alpha$ to evaluate the hypothesis test. In particular, if 
+
+- the $p$-value is less than $\alpha$, reject the null and accept the alternative. Or 
+
+- the $p$-value is greater than or equal to $\alpha$, you fail to reject the null. 
+
+Note that a hypothesis test is like a jury trial: a jury either finds the defendant guilty or not guilty, they never deem a defendant innocent. Similarly, we can never *prove* the null hypothesis; instead, we can only collect enough evidence to believe that it is false. With this in mind, we think of the **significance level** $\alpha$ as the probability of a false positive in a hypothesis test. In other words, if the null were true and you could repeatedly perform the same hypothesis test, you would end up rejecting the null $\alpha$\% of the time.   
+
+In general, there are three broad types of hypothesis tests: one-tailed upper, one-tailed lower, and two-tailed tests.  The type of test determines how you calculate the $p$-value of your sample because it determines what counts as "more favorable for the alternative hypothesis." 
+
+To illustrate this idea, let's pretend we're performing a hypothesis test for a proportion with 
+
+\[ H_0:  p = .5 \]
+
+and suppose we took a sample with size $n = 200$ and $\hat{p} = .55$.  Below we'll look at the three types of alternative hypotheses and visualize the corresponding $p$-values for our imaginary sample. 
+
+1. **Two-sided hypothesis test**.  In this case, we're simply checking to see if the population parameter deviates from the null value. For our example: 
+\[ H_a: p \neq .5  \]
+
+Samples that are at least as favorable for $H_a$ as our own come in two flavors: samples with a proportion of at least .55 and those with a proportion of *at most* .45.  Notice that the samples with proportions of at most .45 really are just as favorable as those with proportions of at least .55 when we're checking for a difference because they are equally as far away from the null proportion of .5. Thus, the $p$-value of a two-sided hypothesis tests will be a two-tailed probability. The plot below helps visualize this $p$-value as an area in the sampling distribution. We have hidden the plotting code here to prioritize the concepts.
+
+```{r, echo  = T}
+#set mean and sd of normal sampling dist.
+args <- c(mean = .5, sd = sqrt(.5*.5/200))
+#plotting
+ggplot(data.frame(x = c(.4,.6)), aes(x = x)) +
+  stat_function(fun = dnorm, 
+                args = args, 
+                geom = "line") +
+  stat_function(fun = dnorm,
+                args = args,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(.4, .45))+ 
+  stat_function(fun = dnorm,
+                args = args,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(.55, .6)) + 
+  labs(title = "P-value of two-sided hypothesis test",
+       subtitle = "null prop. = .5, p_hat = .55, n = 200", 
+       x = "sample proprotion",
+       y = "")
+```
+
+2. **One-sided upper hypothesis test**: In this case, we're simply checking to see if the population parameter is greater than the null value. For our example: 
+
+\[ H_a: p > .5  \] 
+
+Samples that are at least as favorable for $H_a$ as our own only one flavor  this time: samples with a proportion of at least .55. Thus the $p$-value for this hypothesis test is an upper-tail area.  The plot below helps us visualize this. 
+
+```{r, echo  = T}
+#set mean and sd of normal sampling dist.
+args <- c(mean = .5, sd = sqrt(.5*.5/200))
+#plotting
+ggplot(data.frame(x = c(.4,.6)), aes(x = x)) +
+  stat_function(fun = dnorm, 
+                args = args, 
+                geom = "line") +
+  stat_function(fun = dnorm,
+                args = args,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(.55, .6)) + 
+  labs(title = "P-value of one-sided upper hypothesis test",
+       subtitle = "null prop. = .5, p_hat = .55, n = 200", 
+       x = "sample proprotion",
+       y = "")
+```
+
+3. **One-sided lower hypothesis test**: In this case, we're simply checking to see if the population parameter is less than the null value. For our example: 
+
+\[ H_a: p > .5  \] 
+
+Samples that are at least as favorable for $H_a$ as our own only one flavor: samples with a proportion of at most .55. Thus the $p$-value for this hypothesis test is a lower-tail area in the sampling distribution. The plot below helps us visualize this. 
+
+```{r, echo  = T}
+#set mean and sd of normal sampling dist.
+args <- c(mean = .5, sd = sqrt(.5*.5/200))
+#plotting
+ggplot(data.frame(x = c(.4,.6)), aes(x = x)) +
+  stat_function(fun = dnorm, 
+                args = args, 
+                geom = "line") +
+  stat_function(fun = dnorm,
+                args = args,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(.4, .55)) + 
+  labs(title = "P-value of one-sided lower hypothesis test",
+       subtitle = "null prop. = .5, p_hat = .55, n = 200", 
+       x = "sample proprotion",
+       y = "")
+```
+
+Our $p$-value is large because our sample proportion is above the null value when we thought it was going to be below. We should revise our alternative hypothesis in this case. 
+
+Let's finish this section using the high school diploma question we started this chapter with. In particular, in 2010 did more than 10\% of Americans fail to graduate high school?  As a hypothesis test:
+
+- $H_0: p = .1$
+
+- $H_a: p > .1$
+
+Let's set our significance level to $\alpha  .05$. To evaluate the hypothesis test need to calculate a $p$-value. To accomplish this, we need to be able to assess the likelihood of our sample assuming the null hypothesis is true.  Here we're still using the `gss2010` data for our sample; recall the recall the sample proportion is \( \hat{p} \approx `r round(pHat, 3)`\) and the sample size is $n = 2044$.
+
+In the next section we'll learn some theory that describes the sampling distribution, but we will simulate a sampling distribution under the null hypothesis. 
+
+```{r}
+# generates results from 5000 binomial experiments w/ probability of 
+# success = .1 and sample size of n = 2044, returns sample proportion. 
+null_dist <- tibble(p_hat = rbinom(5000, 2044, .1)/2044)
+# center of distribution
+mean(null_dist$p_hat)
+# standard error
+SE <- sd(null_dist$p_hat)
+SE
+```
+
+Let's visualize the null distribution and our sample proportion $\hat{p}$'s location in the nul distribution.  
+
+```{r}
+ggplot(null_dist, aes(x = p_hat)) + 
+  geom_histogram(bins = 15, color = "black", fill = "steelblue") + 
+  geom_vline(xintercept = pHat, color = "red") +
+  labs(title = "Null distribution with p = .1 and n = 2044, pHat .149", 
+       x = "Sample proportion, p-hat")
+```
+
+As we'd expect the null sampling distribution is approximately normal. The plot above indicates that our sample proportion $\hat{p}$ would be quite unlikely if the null hypothesis were true. To estimate exactly how unlikely, let's *estimate* the $p$-value of our sample. 
+
+```{r}
+# count the number of simulated samples with proportions at least as large as 
+# our actual sample proportion, divide by number of samples in simulated dist.
+pValue <- sum(null_dist$p_hat >= pHat ) / length(null_dist$p_hat)
+pValue
+```
+
+This means that if 10\% of Americans didn't have high school diplomas in 2010, the probability of finding a sample of 2044 Americans of which 14.9\% or more do not have a high school diploma is essentially 0. 
+
+Because our $p$-value is less than the significance level $\alpha = .05$, we reject the null hypothesis and accept the alternative. In other words, our data provide compelling evidence to believe that more than 10\% of Americans in 2010 did not have a high school diploma. 
+
+We finish this section by noting that we spent a lot of time on this example and a lot of time/space on explanation here. Once you get the hang of this, you will perform and interpret hypothesis tests quickly and efficiently. Moreover, most of what we'll do in this class will *not* require simulating sampling distribtions. For more on this, read on!
 
 ## Analyzing categorical variables
 
@@ -138,9 +328,6 @@ Now we will move in to using theoretical sampling distributions to calculate con
 #### Confidence intervals
 
 #### Hypothesis testing
-
-
-
 
 ### Two sample proportion
 
