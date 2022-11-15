@@ -76,8 +76,8 @@ hypothesis-testing-4
 analysis-of-variance-anova
 inferential-statistics-take-2
 analyzing-categorical-variables-1
-single-sample
-two-sample
+single-sample-proportions
+two-sample-proportions
 chi-squared-goodness-of-fit-test-1
 chi-squared-test-of-independence-1
 analyzing-numerical-variables-1

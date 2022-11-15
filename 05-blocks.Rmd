@@ -1,4 +1,4 @@
-# Inferential statistics, take 1
+# Inferential statistics: Take 1
 
 This chapter and the next are going to introduce inferential statistics in R, but from two different perspectives.  This chapter will focus on doing all of the calculations involved in statistical inference "by hand" (where here we really mean using R to implement the formulas/ideas).  The next chapter will show you how to perform many of the same calculations using functions native to R. It is valuable knowing how to do both so that you can check one or the other or possibly write your own type of statistical test one day! 
 
@@ -133,7 +133,7 @@ Recall that a **confidence interval** provides a range of plausible values for a
 
 - the **standard error**: the standard deviation of the sampling distribution. 
 
-Your confidence level determines a *critical value* $CV$. If your confidence level is $CL$, then $CL$\% of all sample proportions will fall without $CV$ standard deviations of the true population parameter within the sampling distribution. Thus, as your confidence level increase, the critical value increases, and so your confidence interval ends up getting wider. This makes sense: to be more confident in your estimate, your range of plausible values better be "larger." 
+Your confidence level determines a *critical value* $CV$. If your confidence level is $CL$, then $CL$\% of all sample proportions will fall within $CV$ standard deviations of the true population parameter within the sampling distribution. Thus, as your confidence level increase, the critical value increases, and so your confidence interval ends up getting wider. This makes sense: to be more confident in your estimate, your range of plausible values better be "larger." 
 
 Now we can describe the general formula for confidence intervals:
 
@@ -197,7 +197,7 @@ and suppose we took a sample with size $n = 200$ and $\hat{p} = .55$.  Below we'
 
 Samples that are at least as favorable for $H_a$ as our own come in two flavors: samples with a proportion of at least .55 and those with a proportion of *at most* .45.  Notice that the samples with proportions of at most .45 really are just as favorable as those with proportions of at least .55 when we're checking for a difference because they are equally as far away from the null proportion of .5. Thus, the $p$-value of a two-sided hypothesis tests will be a two-tailed probability. The plot below helps visualize this $p$-value as an area in the sampling distribution. We have hidden the plotting code here to prioritize the concepts.
 
-```{r, echo  = T}
+```{r, echo  = F}
 #set mean and sd of normal sampling dist.
 args <- c(mean = .5, sd = sqrt(.5*.5/200))
 #plotting
@@ -227,7 +227,7 @@ ggplot(data.frame(x = c(.4,.6)), aes(x = x)) +
 
 Samples that are at least as favorable for $H_a$ as our own only one flavor  this time: samples with a proportion of at least .55. Thus the $p$-value for this hypothesis test is an upper-tail area.  The plot below helps us visualize this. 
 
-```{r, echo  = T}
+```{r, echo  = F}
 #set mean and sd of normal sampling dist.
 args <- c(mean = .5, sd = sqrt(.5*.5/200))
 #plotting
@@ -252,7 +252,7 @@ ggplot(data.frame(x = c(.4,.6)), aes(x = x)) +
 
 Samples that are at least as favorable for $H_a$ as our own only one flavor: samples with a proportion of at most .55. Thus the $p$-value for this hypothesis test is a lower-tail area in the sampling distribution. The plot below helps us visualize this. 
 
-```{r, echo  = T}
+```{r, echo  = F}
 #set mean and sd of normal sampling dist.
 args <- c(mean = .5, sd = sqrt(.5*.5/200))
 #plotting
@@ -300,7 +300,7 @@ Let's visualize the null distribution and our sample proportion $\hat{p}$'s loca
 ggplot(null_dist, aes(x = p_hat)) + 
   geom_histogram(bins = 15, color = "black", fill = "steelblue") + 
   geom_vline(xintercept = pHat, color = "red") +
-  labs(title = "Null distribution with p = .1 and n = 2044, pHat .149", 
+  labs(title = "Null distribution with p = .1 and n = 2044, pHat = .149", 
        x = "Sample proportion, p-hat")
 ```
 
@@ -317,25 +317,397 @@ This means that if 10\% of Americans didn't have high school diplomas in 2010, t
 
 Because our $p$-value is less than the significance level $\alpha = .05$, we reject the null hypothesis and accept the alternative. In other words, our data provide compelling evidence to believe that more than 10\% of Americans in 2010 did not have a high school diploma. 
 
-We finish this section by noting that we spent a lot of time on this example and a lot of time/space on explanation here. Once you get the hang of this, you will perform and interpret hypothesis tests quickly and efficiently. Moreover, most of what we'll do in this class will *not* require simulating sampling distribtions. For more on this, read on!
+We finish this section by noting that we spent a lot of time on this example and a lot of time/space on explanation here. Once you get the hang of this, you will perform and interpret hypothesis tests quickly and efficiently. Moreover, most of what we'll do in this class will *not* require simulating sampling distributions. For more on this, read on!
 
 ## Analyzing categorical variables
 
-Now we will move in to using theoretical sampling distributions to calculate confidence intervals and perform hypothesis tests.  
+Now we will move in to using theoretical sampling distributions to calculate confidence intervals and perform hypothesis tests.  The key almost all of the theoretical sampling distributions is the **central limit theorem**, which states that, if you have a large enough sample of independent observations, the sampling distribution will be approximately normal. Moreover, the standard error decreases as your sample size increase. In the following sections we will see a few different incarnations of the central limit theorem; the big picture will stay the same while the fine details change as we analyze different types of data. 
+
+This section focus on analyzing categorical variables. When making inferences about categorical variables it is best to analyze *proportions* because these generalize to populations much better than counts. In particular we want to look at the proportion of responses in a sample that take on a specific value of the categorical variable. We've seen this already, of course (see the last section for an example). The following subsections describe how to make inferences using a single sample proportion, two sample proportions, or (in some sense) many sample proportions.
 
 ### Single sample proportion
 
+When analyzing a single categorical variable, the most basic parameter to make an inference about is the population proportion $p$, the proportion of the population taking on a particular value of the categorical variable. For example, the proportion of American adults in 2010 that do not have a high school diploma.  We use sample proportions $\hat{p}$ to make inferences about $p$ and under the right circumstances can apply the Central Limit Theorem to understand the distribution of sample proportions.
+
+- **Sample statistic**: sample proportion $\hat{p}$
+
+- **Population parameter**: population proportion $p$
+
+- The **Central Limit Theorem for a Single-sample Proportion** states that if you
+
+    - have a sample of $n$ independent observations (hard to guarantee, but safe to assume if n < 10\% of the populatino and you employ random sampling) and 
+    
+    - and at least 10 (expected) success and failures (ie $\hat{p}n \geq 10$ and $(1- \hat{p})n \geq 10$ )
+    
+    Then the sampling distribution of $\hat{p}$ is approximately normal with a mean of $p$ and standard error $SE = \sqrt{ \frac{p(1-p)}{n}}$. In symbols:
+    \[ \hat{p} \sim N \left( \text{mean} = p, SE =\sqrt{ \frac{p(1-p)}{n}} \right) \]
+    
+    Moreover, if $p$ is unknown (as it usually is!), 
+    \[ SE \approx \sqrt{ \frac{\hat{p}(1-\hat{p})}{n}}\]
+    In other words, you can approximate the standard error using the sample proportion. 
+    
+In this situation, the hypotheses you need to meet in order to apply the Central Limit Theorem are typically easy to satisfy, which means we can use the CLT to make inferences in all of our favorite ways!
+
 #### Confidence intervals
 
+Suppose you have a sample of $n$ observations that meets the conditions for applying the Central Limit Theorem.  Then the distribution of sample proportions is approximately normal, centered at the true population proportion with a standard error of 
+
+\[ SE \approx \sqrt{ \frac{\hat{p}(1-\hat{p})}{n}}.\]
+
+We can use these facts to calculate a confidence interval to estimate the population proportion. Recall that every confidence interval has the form
+
+
+\[ \text{point estimate} \pm CV \cdot SE\]
+
+where $CV$ is the critical value determined by the confidence level. The **CLT** provides the standard error and our sample gives the point estimate, so we only need to worry about the critical value. Recall that if your confidence level is $CL$, then $CL$\% of all sample proportions will fall within $CV$ standard deviations of the true population parameter within the sampling distribution. The sampling distribution is normal by the Central Limit theorem, so we can use the `qnorm(...)` function to find precise critical values.  
+
+As an example, let's find the critical value for a 95\% confidence interval.  We want to find the value $z^\ast$ so that 95\% of all sample proportions fall within $z^\ast$ standard deviations of the population proportion. In other words, we need to find $z^\ast$ so that \( P ( |Z| \leq z^\ast ) = .95 \).  The graph below helps visualize the setup. 
+
+```{r, echo = F}
+ggplot(data.frame(x = c(-3,3)), aes(x = x)) +
+  stat_function(fun = dnorm, 
+                geom = "line") +
+  stat_function(fun = dnorm,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(-1.96, 1.96))+ 
+  labs(title = "What bounds give us a central area of .95?", 
+       x = "Z", y = "")
+```
+
+We can see that the bounds are almost $\pm2$, but not quite. If the central area is .95, then the tail area is .05. The upper and lower tails are symmetric, so the upper tail area is .025. Thus, to find our critical value, we simply evaluate
+
+```{r}
+qnorm(.025, lower.tail = FALSE)
+```
+Let's use the same idea to find the critical values for some common confidence levels. 
+
+```{r}
+cvTable <- tibble( conf.level = c(.9, .95, .98, .99), 
+                   crit.val = qnorm( (1 - conf.level)/2, lower.tail =F))
+cvTable
+```
+
+With that taken care of, we can calculate confidence intervals for any proportion we want at any confidence level! In particular, an $\alpha$\% confidence level for a single proportion is 
+
+\[\hat{p} \pm z^\ast_\alpha \cdot \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}.  \]
+
+Note there that this really is the same formula as above just with the details of the **CLT** filled in. 
+
+Let's close this off with an example, recreating what we did in the last section to estimate the proportion of American adults without high school degrees. As a reminder, this is from the `gss2010` data set from the `openintro` package.
+
+The code chunk below goes through the calculation of a 95\% confidence interval for the proportion in question. 
+
+```{r}
+# components of CI
+pHat <- sum( gss2010$degree == "LT HIGH SCHOOL") / length(gss2010$degree)
+SE <- sqrt(pHat*(1-pHat)/length(gss2010$degree))
+zCrit <- qnorm( (1 - .95)/2, lower.tail = FALSE)
+# CI
+pHat + c(-1,1)*zCrit*SE
+```
+So with 95\% confidence, between 13.4\% and 16.5\% of all Americans in 2010 did not have a high school diploma. Compare this to the simulated example from the previous section: the confidence intervals are almost identical! You can think of this as the central limit theorem verifying simulations or simulations verifying the central limit theorem. In their case, it's cool!
+
+Next up, we'll learn how to perform hypothesis tests using theoretical sampling distributions. 
+
 #### Hypothesis testing
+
+Suppose you have a sample of $n$ observations and you'd like to perform a hypothesis test using this sample. Recall that you assume the null hypothesis is true when performing a hypothesis test.  Thus, in order to apply the Central Limit Theorem, we need to make sure our sample is sufficiently large *under the null hypothesis*. 
+
+More explicitly, suppose the null proportion is $p_0$. If 
+
+- your sample has $n$ independent observations and 
+
+- your sample has at least 10 *expected* success and failures, ie $n p_0 \geq 10$ and $n (1- p_0) \geq 10$
+
+then the distribution of sample proportions is approximately normal:
+
+\[ \hat{p} \sim N\left( \text{mean} = p_0 , SE = \sqrt{\frac{p_0(1-p_0)}{n}} \right). \]
+
+We can use use this sampling distribution to calculate $p$-values thus execute hypothesis tests. We will show how to do this first with the toy examples from the last section which demonstrate the three types of hypothesis tests then one last time using the familiar `gss2010` data. 
+
+For the next three examples, suppose we have a sample of $n = 200$ independent observations and a sample proportion of $\hat{p} = .55$. We will perform three hypothesis tests to see if our sample provides sufficient evidence to conclude that the true population proportion is greater than .5, less than .5, or different from .5 using a siginificance level of $\alpha = .05$.
+
+In all cases, note that $.5*200 = 100 \geq 10$, so the Central Limit Theorem applies. Furthermore
+
+\[ \hat{p} \sim N\left(\text{mean} = .5, SE = \sqrt{\frac{.5\cdot .5}{200}} \right)  \]
+
+1. **Two-sided hypothesis test:** Our hypothesis test is 
+
+
+    \[\begin{array}{cc}
+H_0: p = .5 \\
+H_a: p \neq .5
+\end{array}
+    \]
+
+    and the image below helps us visualize the $p$-value of our sample with $\hat{p} = .55$
+
+    ```{r, echo = F}
+#set mean and sd of normal sampling dist.
+args <- c(mean = .5, sd = sqrt(.5*.5/200))
+#plotting
+ggplot(data.frame(x = c(.4,.6)), aes(x = x)) +
+  stat_function(fun = dnorm, 
+                args = args, 
+                geom = "line") +
+  stat_function(fun = dnorm,
+                args = args,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(.4, .45))+ 
+  stat_function(fun = dnorm,
+                args = args,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(.55, .6)) + 
+  labs(title = "P-value of two-sided hypothesis test",
+       subtitle = "null prop. = .5, p_hat = .55, n = 200", 
+       x = "sample proprotion",
+         y = "")
+    ```
+
+    The upper and lower tails of the $p$-value are symmetric about the mean, so we can calculate one of them and double it. 
+    
+    ```{r}
+    pNull <- .5
+    SE <- sqrt(pNull*(1 - pNull)/200)
+    pHat <- .55
+    pVal <- 2*pnorm(.55, mean = pNull, sd = SE, lower.tail = F)
+    pVal
+    ```
+    
+    With a $p$-value of approximately .16 we fail to reject the null hypothesis. The data do not provide compelling evidence of a difference.
+    
+2. **One-Sided Upper Hypothesis test:** Our hypothesis test is 
+
+
+    \[\begin{array}{cc}
+H_0: p = .5 \\
+H_a: p > .5
+\end{array}
+    \]
+
+    and the image below helps us visualize the $p$-value of our sample with $\hat{p} = .55$
+
+    ```{r, echo = F}
+#set mean and sd of normal sampling dist.
+args <- c(mean = .5, sd = sqrt(.5*.5/200))
+#plotting
+ggplot(data.frame(x = c(.4,.6)), aes(x = x)) +
+  stat_function(fun = dnorm, 
+                args = args, 
+                geom = "line") +
+  stat_function(fun = dnorm,
+                args = args,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(.55, .6)) + 
+  labs(title = "P-value of one-sided upper hypothesis test",
+       subtitle = "null prop. = .5, p_hat = .55, n = 200", 
+       x = "sample proprotion",
+         y = "")
+    ```
+
+    The $p$-value is the shaded upper tail area and can be calculated as follows. 
+    
+    ```{r}
+    pNull <- .5
+    SE <- sqrt(pNull*(1 - pNull)/200)
+    pHat <- .55
+    pVal <- pnorm(.55, mean = pNull, sd = SE, lower.tail = F)
+    pVal
+    ```
+    
+    With a $p$-value of approximately .08 we fail to reject the null hypothesis at a significance level of $\alpha =.05$ . The data do not provide compelling evidence that the true proportion is greater than .5. 
+    
+3. **One-Sided Lower Hypothesis test:** Our hypothesis test is 
+
+
+    \[\begin{array}{cc}
+H_0: p = .5 \\
+H_a: p < .5
+\end{array}
+    \]
+
+    and the image below helps us visualize the $p$-value of our sample with $\hat{p} = .55$
+
+    ```{r, echo = F}
+#set mean and sd of normal sampling dist.
+args <- c(mean = .5, sd = sqrt(.5*.5/200))
+#plotting
+ggplot(data.frame(x = c(.4,.6)), aes(x = x)) +
+  stat_function(fun = dnorm, 
+                args = args, 
+                geom = "line") +
+  stat_function(fun = dnorm,
+                args = args,
+                geom = "area",
+                fill = "steelblue",
+                xlim = c(.4, .55)) + 
+  labs(title = "P-value of one-sided lower hypothesis test",
+       subtitle = "null prop. = .5, p_hat = .55, n = 200", 
+       x = "sample proprotion",
+         y = "")
+    ```
+
+    The $p$-value is the shaded llower tail area and can be calculated as follows. 
+    
+    ```{r}
+    pNull <- .5
+    SE <- sqrt(pNull*(1 - pNull)/200)
+    pHat <- .55
+    pVal <- pnorm(.55, mean = pNull, sd = SE)
+    pVal
+    ```
+    
+    No suprise here. With a $p$-value of approximately .92 we fail to reject the null hypothesis at a significance level of $\alpha =.05$ . The data do not provide compelling evidence that the true proportion is less than .5. 
+
+We close this section using the `gss2010` data to perform a hypothesis test to see if more than 10\% of Americans in 2010 did not have a high school diploma. Again we'll use a significance level of $\alpha = .05$. Recall the following sample size and statistic from earlier.
+
+```{r}
+n <- length(gss2010$degree)
+n
+pHat <- sum(gss2010$degree == "LT HIGH SCHOOL")/n
+pHat
+```
+
+We reformulate our question as a hypothesis test. 
+
+\[\begin{array}{cc}
+H_0: p = .1 \\
+H_a: p > .1
+\end{array}
+\]
+
+We assume the observations in the `gss2010` data set are independent. Before preceding with the hypothesis test, we need to make sure our sample size is sufficiently large so that we can use the Central Limit Theorem. 
+
+```{r}
+pNull <- .1
+# will return a logical, T/F 
+n*pNull >= 10 
+n*(1 - pNull) >= 10
+```
+
+Since the calculation above returned two `TRUE`'s we're good to go! The CLT implies.
+
+\[ \hat{p} \sim N \left(\text{mean} = .1, SE = \sqrt{\frac{.1\cdot.9}{2044}} \right)\]
+
+We are performing a one-sided upper hypothesis test, so our $p$-value is
+
+```{r}
+SE <- sqrt(pNull*(1- pNull)/n)
+pValue <- pnorm(pHat, mean = pNull, sd = SE, lower.tail = F)
+pValue 
+```
+Since $0 < .05 = \alpha$, we reject the null and accept the research. Our data provide sufficient evidence to believe that more than 10\% of Americans in 2010 did not have a high school diploma.  
+
+This $p$-value is the same as the one we calculated in the previous section! This is no surprise: you can either think of this example as a check on simulation techniques or as the simulation techniques as a check on the central limit theorem.
 
 ### Two sample proportion
 
-data set: openintro::burger
+We often want to compare the same measurement or parameter for two different populations. As usual, we almost never know any single population parameter, so the best we can do is take a sample from each population and compare the sample statistics. When analyzing a categorical variable, we end up comparing sample proportions to make inferences about population proportions. 
+
+To make this more precise, suppose you're investigating some proportion for two populations. 
+
+- Our population parameter of interest is \(p_1 - p2\)
+
+- Our sample statistic is \(\hat{p}_1- \hat{p}_2 \)
+
+To make an inference about the population parameter, we need to learn about the sampling distribution of \(\hat{p}_1- \hat{p}_2 \). Fortunately, if we can apply the central limit theorem for each sample individually, a version of the central limit theorem applies again! The formula for the standard error looks more complicated, but note that the variance of the sampling distrubtion for \(\hat{p}_1- \hat{p}_2 \) is just the sum of the variances for each each of the individual sampling distributions. 
+
+**CLT for two sample proportions**: Suppose you are analyzing the difference between two population proportions $p_1$ and $p_2$, take two samples of size $n_1$ and $n_2$ from each population respectively.  If 
+
+- the observations within each sample are independent from one another,
+
+- the observations between the samples are independent, and
+
+- each sample has at least ten expected or observed success and failures (ie \(n_ip_i \geq 10\) and \(n_i(1 - p_i) \geq 10\) for $i= 1,2$)
+
+Then the sampling distribution for \(\hat{p}_1- \hat{p}_2 \) is approximately normally distributed. In particular, 
+
+\[ \hat{p}_1- \hat{p}_2 \sim N\left( \text{mean} = p_1 - p_2 \text{ and } SE = \sqrt{\frac{p_1(1-p_1)}{n_1}+ \frac{p_2(1-p_2)}{n_2}} \right) \]
+
+The details on how we employ the CLT for two sample proportions changes depending on whether we'd like to calculate a confidence interval or perform a hypothesis test. As above, this difference arise because *always assume the null hypothesis is true* when performing a hypothesis test.  The following subsections highlight exactly what these differences entail, but, briefly, it only changes the standard error calculation. 
 
 #### Confidence intervals
 
+As a reminder, the general formula for a confidence interval is
+
+\[\text{point est.} \pm (\text{crit. val.})\cdot SE  \]
+
+so to calculate and interpret a confidence interval for two sample proportions, we simply need to figure out each of these three pieces.  We'll do so by example using the `cancer_in_dogs` data set from the `openintro` R package. 
+
+This data set is the result of a 1994 study from 1994 designed to determine if exposure to the herbicide herbicide 2,4-Dichlorophenoxyacetic acid (2,4-D) increases dogs' risk of developing cancer. Let's calculate a 95\% confidence interval estimating the difference in cancer rates between dogs exposed to the herbicide and those who are not. 
+
+There are 491 dogs in the data set who were exposed and 945 dogs that were not. The data set has two columns: `order` and `response`; the first indicates whether or not the dogs were exposed to the herbicide and the second indicates whether or not the dog developed cancer. Below we display 4 randomly selected rows from the dataset. 
+
+```{r}
+slice_sample(cancer_in_dogs, n = 4)
+```
+
+Let $p_1$ denote the true proportion of dogs who are exposed to the herbicide and develop cancer; let $p_2$ denote the proportion of dogs who are not exposed but still develop cancer. We need to determine our sample proportions $\hat{p}_1$ and $\hat{p}_2$. There are many ways to do this in R. A quick way is to use the `table(...)` function. Since the table only has two columns we can run the following to create a simple two-way table and store it in memory for future use. 
+
+```{r}
+sumTab <- table(cancer_in_dogs$response, cancer_in_dogs$order)
+sumTab %>% kable()
+```
+
+The columns in this two way table correspond to the samples of interest (ie the explanatory variable) and the rows the response variable. Thus, the denominator of our sample proportions will be the column sums and the numerators will be the entries in the `cancer` row. 
+
+```{r}
+n1 <- sum(sumTab[,1])
+n2 <- sum(sumTab[,2])
+pHat1 <- sumTab[1,1] / n1
+pHat2 <- sumTab[1,2] / n2 
+c(pHat1, pHat2)
+```
+
+When we calculate a confidence interval for two sample proportions, we're estimating the *difference between the two proportions*, so our point estimate is
+
+```{r}
+pDiff <- pHat1 - pHat2
+pDiff
+```
+
+This means that roughly `r round(pDiff,3)*100`\% *more* dogs exposed to the herbicide developed cancer in the sample data. Before we calculate a confidence interval, we need to make sure our samples meet the conditions needed to apply to Central Limit theorem. 
+
+- Independence within samples and between samples. The study employed random sampling for both groups and each sample size is less than 10\% of its corresponding population. Moreover, the samples were taken independently of one another. We're thus good to go here.
+
+- Sample size requirements. From the two-way table `sumTab` above we see that we have more than 10 successes (cancer) and failures (no cancer) in each group of dogs. Good to go here too!
+
+The CLT applies, so the sampling distribution of $\hat{p}_1 - \hat{p}_2$ is approximately normally distributed. Moreover, the standard error is 
+
+\[ SE \approx \sqrt{\frac{\hat{p}_1(1-\hat{p}_1)}{n_1}+ \frac{\hat{p}_2(1-\hat{p}_2)}{n_2}} \]
+
+which we can now easily calculate! 
+
+```{r}
+SE <- sqrt(pHat1*(1- pHat1)/n1 +  pHat2*(1- pHat2)/n2)
+SE
+```
+
+This means that if we repeated the study over and over we should expect about changes of about 2.7\% between the various differences in sample proportions. We're finally ready to calculate our confidence interval!  Since the sampling distribution is approximately normal, our the critical value for our 95\% confidence interval is
+```{r}
+zCrit <- qnorm( (1-.95)/2, lower.tail = F)
+```
+
+and our confidence interval is
+
+```{r}
+ciDiff <- pDiff + c(-1, 1)*zCrit*SE
+ciDiff
+```
+
+How should we interpret this confidence interval? Remember, we're estimating the difference in cancer rates between dogs who were exposed to the herbicide and those who were not. Thus:
+
+With 95\% confidence, the cancer rate of dogs who are exposed to 2,4-Dichlorophenoxyacetic acid is between `r round(ciDiff[1], 3)*100`\% and `r round(ciDiff[2], 3)*100`\% *higher* than dogs who were not exposed to the herbicide. 
+
+The next section will go through hypothesis testing using the same data. 
+
 #### Hypothesis testing
+
+
 
 ### Chi-squared goodness of fit test
 

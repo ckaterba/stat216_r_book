@@ -205,7 +205,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.2.2" data-path="distribution-calculations.html"><a href="distribution-calculations.html#continuous-random-variables"><i class="fa fa-check"></i><b>5.2.2</b> Continuous random variables</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html"><i class="fa fa-check"></i><b>6</b> Inferential statistics, take 1</a>
+<li class="chapter" data-level="6" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html"><i class="fa fa-check"></i><b>6</b> Inferential statistics: Take 1</a>
 <ul>
 <li class="chapter" data-level="6.1" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html#basics-of-statistical-inference"><i class="fa fa-check"></i><b>6.1</b> Basics of statistical inference</a>
 <ul>
@@ -232,8 +232,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="7.1" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#analyzing-categorical-variables-1"><i class="fa fa-check"></i><b>7.1</b> Analyzing categorical variables</a>
 <ul>
-<li class="chapter" data-level="7.1.1" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#single-sample"><i class="fa fa-check"></i><b>7.1.1</b> Single sample</a></li>
-<li class="chapter" data-level="7.1.2" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#two-sample"><i class="fa fa-check"></i><b>7.1.2</b> Two sample</a></li>
+<li class="chapter" data-level="7.1.1" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#single-sample-proportions"><i class="fa fa-check"></i><b>7.1.1</b> Single sample proportions</a></li>
+<li class="chapter" data-level="7.1.2" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#two-sample-proportions"><i class="fa fa-check"></i><b>7.1.2</b> Two sample proportions</a></li>
 <li class="chapter" data-level="7.1.3" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#chi-squared-goodness-of-fit-test-1"><i class="fa fa-check"></i><b>7.1.3</b> Chi-squared goodness of fit test</a></li>
 <li class="chapter" data-level="7.1.4" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#chi-squared-test-of-independence-1"><i class="fa fa-check"></i><b>7.1.4</b> Chi-squared test of independence</a></li>
 </ul></li>
@@ -274,14 +274,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="inferential-statistics-take-2" class="section level1 hasAnchor" number="7">
 <h1><span class="header-section-number">Chapter 7</span> Inferential statistics, take 2<a href="inferential-statistics-take-2.html#inferential-statistics-take-2" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>TO DO: hypothesis testing and confidence intervals using in-built functions in R.</p>
+<p>This chapter will show you how to calculate confidence intervals and perform hypothesis tests using R’s in-built hypothesis testing functions. We will quickly go over the same examples from the previous sections using R’s functions to recover the values we calculated earlier.</p>
 <div id="analyzing-categorical-variables-1" class="section level2 hasAnchor" number="7.1">
 <h2><span class="header-section-number">7.1</span> Analyzing categorical variables<a href="inferential-statistics-take-2.html#analyzing-categorical-variables-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div id="single-sample" class="section level3 hasAnchor" number="7.1.1">
-<h3><span class="header-section-number">7.1.1</span> Single sample<a href="inferential-statistics-take-2.html#single-sample" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="single-sample-proportions" class="section level3 hasAnchor" number="7.1.1">
+<h3><span class="header-section-number">7.1.1</span> Single sample proportions<a href="inferential-statistics-take-2.html#single-sample-proportions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The main function we will use in this section is <code>prop.test(...)</code>; it both calculates confidence intervals <em>and</em> performs hypothesis tests all in one fell swoop! The important thing for us, then, is being able to read and interpret the outputs.</p>
 </div>
-<div id="two-sample" class="section level3 hasAnchor" number="7.1.2">
-<h3><span class="header-section-number">7.1.2</span> Two sample<a href="inferential-statistics-take-2.html#two-sample" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="two-sample-proportions" class="section level3 hasAnchor" number="7.1.2">
+<h3><span class="header-section-number">7.1.2</span> Two sample proportions<a href="inferential-statistics-take-2.html#two-sample-proportions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The main function we will use in this section is again <code>prop.test(...)</code>; it’s a workhorse!</p>
 </div>
 <div id="chi-squared-goodness-of-fit-test-1" class="section level3 hasAnchor" number="7.1.3">
 <h3><span class="header-section-number">7.1.3</span> Chi-squared goodness of fit test<a href="inferential-statistics-take-2.html#chi-squared-goodness-of-fit-test-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>

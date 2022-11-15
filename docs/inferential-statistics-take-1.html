@@ -4,13 +4,13 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 6 Inferential statistics, take 1 | R and RStudio for STAT216</title>
+  <title>Chapter 6 Inferential statistics: Take 1 | R and RStudio for STAT216</title>
   <meta name="description" content="<p>This is a minimal example of using the bookdown package to write a book.
 The HTML output format for this example is bookdown::gitbook,
 set in the _output.yml file.</p>" />
   <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 6 Inferential statistics, take 1 | R and RStudio for STAT216" />
+  <meta property="og:title" content="Chapter 6 Inferential statistics: Take 1 | R and RStudio for STAT216" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="<p>This is a minimal example of using the bookdown package to write a book.
@@ -19,7 +19,7 @@ set in the _output.yml file.</p>" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 6 Inferential statistics, take 1 | R and RStudio for STAT216" />
+  <meta name="twitter:title" content="Chapter 6 Inferential statistics: Take 1 | R and RStudio for STAT216" />
   
   <meta name="twitter:description" content="<p>This is a minimal example of using the bookdown package to write a book.
 The HTML output format for this example is bookdown::gitbook,
@@ -205,7 +205,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.2.2" data-path="distribution-calculations.html"><a href="distribution-calculations.html#continuous-random-variables"><i class="fa fa-check"></i><b>5.2.2</b> Continuous random variables</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html"><i class="fa fa-check"></i><b>6</b> Inferential statistics, take 1</a>
+<li class="chapter" data-level="6" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html"><i class="fa fa-check"></i><b>6</b> Inferential statistics: Take 1</a>
 <ul>
 <li class="chapter" data-level="6.1" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html#basics-of-statistical-inference"><i class="fa fa-check"></i><b>6.1</b> Basics of statistical inference</a>
 <ul>
@@ -232,8 +232,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="7.1" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#analyzing-categorical-variables-1"><i class="fa fa-check"></i><b>7.1</b> Analyzing categorical variables</a>
 <ul>
-<li class="chapter" data-level="7.1.1" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#single-sample"><i class="fa fa-check"></i><b>7.1.1</b> Single sample</a></li>
-<li class="chapter" data-level="7.1.2" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#two-sample"><i class="fa fa-check"></i><b>7.1.2</b> Two sample</a></li>
+<li class="chapter" data-level="7.1.1" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#single-sample-proportions"><i class="fa fa-check"></i><b>7.1.1</b> Single sample proportions</a></li>
+<li class="chapter" data-level="7.1.2" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#two-sample-proportions"><i class="fa fa-check"></i><b>7.1.2</b> Two sample proportions</a></li>
 <li class="chapter" data-level="7.1.3" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#chi-squared-goodness-of-fit-test-1"><i class="fa fa-check"></i><b>7.1.3</b> Chi-squared goodness of fit test</a></li>
 <li class="chapter" data-level="7.1.4" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#chi-squared-test-of-independence-1"><i class="fa fa-check"></i><b>7.1.4</b> Chi-squared test of independence</a></li>
 </ul></li>
@@ -273,7 +273,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="inferential-statistics-take-1" class="section level1 hasAnchor" number="6">
-<h1><span class="header-section-number">Chapter 6</span> Inferential statistics, take 1<a href="inferential-statistics-take-1.html#inferential-statistics-take-1" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<h1><span class="header-section-number">Chapter 6</span> Inferential statistics: Take 1<a href="inferential-statistics-take-1.html#inferential-statistics-take-1" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>This chapter and the next are going to introduce inferential statistics in R, but from two different perspectives. This chapter will focus on doing all of the calculations involved in statistical inference “by hand” (where here we really mean using R to implement the formulas/ideas). The next chapter will show you how to perform many of the same calculations using functions native to R. It is valuable knowing how to do both so that you can check one or the other or possibly write your own type of statistical test one day!</p>
 <p>Both chapters will be organized according to the type of variables we will be analyzing. So, for example, we’ll start with statistical inference for a single categorical variable. One can (and probably should) read the “by hand” section of this chapter in tandem with the corresponding native function section of the next chapter. This chapter will include a brief summary of the ideas involved in statistical inference, but the next will just go straight into the details.</p>
 <p>The code chunk below attaches all packages we’ll use in this chapter and sets a <em>seed</em> which basically determines a starting point for some of the randomization we’ll employ in the chapter. Setting a seed insures that the same random samples will be drawn every time the code is run.</p>
@@ -333,7 +333,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb336-3"><a href="inferential-statistics-take-1.html#cb336-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Distribution of sample proportions, n = 2044&quot;</span>, </span>
 <span id="cb336-4"><a href="inferential-statistics-take-1.html#cb336-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Estimating SE for 2010 proportion of Americans without a HS diploma&quot;</span>,</span>
 <span id="cb336-5"><a href="inferential-statistics-take-1.html#cb336-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Sample proportion, p-hat&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-188-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-155-1.png" width="672" /></p>
 <p>Voila! Our sampling distribution does seem to be symmetric and unimodal. Where precisely is the center?</p>
 <div class="sourceCode" id="cb337"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb337-1"><a href="inferential-statistics-take-1.html#cb337-1" aria-hidden="true" tabindex="-1"></a><span class="co">#average sample proportion</span></span>
 <span id="cb337-2"><a href="inferential-statistics-take-1.html#cb337-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(simulated_sampling_distr<span class="sc">$</span>p_hat)</span></code></pre></div>
@@ -367,7 +367,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb343-3"><a href="inferential-statistics-take-1.html#cb343-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Distribution of sample proportions, n = 100&quot;</span>, </span>
 <span id="cb343-4"><a href="inferential-statistics-take-1.html#cb343-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Estimating SE for 2010 proportion of Americans without a HS diploma&quot;</span>,</span>
 <span id="cb343-5"><a href="inferential-statistics-take-1.html#cb343-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Sample proportion, p-hat&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-192-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-159-1.png" width="672" /></p>
 <p>Notice that the center is about the same as our first sampling distribution, but our second is more spread out as we claimed above! To check these claims, let’s look at the average sample proportion and the estimated standard error.</p>
 <div class="sourceCode" id="cb344"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb344-1"><a href="inferential-statistics-take-1.html#cb344-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(sampling_dist2<span class="sc">$</span>p_hat)</span></code></pre></div>
 <pre><code>## [1] 0.14884</code></pre>
@@ -383,7 +383,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>the <strong>confidence level</strong>: a measure of the likelihood that our interval contains to true population parameter. Typical confidence levels are 90%, 95%, and 99%.</p></li>
 <li><p>the <strong>standard error</strong>: the standard deviation of the sampling distribution.</p></li>
 </ul>
-<p>Your confidence level determines a <em>critical value</em> <span class="math inline">\(CV\)</span>. If your confidence level is <span class="math inline">\(CL\)</span>, then <span class="math inline">\(CL\)</span>% of all sample proportions will fall without <span class="math inline">\(CV\)</span> standard deviations of the true population parameter within the sampling distribution. Thus, as your confidence level increase, the critical value increases, and so your confidence interval ends up getting wider. This makes sense: to be more confident in your estimate, your range of plausible values better be “larger.”</p>
+<p>Your confidence level determines a <em>critical value</em> <span class="math inline">\(CV\)</span>. If your confidence level is <span class="math inline">\(CL\)</span>, then <span class="math inline">\(CL\)</span>% of all sample proportions will fall within <span class="math inline">\(CV\)</span> standard deviations of the true population parameter within the sampling distribution. Thus, as your confidence level increase, the critical value increases, and so your confidence interval ends up getting wider. This makes sense: to be more confident in your estimate, your range of plausible values better be “larger.”</p>
 <p>Now we can describe the general formula for confidence intervals:</p>
 <p><span class="math display">\[ \text{point estimate} \pm CV \cdot SE\]</span></p>
 <p>In the sections to come, the details of your point estimates along with the procedure to calculate the standard error and critical value will change, but the general formula for a confidence interval is always the same. With this in mind, it becomes much more important to be able to correctly interpret confidence intervals. Before closing out this section, let’s use our simulated sampling distribution from the previous section to estimate the proportion of Americans without a high school diploma in 2010. In particular, we’ll calculate a 95% confidence interval.</p>
@@ -428,72 +428,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span class="math display">\[ H_a: p \neq .5  \]</span></li>
 </ol>
 <p>Samples that are at least as favorable for <span class="math inline">\(H_a\)</span> as our own come in two flavors: samples with a proportion of at least .55 and those with a proportion of <em>at most</em> .45. Notice that the samples with proportions of at most .45 really are just as favorable as those with proportions of at least .55 when we’re checking for a difference because they are equally as far away from the null proportion of .5. Thus, the <span class="math inline">\(p\)</span>-value of a two-sided hypothesis tests will be a two-tailed probability. The plot below helps visualize this <span class="math inline">\(p\)</span>-value as an area in the sampling distribution. We have hidden the plotting code here to prioritize the concepts.</p>
-<div class="sourceCode" id="cb354"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb354-1"><a href="inferential-statistics-take-1.html#cb354-1" aria-hidden="true" tabindex="-1"></a><span class="co">#set mean and sd of normal sampling dist.</span></span>
-<span id="cb354-2"><a href="inferential-statistics-take-1.html#cb354-2" aria-hidden="true" tabindex="-1"></a>args <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">mean =</span> .<span class="dv">5</span>, <span class="at">sd =</span> <span class="fu">sqrt</span>(.<span class="dv">5</span><span class="sc">*</span>.<span class="dv">5</span><span class="sc">/</span><span class="dv">200</span>))</span>
-<span id="cb354-3"><a href="inferential-statistics-take-1.html#cb354-3" aria-hidden="true" tabindex="-1"></a><span class="co">#plotting</span></span>
-<span id="cb354-4"><a href="inferential-statistics-take-1.html#cb354-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">c</span>(.<span class="dv">4</span>,.<span class="dv">6</span>)), <span class="fu">aes</span>(<span class="at">x =</span> x)) <span class="sc">+</span></span>
-<span id="cb354-5"><a href="inferential-statistics-take-1.html#cb354-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dnorm, </span>
-<span id="cb354-6"><a href="inferential-statistics-take-1.html#cb354-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">args =</span> args, </span>
-<span id="cb354-7"><a href="inferential-statistics-take-1.html#cb354-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">geom =</span> <span class="st">&quot;line&quot;</span>) <span class="sc">+</span></span>
-<span id="cb354-8"><a href="inferential-statistics-take-1.html#cb354-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dnorm,</span>
-<span id="cb354-9"><a href="inferential-statistics-take-1.html#cb354-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">args =</span> args,</span>
-<span id="cb354-10"><a href="inferential-statistics-take-1.html#cb354-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">geom =</span> <span class="st">&quot;area&quot;</span>,</span>
-<span id="cb354-11"><a href="inferential-statistics-take-1.html#cb354-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">fill =</span> <span class="st">&quot;steelblue&quot;</span>,</span>
-<span id="cb354-12"><a href="inferential-statistics-take-1.html#cb354-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">xlim =</span> <span class="fu">c</span>(.<span class="dv">4</span>, .<span class="dv">45</span>))<span class="sc">+</span> </span>
-<span id="cb354-13"><a href="inferential-statistics-take-1.html#cb354-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dnorm,</span>
-<span id="cb354-14"><a href="inferential-statistics-take-1.html#cb354-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">args =</span> args,</span>
-<span id="cb354-15"><a href="inferential-statistics-take-1.html#cb354-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">geom =</span> <span class="st">&quot;area&quot;</span>,</span>
-<span id="cb354-16"><a href="inferential-statistics-take-1.html#cb354-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">fill =</span> <span class="st">&quot;steelblue&quot;</span>,</span>
-<span id="cb354-17"><a href="inferential-statistics-take-1.html#cb354-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">xlim =</span> <span class="fu">c</span>(.<span class="dv">55</span>, .<span class="dv">6</span>)) <span class="sc">+</span> </span>
-<span id="cb354-18"><a href="inferential-statistics-take-1.html#cb354-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;P-value of two-sided hypothesis test&quot;</span>,</span>
-<span id="cb354-19"><a href="inferential-statistics-take-1.html#cb354-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;null prop. = .5, p_hat = .55, n = 200&quot;</span>, </span>
-<span id="cb354-20"><a href="inferential-statistics-take-1.html#cb354-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;sample proprotion&quot;</span>,</span>
-<span id="cb354-21"><a href="inferential-statistics-take-1.html#cb354-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-196-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-163-1.png" width="672" /></p>
 <ol start="2" style="list-style-type: decimal">
 <li><strong>One-sided upper hypothesis test</strong>: In this case, we’re simply checking to see if the population parameter is greater than the null value. For our example:</li>
 </ol>
 <p><span class="math display">\[ H_a: p &gt; .5  \]</span></p>
 <p>Samples that are at least as favorable for <span class="math inline">\(H_a\)</span> as our own only one flavor this time: samples with a proportion of at least .55. Thus the <span class="math inline">\(p\)</span>-value for this hypothesis test is an upper-tail area. The plot below helps us visualize this.</p>
-<div class="sourceCode" id="cb355"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb355-1"><a href="inferential-statistics-take-1.html#cb355-1" aria-hidden="true" tabindex="-1"></a><span class="co">#set mean and sd of normal sampling dist.</span></span>
-<span id="cb355-2"><a href="inferential-statistics-take-1.html#cb355-2" aria-hidden="true" tabindex="-1"></a>args <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">mean =</span> .<span class="dv">5</span>, <span class="at">sd =</span> <span class="fu">sqrt</span>(.<span class="dv">5</span><span class="sc">*</span>.<span class="dv">5</span><span class="sc">/</span><span class="dv">200</span>))</span>
-<span id="cb355-3"><a href="inferential-statistics-take-1.html#cb355-3" aria-hidden="true" tabindex="-1"></a><span class="co">#plotting</span></span>
-<span id="cb355-4"><a href="inferential-statistics-take-1.html#cb355-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">c</span>(.<span class="dv">4</span>,.<span class="dv">6</span>)), <span class="fu">aes</span>(<span class="at">x =</span> x)) <span class="sc">+</span></span>
-<span id="cb355-5"><a href="inferential-statistics-take-1.html#cb355-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dnorm, </span>
-<span id="cb355-6"><a href="inferential-statistics-take-1.html#cb355-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">args =</span> args, </span>
-<span id="cb355-7"><a href="inferential-statistics-take-1.html#cb355-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">geom =</span> <span class="st">&quot;line&quot;</span>) <span class="sc">+</span></span>
-<span id="cb355-8"><a href="inferential-statistics-take-1.html#cb355-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dnorm,</span>
-<span id="cb355-9"><a href="inferential-statistics-take-1.html#cb355-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">args =</span> args,</span>
-<span id="cb355-10"><a href="inferential-statistics-take-1.html#cb355-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">geom =</span> <span class="st">&quot;area&quot;</span>,</span>
-<span id="cb355-11"><a href="inferential-statistics-take-1.html#cb355-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">fill =</span> <span class="st">&quot;steelblue&quot;</span>,</span>
-<span id="cb355-12"><a href="inferential-statistics-take-1.html#cb355-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">xlim =</span> <span class="fu">c</span>(.<span class="dv">55</span>, .<span class="dv">6</span>)) <span class="sc">+</span> </span>
-<span id="cb355-13"><a href="inferential-statistics-take-1.html#cb355-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;P-value of one-sided upper hypothesis test&quot;</span>,</span>
-<span id="cb355-14"><a href="inferential-statistics-take-1.html#cb355-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;null prop. = .5, p_hat = .55, n = 200&quot;</span>, </span>
-<span id="cb355-15"><a href="inferential-statistics-take-1.html#cb355-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;sample proprotion&quot;</span>,</span>
-<span id="cb355-16"><a href="inferential-statistics-take-1.html#cb355-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-197-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-164-1.png" width="672" /></p>
 <ol start="3" style="list-style-type: decimal">
 <li><strong>One-sided lower hypothesis test</strong>: In this case, we’re simply checking to see if the population parameter is less than the null value. For our example:</li>
 </ol>
 <p><span class="math display">\[ H_a: p &gt; .5  \]</span></p>
 <p>Samples that are at least as favorable for <span class="math inline">\(H_a\)</span> as our own only one flavor: samples with a proportion of at most .55. Thus the <span class="math inline">\(p\)</span>-value for this hypothesis test is a lower-tail area in the sampling distribution. The plot below helps us visualize this.</p>
-<div class="sourceCode" id="cb356"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb356-1"><a href="inferential-statistics-take-1.html#cb356-1" aria-hidden="true" tabindex="-1"></a><span class="co">#set mean and sd of normal sampling dist.</span></span>
-<span id="cb356-2"><a href="inferential-statistics-take-1.html#cb356-2" aria-hidden="true" tabindex="-1"></a>args <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">mean =</span> .<span class="dv">5</span>, <span class="at">sd =</span> <span class="fu">sqrt</span>(.<span class="dv">5</span><span class="sc">*</span>.<span class="dv">5</span><span class="sc">/</span><span class="dv">200</span>))</span>
-<span id="cb356-3"><a href="inferential-statistics-take-1.html#cb356-3" aria-hidden="true" tabindex="-1"></a><span class="co">#plotting</span></span>
-<span id="cb356-4"><a href="inferential-statistics-take-1.html#cb356-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">c</span>(.<span class="dv">4</span>,.<span class="dv">6</span>)), <span class="fu">aes</span>(<span class="at">x =</span> x)) <span class="sc">+</span></span>
-<span id="cb356-5"><a href="inferential-statistics-take-1.html#cb356-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dnorm, </span>
-<span id="cb356-6"><a href="inferential-statistics-take-1.html#cb356-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">args =</span> args, </span>
-<span id="cb356-7"><a href="inferential-statistics-take-1.html#cb356-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">geom =</span> <span class="st">&quot;line&quot;</span>) <span class="sc">+</span></span>
-<span id="cb356-8"><a href="inferential-statistics-take-1.html#cb356-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dnorm,</span>
-<span id="cb356-9"><a href="inferential-statistics-take-1.html#cb356-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">args =</span> args,</span>
-<span id="cb356-10"><a href="inferential-statistics-take-1.html#cb356-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">geom =</span> <span class="st">&quot;area&quot;</span>,</span>
-<span id="cb356-11"><a href="inferential-statistics-take-1.html#cb356-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">fill =</span> <span class="st">&quot;steelblue&quot;</span>,</span>
-<span id="cb356-12"><a href="inferential-statistics-take-1.html#cb356-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">xlim =</span> <span class="fu">c</span>(.<span class="dv">4</span>, .<span class="dv">55</span>)) <span class="sc">+</span> </span>
-<span id="cb356-13"><a href="inferential-statistics-take-1.html#cb356-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;P-value of one-sided lower hypothesis test&quot;</span>,</span>
-<span id="cb356-14"><a href="inferential-statistics-take-1.html#cb356-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;null prop. = .5, p_hat = .55, n = 200&quot;</span>, </span>
-<span id="cb356-15"><a href="inferential-statistics-take-1.html#cb356-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;sample proprotion&quot;</span>,</span>
-<span id="cb356-16"><a href="inferential-statistics-take-1.html#cb356-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-198-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-165-1.png" width="672" /></p>
 <p>Our <span class="math inline">\(p\)</span>-value is large because our sample proportion is above the null value when we thought it was going to be below. We should revise our alternative hypothesis in this case.</p>
 <p>Let’s finish this section using the high school diploma question we started this chapter with. In particular, in 2010 did more than 10% of Americans fail to graduate high school? As a hypothesis test:</p>
 <ul>
@@ -502,51 +449,277 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p>Let’s set our significance level to <span class="math inline">\(\alpha .05\)</span>. To evaluate the hypothesis test need to calculate a <span class="math inline">\(p\)</span>-value. To accomplish this, we need to be able to assess the likelihood of our sample assuming the null hypothesis is true. Here we’re still using the <code>gss2010</code> data for our sample; recall the recall the sample proportion is <span class="math inline">\(\hat{p} \approx 0.149\)</span> and the sample size is <span class="math inline">\(n = 2044\)</span>.</p>
 <p>In the next section we’ll learn some theory that describes the sampling distribution, but we will simulate a sampling distribution under the null hypothesis.</p>
-<div class="sourceCode" id="cb357"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb357-1"><a href="inferential-statistics-take-1.html#cb357-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generates results from 5000 binomial experiments w/ probability of </span></span>
-<span id="cb357-2"><a href="inferential-statistics-take-1.html#cb357-2" aria-hidden="true" tabindex="-1"></a><span class="co"># success = .1 and sample size of n = 2044, returns sample proportion. </span></span>
-<span id="cb357-3"><a href="inferential-statistics-take-1.html#cb357-3" aria-hidden="true" tabindex="-1"></a>null_dist <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">p_hat =</span> <span class="fu">rbinom</span>(<span class="dv">5000</span>, <span class="dv">2044</span>, .<span class="dv">1</span>)<span class="sc">/</span><span class="dv">2044</span>)</span>
-<span id="cb357-4"><a href="inferential-statistics-take-1.html#cb357-4" aria-hidden="true" tabindex="-1"></a><span class="co"># center of distribution</span></span>
-<span id="cb357-5"><a href="inferential-statistics-take-1.html#cb357-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(null_dist<span class="sc">$</span>p_hat)</span></code></pre></div>
+<div class="sourceCode" id="cb354"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb354-1"><a href="inferential-statistics-take-1.html#cb354-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generates results from 5000 binomial experiments w/ probability of </span></span>
+<span id="cb354-2"><a href="inferential-statistics-take-1.html#cb354-2" aria-hidden="true" tabindex="-1"></a><span class="co"># success = .1 and sample size of n = 2044, returns sample proportion. </span></span>
+<span id="cb354-3"><a href="inferential-statistics-take-1.html#cb354-3" aria-hidden="true" tabindex="-1"></a>null_dist <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">p_hat =</span> <span class="fu">rbinom</span>(<span class="dv">5000</span>, <span class="dv">2044</span>, .<span class="dv">1</span>)<span class="sc">/</span><span class="dv">2044</span>)</span>
+<span id="cb354-4"><a href="inferential-statistics-take-1.html#cb354-4" aria-hidden="true" tabindex="-1"></a><span class="co"># center of distribution</span></span>
+<span id="cb354-5"><a href="inferential-statistics-take-1.html#cb354-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(null_dist<span class="sc">$</span>p_hat)</span></code></pre></div>
 <pre><code>## [1] 0.1000021</code></pre>
-<div class="sourceCode" id="cb359"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb359-1"><a href="inferential-statistics-take-1.html#cb359-1" aria-hidden="true" tabindex="-1"></a><span class="co"># standard error</span></span>
-<span id="cb359-2"><a href="inferential-statistics-take-1.html#cb359-2" aria-hidden="true" tabindex="-1"></a>SE <span class="ot">&lt;-</span> <span class="fu">sd</span>(null_dist<span class="sc">$</span>p_hat)</span>
-<span id="cb359-3"><a href="inferential-statistics-take-1.html#cb359-3" aria-hidden="true" tabindex="-1"></a>SE</span></code></pre></div>
+<div class="sourceCode" id="cb356"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb356-1"><a href="inferential-statistics-take-1.html#cb356-1" aria-hidden="true" tabindex="-1"></a><span class="co"># standard error</span></span>
+<span id="cb356-2"><a href="inferential-statistics-take-1.html#cb356-2" aria-hidden="true" tabindex="-1"></a>SE <span class="ot">&lt;-</span> <span class="fu">sd</span>(null_dist<span class="sc">$</span>p_hat)</span>
+<span id="cb356-3"><a href="inferential-statistics-take-1.html#cb356-3" aria-hidden="true" tabindex="-1"></a>SE</span></code></pre></div>
 <pre><code>## [1] 0.006583714</code></pre>
 <p>Let’s visualize the null distribution and our sample proportion <span class="math inline">\(\hat{p}\)</span>’s location in the nul distribution.</p>
-<div class="sourceCode" id="cb361"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb361-1"><a href="inferential-statistics-take-1.html#cb361-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(null_dist, <span class="fu">aes</span>(<span class="at">x =</span> p_hat)) <span class="sc">+</span> </span>
-<span id="cb361-2"><a href="inferential-statistics-take-1.html#cb361-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">15</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;steelblue&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb361-3"><a href="inferential-statistics-take-1.html#cb361-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> pHat, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
-<span id="cb361-4"><a href="inferential-statistics-take-1.html#cb361-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Null distribution with p = .1 and n = 2044, pHat .149&quot;</span>, </span>
-<span id="cb361-5"><a href="inferential-statistics-take-1.html#cb361-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Sample proportion, p-hat&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-200-1.png" width="672" /></p>
+<div class="sourceCode" id="cb358"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb358-1"><a href="inferential-statistics-take-1.html#cb358-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(null_dist, <span class="fu">aes</span>(<span class="at">x =</span> p_hat)) <span class="sc">+</span> </span>
+<span id="cb358-2"><a href="inferential-statistics-take-1.html#cb358-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">15</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;steelblue&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb358-3"><a href="inferential-statistics-take-1.html#cb358-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> pHat, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb358-4"><a href="inferential-statistics-take-1.html#cb358-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Null distribution with p = .1 and n = 2044, pHat = .149&quot;</span>, </span>
+<span id="cb358-5"><a href="inferential-statistics-take-1.html#cb358-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Sample proportion, p-hat&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-167-1.png" width="672" /></p>
 <p>As we’d expect the null sampling distribution is approximately normal. The plot above indicates that our sample proportion <span class="math inline">\(\hat{p}\)</span> would be quite unlikely if the null hypothesis were true. To estimate exactly how unlikely, let’s <em>estimate</em> the <span class="math inline">\(p\)</span>-value of our sample.</p>
-<div class="sourceCode" id="cb362"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb362-1"><a href="inferential-statistics-take-1.html#cb362-1" aria-hidden="true" tabindex="-1"></a><span class="co"># count the number of simulated samples with proportions at least as large as </span></span>
-<span id="cb362-2"><a href="inferential-statistics-take-1.html#cb362-2" aria-hidden="true" tabindex="-1"></a><span class="co"># our actual sample proportion, divide by number of samples in simulated dist.</span></span>
-<span id="cb362-3"><a href="inferential-statistics-take-1.html#cb362-3" aria-hidden="true" tabindex="-1"></a>pValue <span class="ot">&lt;-</span> <span class="fu">sum</span>(null_dist<span class="sc">$</span>p_hat <span class="sc">&gt;=</span> pHat ) <span class="sc">/</span> <span class="fu">length</span>(null_dist<span class="sc">$</span>p_hat)</span>
-<span id="cb362-4"><a href="inferential-statistics-take-1.html#cb362-4" aria-hidden="true" tabindex="-1"></a>pValue</span></code></pre></div>
+<div class="sourceCode" id="cb359"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb359-1"><a href="inferential-statistics-take-1.html#cb359-1" aria-hidden="true" tabindex="-1"></a><span class="co"># count the number of simulated samples with proportions at least as large as </span></span>
+<span id="cb359-2"><a href="inferential-statistics-take-1.html#cb359-2" aria-hidden="true" tabindex="-1"></a><span class="co"># our actual sample proportion, divide by number of samples in simulated dist.</span></span>
+<span id="cb359-3"><a href="inferential-statistics-take-1.html#cb359-3" aria-hidden="true" tabindex="-1"></a>pValue <span class="ot">&lt;-</span> <span class="fu">sum</span>(null_dist<span class="sc">$</span>p_hat <span class="sc">&gt;=</span> pHat ) <span class="sc">/</span> <span class="fu">length</span>(null_dist<span class="sc">$</span>p_hat)</span>
+<span id="cb359-4"><a href="inferential-statistics-take-1.html#cb359-4" aria-hidden="true" tabindex="-1"></a>pValue</span></code></pre></div>
 <pre><code>## [1] 0</code></pre>
 <p>This means that if 10% of Americans didn’t have high school diplomas in 2010, the probability of finding a sample of 2044 Americans of which 14.9% or more do not have a high school diploma is essentially 0.</p>
 <p>Because our <span class="math inline">\(p\)</span>-value is less than the significance level <span class="math inline">\(\alpha = .05\)</span>, we reject the null hypothesis and accept the alternative. In other words, our data provide compelling evidence to believe that more than 10% of Americans in 2010 did not have a high school diploma.</p>
-<p>We finish this section by noting that we spent a lot of time on this example and a lot of time/space on explanation here. Once you get the hang of this, you will perform and interpret hypothesis tests quickly and efficiently. Moreover, most of what we’ll do in this class will <em>not</em> require simulating sampling distribtions. For more on this, read on!</p>
+<p>We finish this section by noting that we spent a lot of time on this example and a lot of time/space on explanation here. Once you get the hang of this, you will perform and interpret hypothesis tests quickly and efficiently. Moreover, most of what we’ll do in this class will <em>not</em> require simulating sampling distributions. For more on this, read on!</p>
 </div>
 </div>
 <div id="analyzing-categorical-variables" class="section level2 hasAnchor" number="6.2">
 <h2><span class="header-section-number">6.2</span> Analyzing categorical variables<a href="inferential-statistics-take-1.html#analyzing-categorical-variables" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Now we will move in to using theoretical sampling distributions to calculate confidence intervals and perform hypothesis tests.</p>
+<p>Now we will move in to using theoretical sampling distributions to calculate confidence intervals and perform hypothesis tests. The key almost all of the theoretical sampling distributions is the <strong>central limit theorem</strong>, which states that, if you have a large enough sample of independent observations, the sampling distribution will be approximately normal. Moreover, the standard error decreases as your sample size increase. In the following sections we will see a few different incarnations of the central limit theorem; the big picture will stay the same while the fine details change as we analyze different types of data.</p>
+<p>This section focus on analyzing categorical variables. When making inferences about categorical variables it is best to analyze <em>proportions</em> because these generalize to populations much better than counts. In particular we want to look at the proportion of responses in a sample that take on a specific value of the categorical variable. We’ve seen this already, of course (see the last section for an example). The following subsections describe how to make inferences using a single sample proportion, two sample proportions, or (in some sense) many sample proportions.</p>
 <div id="single-sample-proportion" class="section level3 hasAnchor" number="6.2.1">
 <h3><span class="header-section-number">6.2.1</span> Single sample proportion<a href="inferential-statistics-take-1.html#single-sample-proportion" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>When analyzing a single categorical variable, the most basic parameter to make an inference about is the population proportion <span class="math inline">\(p\)</span>, the proportion of the population taking on a particular value of the categorical variable. For example, the proportion of American adults in 2010 that do not have a high school diploma. We use sample proportions <span class="math inline">\(\hat{p}\)</span> to make inferences about <span class="math inline">\(p\)</span> and under the right circumstances can apply the Central Limit Theorem to understand the distribution of sample proportions.</p>
+<ul>
+<li><p><strong>Sample statistic</strong>: sample proportion <span class="math inline">\(\hat{p}\)</span></p></li>
+<li><p><strong>Population parameter</strong>: population proportion <span class="math inline">\(p\)</span></p></li>
+<li><p>The <strong>Central Limit Theorem for a Single-sample Proportion</strong> states that if you</p>
+<ul>
+<li><p>have a sample of <span class="math inline">\(n\)</span> independent observations (hard to guarantee, but safe to assume if n &lt; 10% of the populatino and you employ random sampling) and</p></li>
+<li><p>and at least 10 (expected) success and failures (ie <span class="math inline">\(\hat{p}n \geq 10\)</span> and <span class="math inline">\((1- \hat{p})n \geq 10\)</span> )</p></li>
+</ul>
+<p>Then the sampling distribution of <span class="math inline">\(\hat{p}\)</span> is approximately normal with a mean of <span class="math inline">\(p\)</span> and standard error <span class="math inline">\(SE = \sqrt{ \frac{p(1-p)}{n}}\)</span>. In symbols:
+<span class="math display">\[ \hat{p} \sim N \left( \text{mean} = p, SE =\sqrt{ \frac{p(1-p)}{n}} \right) \]</span></p>
+<p>Moreover, if <span class="math inline">\(p\)</span> is unknown (as it usually is!),
+<span class="math display">\[ SE \approx \sqrt{ \frac{\hat{p}(1-\hat{p})}{n}}\]</span>
+In other words, you can approximate the standard error using the sample proportion.</p></li>
+</ul>
+<p>In this situation, the hypotheses you need to meet in order to apply the Central Limit Theorem are typically easy to satisfy, which means we can use the CLT to make inferences in all of our favorite ways!</p>
 <div id="confidence-intervals-1" class="section level4 hasAnchor" number="6.2.1.1">
 <h4><span class="header-section-number">6.2.1.1</span> Confidence intervals<a href="inferential-statistics-take-1.html#confidence-intervals-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Suppose you have a sample of <span class="math inline">\(n\)</span> observations that meets the conditions for applying the Central Limit Theorem. Then the distribution of sample proportions is approximately normal, centered at the true population proportion with a standard error of</p>
+<p><span class="math display">\[ SE \approx \sqrt{ \frac{\hat{p}(1-\hat{p})}{n}}.\]</span></p>
+<p>We can use these facts to calculate a confidence interval to estimate the population proportion. Recall that every confidence interval has the form</p>
+<p><span class="math display">\[ \text{point estimate} \pm CV \cdot SE\]</span></p>
+<p>where <span class="math inline">\(CV\)</span> is the critical value determined by the confidence level. The <strong>CLT</strong> provides the standard error and our sample gives the point estimate, so we only need to worry about the critical value. Recall that if your confidence level is <span class="math inline">\(CL\)</span>, then <span class="math inline">\(CL\)</span>% of all sample proportions will fall within <span class="math inline">\(CV\)</span> standard deviations of the true population parameter within the sampling distribution. The sampling distribution is normal by the Central Limit theorem, so we can use the <code>qnorm(...)</code> function to find precise critical values.</p>
+<p>As an example, let’s find the critical value for a 95% confidence interval. We want to find the value <span class="math inline">\(z^\ast\)</span> so that 95% of all sample proportions fall within <span class="math inline">\(z^\ast\)</span> standard deviations of the population proportion. In other words, we need to find <span class="math inline">\(z^\ast\)</span> so that <span class="math inline">\(P ( |Z| \leq z^\ast ) = .95\)</span>. The graph below helps visualize the setup.</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-169-1.png" width="672" /></p>
+<p>We can see that the bounds are almost <span class="math inline">\(\pm2\)</span>, but not quite. If the central area is .95, then the tail area is .05. The upper and lower tails are symmetric, so the upper tail area is .025. Thus, to find our critical value, we simply evaluate</p>
+<div class="sourceCode" id="cb361"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb361-1"><a href="inferential-statistics-take-1.html#cb361-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(.<span class="dv">025</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## [1] 1.959964</code></pre>
+<p>Let’s use the same idea to find the critical values for some common confidence levels.</p>
+<div class="sourceCode" id="cb363"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb363-1"><a href="inferential-statistics-take-1.html#cb363-1" aria-hidden="true" tabindex="-1"></a>cvTable <span class="ot">&lt;-</span> <span class="fu">tibble</span>( <span class="at">conf.level =</span> <span class="fu">c</span>(.<span class="dv">9</span>, .<span class="dv">95</span>, .<span class="dv">98</span>, .<span class="dv">99</span>), </span>
+<span id="cb363-2"><a href="inferential-statistics-take-1.html#cb363-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">crit.val =</span> <span class="fu">qnorm</span>( (<span class="dv">1</span> <span class="sc">-</span> conf.level)<span class="sc">/</span><span class="dv">2</span>, <span class="at">lower.tail =</span>F))</span>
+<span id="cb363-3"><a href="inferential-statistics-take-1.html#cb363-3" aria-hidden="true" tabindex="-1"></a>cvTable</span></code></pre></div>
+<pre><code>## # A tibble: 4 × 2
+##   conf.level crit.val
+##        &lt;dbl&gt;    &lt;dbl&gt;
+## 1       0.9      1.64
+## 2       0.95     1.96
+## 3       0.98     2.33
+## 4       0.99     2.58</code></pre>
+<p>With that taken care of, we can calculate confidence intervals for any proportion we want at any confidence level! In particular, an <span class="math inline">\(\alpha\)</span>% confidence level for a single proportion is</p>
+<p><span class="math display">\[\hat{p} \pm z^\ast_\alpha \cdot \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}.  \]</span></p>
+<p>Note there that this really is the same formula as above just with the details of the <strong>CLT</strong> filled in.</p>
+<p>Let’s close this off with an example, recreating what we did in the last section to estimate the proportion of American adults without high school degrees. As a reminder, this is from the <code>gss2010</code> data set from the <code>openintro</code> package.</p>
+<p>The code chunk below goes through the calculation of a 95% confidence interval for the proportion in question.</p>
+<div class="sourceCode" id="cb365"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb365-1"><a href="inferential-statistics-take-1.html#cb365-1" aria-hidden="true" tabindex="-1"></a><span class="co"># components of CI</span></span>
+<span id="cb365-2"><a href="inferential-statistics-take-1.html#cb365-2" aria-hidden="true" tabindex="-1"></a>pHat <span class="ot">&lt;-</span> <span class="fu">sum</span>( gss2010<span class="sc">$</span>degree <span class="sc">==</span> <span class="st">&quot;LT HIGH SCHOOL&quot;</span>) <span class="sc">/</span> <span class="fu">length</span>(gss2010<span class="sc">$</span>degree)</span>
+<span id="cb365-3"><a href="inferential-statistics-take-1.html#cb365-3" aria-hidden="true" tabindex="-1"></a>SE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(pHat<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>pHat)<span class="sc">/</span><span class="fu">length</span>(gss2010<span class="sc">$</span>degree))</span>
+<span id="cb365-4"><a href="inferential-statistics-take-1.html#cb365-4" aria-hidden="true" tabindex="-1"></a>zCrit <span class="ot">&lt;-</span> <span class="fu">qnorm</span>( (<span class="dv">1</span> <span class="sc">-</span> .<span class="dv">95</span>)<span class="sc">/</span><span class="dv">2</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb365-5"><a href="inferential-statistics-take-1.html#cb365-5" aria-hidden="true" tabindex="-1"></a><span class="co"># CI</span></span>
+<span id="cb365-6"><a href="inferential-statistics-take-1.html#cb365-6" aria-hidden="true" tabindex="-1"></a>pHat <span class="sc">+</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="sc">*</span>zCrit<span class="sc">*</span>SE</span></code></pre></div>
+<pre><code>## [1] 0.1337709 0.1646636</code></pre>
+<p>So with 95% confidence, between 13.4% and 16.5% of all Americans in 2010 did not have a high school diploma. Compare this to the simulated example from the previous section: the confidence intervals are almost identical! You can think of this as the central limit theorem verifying simulations or simulations verifying the central limit theorem. In their case, it’s cool!</p>
+<p>Next up, we’ll learn how to perform hypothesis tests using theoretical sampling distributions.</p>
 </div>
 <div id="hypothesis-testing" class="section level4 hasAnchor" number="6.2.1.2">
 <h4><span class="header-section-number">6.2.1.2</span> Hypothesis testing<a href="inferential-statistics-take-1.html#hypothesis-testing" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Suppose you have a sample of <span class="math inline">\(n\)</span> observations and you’d like to perform a hypothesis test using this sample. Recall that you assume the null hypothesis is true when performing a hypothesis test. Thus, in order to apply the Central Limit Theorem, we need to make sure our sample is sufficiently large <em>under the null hypothesis</em>.</p>
+<p>More explicitly, suppose the null proportion is <span class="math inline">\(p_0\)</span>. If</p>
+<ul>
+<li><p>your sample has <span class="math inline">\(n\)</span> independent observations and</p></li>
+<li><p>your sample has at least 10 <em>expected</em> success and failures, ie <span class="math inline">\(n p_0 \geq 10\)</span> and <span class="math inline">\(n (1- p_0) \geq 10\)</span></p></li>
+</ul>
+<p>then the distribution of sample proportions is approximately normal:</p>
+<p><span class="math display">\[ \hat{p} \sim N\left( \text{mean} = p_0 , SE = \sqrt{\frac{p_0(1-p_0)}{n}} \right). \]</span></p>
+<p>We can use use this sampling distribution to calculate <span class="math inline">\(p\)</span>-values thus execute hypothesis tests. We will show how to do this first with the toy examples from the last section which demonstrate the three types of hypothesis tests then one last time using the familiar <code>gss2010</code> data.</p>
+<p>For the next three examples, suppose we have a sample of <span class="math inline">\(n = 200\)</span> independent observations and a sample proportion of <span class="math inline">\(\hat{p} = .55\)</span>. We will perform three hypothesis tests to see if our sample provides sufficient evidence to conclude that the true population proportion is greater than .5, less than .5, or different from .5 using a siginificance level of <span class="math inline">\(\alpha = .05\)</span>.</p>
+<p>In all cases, note that <span class="math inline">\(.5*200 = 100 \geq 10\)</span>, so the Central Limit Theorem applies. Furthermore</p>
+<p><span class="math display">\[ \hat{p} \sim N\left(\text{mean} = .5, SE = \sqrt{\frac{.5\cdot .5}{200}} \right)  \]</span></p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Two-sided hypothesis test:</strong> Our hypothesis test is</p>
+<p><span class="math display">\[\begin{array}{cc}
+H_0: p = .5 \\
+H_a: p \neq .5
+\end{array}
+\]</span></p>
+<p>and the image below helps us visualize the <span class="math inline">\(p\)</span>-value of our sample with <span class="math inline">\(\hat{p} = .55\)</span></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-173-1.png" width="672" /></p>
+<p>The upper and lower tails of the <span class="math inline">\(p\)</span>-value are symmetric about the mean, so we can calculate one of them and double it.</p>
+<div class="sourceCode" id="cb367"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb367-1"><a href="inferential-statistics-take-1.html#cb367-1" aria-hidden="true" tabindex="-1"></a>pNull <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
+<span id="cb367-2"><a href="inferential-statistics-take-1.html#cb367-2" aria-hidden="true" tabindex="-1"></a>SE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(pNull<span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> pNull)<span class="sc">/</span><span class="dv">200</span>)</span>
+<span id="cb367-3"><a href="inferential-statistics-take-1.html#cb367-3" aria-hidden="true" tabindex="-1"></a>pHat <span class="ot">&lt;-</span> .<span class="dv">55</span></span>
+<span id="cb367-4"><a href="inferential-statistics-take-1.html#cb367-4" aria-hidden="true" tabindex="-1"></a>pVal <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(.<span class="dv">55</span>, <span class="at">mean =</span> pNull, <span class="at">sd =</span> SE, <span class="at">lower.tail =</span> F)</span>
+<span id="cb367-5"><a href="inferential-statistics-take-1.html#cb367-5" aria-hidden="true" tabindex="-1"></a>pVal</span></code></pre></div>
+<pre><code>## [1] 0.1572992</code></pre>
+<p>With a <span class="math inline">\(p\)</span>-value of approximately .16 we fail to reject the null hypothesis. The data do not provide compelling evidence of a difference.</p></li>
+<li><p><strong>One-Sided Upper Hypothesis test:</strong> Our hypothesis test is</p>
+<p><span class="math display">\[\begin{array}{cc}
+H_0: p = .5 \\
+H_a: p &gt; .5
+\end{array}
+\]</span></p>
+<p>and the image below helps us visualize the <span class="math inline">\(p\)</span>-value of our sample with <span class="math inline">\(\hat{p} = .55\)</span></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-175-1.png" width="672" /></p>
+<p>The <span class="math inline">\(p\)</span>-value is the shaded upper tail area and can be calculated as follows.</p>
+<div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb369-1"><a href="inferential-statistics-take-1.html#cb369-1" aria-hidden="true" tabindex="-1"></a>pNull <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
+<span id="cb369-2"><a href="inferential-statistics-take-1.html#cb369-2" aria-hidden="true" tabindex="-1"></a>SE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(pNull<span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> pNull)<span class="sc">/</span><span class="dv">200</span>)</span>
+<span id="cb369-3"><a href="inferential-statistics-take-1.html#cb369-3" aria-hidden="true" tabindex="-1"></a>pHat <span class="ot">&lt;-</span> .<span class="dv">55</span></span>
+<span id="cb369-4"><a href="inferential-statistics-take-1.html#cb369-4" aria-hidden="true" tabindex="-1"></a>pVal <span class="ot">&lt;-</span> <span class="fu">pnorm</span>(.<span class="dv">55</span>, <span class="at">mean =</span> pNull, <span class="at">sd =</span> SE, <span class="at">lower.tail =</span> F)</span>
+<span id="cb369-5"><a href="inferential-statistics-take-1.html#cb369-5" aria-hidden="true" tabindex="-1"></a>pVal</span></code></pre></div>
+<pre><code>## [1] 0.0786496</code></pre>
+<p>With a <span class="math inline">\(p\)</span>-value of approximately .08 we fail to reject the null hypothesis at a significance level of <span class="math inline">\(\alpha =.05\)</span> . The data do not provide compelling evidence that the true proportion is greater than .5.</p></li>
+<li><p><strong>One-Sided Lower Hypothesis test:</strong> Our hypothesis test is</p>
+<p><span class="math display">\[\begin{array}{cc}
+H_0: p = .5 \\
+H_a: p &lt; .5
+\end{array}
+\]</span></p>
+<p>and the image below helps us visualize the <span class="math inline">\(p\)</span>-value of our sample with <span class="math inline">\(\hat{p} = .55\)</span></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-177-1.png" width="672" /></p>
+<p>The <span class="math inline">\(p\)</span>-value is the shaded llower tail area and can be calculated as follows.</p>
+<div class="sourceCode" id="cb371"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb371-1"><a href="inferential-statistics-take-1.html#cb371-1" aria-hidden="true" tabindex="-1"></a>pNull <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
+<span id="cb371-2"><a href="inferential-statistics-take-1.html#cb371-2" aria-hidden="true" tabindex="-1"></a>SE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(pNull<span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> pNull)<span class="sc">/</span><span class="dv">200</span>)</span>
+<span id="cb371-3"><a href="inferential-statistics-take-1.html#cb371-3" aria-hidden="true" tabindex="-1"></a>pHat <span class="ot">&lt;-</span> .<span class="dv">55</span></span>
+<span id="cb371-4"><a href="inferential-statistics-take-1.html#cb371-4" aria-hidden="true" tabindex="-1"></a>pVal <span class="ot">&lt;-</span> <span class="fu">pnorm</span>(.<span class="dv">55</span>, <span class="at">mean =</span> pNull, <span class="at">sd =</span> SE)</span>
+<span id="cb371-5"><a href="inferential-statistics-take-1.html#cb371-5" aria-hidden="true" tabindex="-1"></a>pVal</span></code></pre></div>
+<pre><code>## [1] 0.9213504</code></pre>
+<p>No suprise here. With a <span class="math inline">\(p\)</span>-value of approximately .92 we fail to reject the null hypothesis at a significance level of <span class="math inline">\(\alpha =.05\)</span> . The data do not provide compelling evidence that the true proportion is less than .5.</p></li>
+</ol>
+<p>We close this section using the <code>gss2010</code> data to perform a hypothesis test to see if more than 10% of Americans in 2010 did not have a high school diploma. Again we’ll use a significance level of <span class="math inline">\(\alpha = .05\)</span>. Recall the following sample size and statistic from earlier.</p>
+<div class="sourceCode" id="cb373"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb373-1"><a href="inferential-statistics-take-1.html#cb373-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(gss2010<span class="sc">$</span>degree)</span>
+<span id="cb373-2"><a href="inferential-statistics-take-1.html#cb373-2" aria-hidden="true" tabindex="-1"></a>n</span></code></pre></div>
+<pre><code>## [1] 2044</code></pre>
+<div class="sourceCode" id="cb375"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb375-1"><a href="inferential-statistics-take-1.html#cb375-1" aria-hidden="true" tabindex="-1"></a>pHat <span class="ot">&lt;-</span> <span class="fu">sum</span>(gss2010<span class="sc">$</span>degree <span class="sc">==</span> <span class="st">&quot;LT HIGH SCHOOL&quot;</span>)<span class="sc">/</span>n</span>
+<span id="cb375-2"><a href="inferential-statistics-take-1.html#cb375-2" aria-hidden="true" tabindex="-1"></a>pHat</span></code></pre></div>
+<pre><code>## [1] 0.1492172</code></pre>
+<p>We reformulate our question as a hypothesis test.</p>
+<p><span class="math display">\[\begin{array}{cc}
+H_0: p = .1 \\
+H_a: p &gt; .1
+\end{array}
+\]</span></p>
+<p>We assume the observations in the <code>gss2010</code> data set are independent. Before preceding with the hypothesis test, we need to make sure our sample size is sufficiently large so that we can use the Central Limit Theorem.</p>
+<div class="sourceCode" id="cb377"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb377-1"><a href="inferential-statistics-take-1.html#cb377-1" aria-hidden="true" tabindex="-1"></a>pNull <span class="ot">&lt;-</span> .<span class="dv">1</span></span>
+<span id="cb377-2"><a href="inferential-statistics-take-1.html#cb377-2" aria-hidden="true" tabindex="-1"></a><span class="co"># will return a logical, T/F </span></span>
+<span id="cb377-3"><a href="inferential-statistics-take-1.html#cb377-3" aria-hidden="true" tabindex="-1"></a>n<span class="sc">*</span>pNull <span class="sc">&gt;=</span> <span class="dv">10</span> </span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb379"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb379-1"><a href="inferential-statistics-take-1.html#cb379-1" aria-hidden="true" tabindex="-1"></a>n<span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> pNull) <span class="sc">&gt;=</span> <span class="dv">10</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>Since the calculation above returned two <code>TRUE</code>’s we’re good to go! The CLT implies.</p>
+<p><span class="math display">\[ \hat{p} \sim N \left(\text{mean} = .1, SE = \sqrt{\frac{.1\cdot.9}{2044}} \right)\]</span></p>
+<p>We are performing a one-sided upper hypothesis test, so our <span class="math inline">\(p\)</span>-value is</p>
+<div class="sourceCode" id="cb381"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb381-1"><a href="inferential-statistics-take-1.html#cb381-1" aria-hidden="true" tabindex="-1"></a>SE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(pNull<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span> pNull)<span class="sc">/</span>n)</span>
+<span id="cb381-2"><a href="inferential-statistics-take-1.html#cb381-2" aria-hidden="true" tabindex="-1"></a>pValue <span class="ot">&lt;-</span> <span class="fu">pnorm</span>(pHat, <span class="at">mean =</span> pNull, <span class="at">sd =</span> SE, <span class="at">lower.tail =</span> F)</span>
+<span id="cb381-3"><a href="inferential-statistics-take-1.html#cb381-3" aria-hidden="true" tabindex="-1"></a>pValue </span></code></pre></div>
+<pre><code>## [1] 5.983973e-14</code></pre>
+<p>Since <span class="math inline">\(0 &lt; .05 = \alpha\)</span>, we reject the null and accept the research. Our data provide sufficient evidence to believe that more than 10% of Americans in 2010 did not have a high school diploma.</p>
+<p>This <span class="math inline">\(p\)</span>-value is the same as the one we calculated in the previous section! This is no surprise: you can either think of this example as a check on simulation techniques or as the simulation techniques as a check on the central limit theorem.</p>
 </div>
 </div>
 <div id="two-sample-proportion" class="section level3 hasAnchor" number="6.2.2">
 <h3><span class="header-section-number">6.2.2</span> Two sample proportion<a href="inferential-statistics-take-1.html#two-sample-proportion" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>data set: openintro::burger</p>
+<p>We often want to compare the same measurement or parameter for two different populations. As usual, we almost never know any single population parameter, so the best we can do is take a sample from each population and compare the sample statistics. When analyzing a categorical variable, we end up comparing sample proportions to make inferences about population proportions.</p>
+<p>To make this more precise, suppose you’re investigating some proportion for two populations.</p>
+<ul>
+<li><p>Our population parameter of interest is <span class="math inline">\(p_1 - p2\)</span></p></li>
+<li><p>Our sample statistic is <span class="math inline">\(\hat{p}_1- \hat{p}_2\)</span></p></li>
+</ul>
+<p>To make an inference about the population parameter, we need to learn about the sampling distribution of <span class="math inline">\(\hat{p}_1- \hat{p}_2\)</span>. Fortunately, if we can apply the central limit theorem for each sample individually, a version of the central limit theorem applies again! The formula for the standard error looks more complicated, but note that the variance of the sampling distrubtion for <span class="math inline">\(\hat{p}_1- \hat{p}_2\)</span> is just the sum of the variances for each each of the individual sampling distributions.</p>
+<p><strong>CLT for two sample proportions</strong>: Suppose you are analyzing the difference between two population proportions <span class="math inline">\(p_1\)</span> and <span class="math inline">\(p_2\)</span>, take two samples of size <span class="math inline">\(n_1\)</span> and <span class="math inline">\(n_2\)</span> from each population respectively. If</p>
+<ul>
+<li><p>the observations within each sample are independent from one another,</p></li>
+<li><p>the observations between the samples are independent, and</p></li>
+<li><p>each sample has at least ten expected or observed success and failures (ie <span class="math inline">\(n_ip_i \geq 10\)</span> and <span class="math inline">\(n_i(1 - p_i) \geq 10\)</span> for <span class="math inline">\(i= 1,2\)</span>)</p></li>
+</ul>
+<p>Then the sampling distribution for <span class="math inline">\(\hat{p}_1- \hat{p}_2\)</span> is approximately normally distributed. In particular,</p>
+<p><span class="math display">\[ \hat{p}_1- \hat{p}_2 \sim N\left( \text{mean} = p_1 - p_2 \text{ and } SE = \sqrt{\frac{p_1(1-p_1)}{n_1}+ \frac{p_2(1-p_2)}{n_2}} \right) \]</span></p>
+<p>The details on how we employ the CLT for two sample proportions changes depending on whether we’d like to calculate a confidence interval or perform a hypothesis test. As above, this difference arise because <em>always assume the null hypothesis is true</em> when performing a hypothesis test. The following subsections highlight exactly what these differences entail, but, briefly, it only changes the standard error calculation.</p>
 <div id="confidence-intervals-2" class="section level4 hasAnchor" number="6.2.2.1">
 <h4><span class="header-section-number">6.2.2.1</span> Confidence intervals<a href="inferential-statistics-take-1.html#confidence-intervals-2" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>As a reminder, the general formula for a confidence interval is</p>
+<p><span class="math display">\[\text{point est.} \pm (\text{crit. val.})\cdot SE  \]</span></p>
+<p>so to calculate and interpret a confidence interval for two sample proportions, we simply need to figure out each of these three pieces. We’ll do so by example using the <code>cancer_in_dogs</code> data set from the <code>openintro</code> R package.</p>
+<p>This data set is the result of a 1994 study from 1994 designed to determine if exposure to the herbicide herbicide 2,4-Dichlorophenoxyacetic acid (2,4-D) increases dogs’ risk of developing cancer. Let’s calculate a 95% confidence interval estimating the difference in cancer rates between dogs exposed to the herbicide and those who are not.</p>
+<p>There are 491 dogs in the data set who were exposed and 945 dogs that were not. The data set has two columns: <code>order</code> and <code>response</code>; the first indicates whether or not the dogs were exposed to the herbicide and the second indicates whether or not the dog developed cancer. Below we display 4 randomly selected rows from the dataset.</p>
+<div class="sourceCode" id="cb383"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb383-1"><a href="inferential-statistics-take-1.html#cb383-1" aria-hidden="true" tabindex="-1"></a><span class="fu">slice_sample</span>(cancer_in_dogs, <span class="at">n =</span> <span class="dv">4</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 4 × 2
+##   order    response 
+##   &lt;fct&gt;    &lt;fct&gt;    
+## 1 no 2,4-D no cancer
+## 2 2,4-D    cancer   
+## 3 2,4-D    cancer   
+## 4 2,4-D    cancer</code></pre>
+<p>Let <span class="math inline">\(p_1\)</span> denote the true proportion of dogs who are exposed to the herbicide and develop cancer; let <span class="math inline">\(p_2\)</span> denote the proportion of dogs who are not exposed but still develop cancer. We need to determine our sample proportions <span class="math inline">\(\hat{p}_1\)</span> and <span class="math inline">\(\hat{p}_2\)</span>. There are many ways to do this in R. A quick way is to use the <code>table(...)</code> function. Since the table only has two columns we can run the following to create a simple two-way table and store it in memory for future use.</p>
+<div class="sourceCode" id="cb385"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb385-1"><a href="inferential-statistics-take-1.html#cb385-1" aria-hidden="true" tabindex="-1"></a>sumTab <span class="ot">&lt;-</span> <span class="fu">table</span>(cancer_in_dogs<span class="sc">$</span>response, cancer_in_dogs<span class="sc">$</span>order)</span>
+<span id="cb385-2"><a href="inferential-statistics-take-1.html#cb385-2" aria-hidden="true" tabindex="-1"></a>sumTab <span class="sc">%&gt;%</span> <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">2,4-D</th>
+<th align="right">no 2,4-D</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">cancer</td>
+<td align="right">191</td>
+<td align="right">300</td>
+</tr>
+<tr class="even">
+<td align="left">no cancer</td>
+<td align="right">304</td>
+<td align="right">641</td>
+</tr>
+</tbody>
+</table>
+<p>The columns in this two way table correspond to the samples of interest (ie the explanatory variable) and the rows the response variable. Thus, the denominator of our sample proportions will be the column sums and the numerators will be the entries in the <code>cancer</code> row.</p>
+<div class="sourceCode" id="cb386"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb386-1"><a href="inferential-statistics-take-1.html#cb386-1" aria-hidden="true" tabindex="-1"></a>n1 <span class="ot">&lt;-</span> <span class="fu">sum</span>(sumTab[,<span class="dv">1</span>])</span>
+<span id="cb386-2"><a href="inferential-statistics-take-1.html#cb386-2" aria-hidden="true" tabindex="-1"></a>n2 <span class="ot">&lt;-</span> <span class="fu">sum</span>(sumTab[,<span class="dv">2</span>])</span>
+<span id="cb386-3"><a href="inferential-statistics-take-1.html#cb386-3" aria-hidden="true" tabindex="-1"></a>pHat1 <span class="ot">&lt;-</span> sumTab[<span class="dv">1</span>,<span class="dv">1</span>] <span class="sc">/</span> n1</span>
+<span id="cb386-4"><a href="inferential-statistics-take-1.html#cb386-4" aria-hidden="true" tabindex="-1"></a>pHat2 <span class="ot">&lt;-</span> sumTab[<span class="dv">1</span>,<span class="dv">2</span>] <span class="sc">/</span> n2 </span>
+<span id="cb386-5"><a href="inferential-statistics-take-1.html#cb386-5" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(pHat1, pHat2)</span></code></pre></div>
+<pre><code>## [1] 0.3858586 0.3188098</code></pre>
+<p>When we calculate a confidence interval for two sample proportions, we’re estimating the <em>difference between the two proportions</em>, so our point estimate is</p>
+<div class="sourceCode" id="cb388"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb388-1"><a href="inferential-statistics-take-1.html#cb388-1" aria-hidden="true" tabindex="-1"></a>pDiff <span class="ot">&lt;-</span> pHat1 <span class="sc">-</span> pHat2</span>
+<span id="cb388-2"><a href="inferential-statistics-take-1.html#cb388-2" aria-hidden="true" tabindex="-1"></a>pDiff</span></code></pre></div>
+<pre><code>## [1] 0.06704881</code></pre>
+<p>This means that roughly 6.7% <em>more</em> dogs exposed to the herbicide developed cancer in the sample data. Before we calculate a confidence interval, we need to make sure our samples meet the conditions needed to apply to Central Limit theorem.</p>
+<ul>
+<li><p>Independence within samples and between samples. The study employed random sampling for both groups and each sample size is less than 10% of its corresponding population. Moreover, the samples were taken independently of one another. We’re thus good to go here.</p></li>
+<li><p>Sample size requirements. From the two-way table <code>sumTab</code> above we see that we have more than 10 successes (cancer) and failures (no cancer) in each group of dogs. Good to go here too!</p></li>
+</ul>
+<p>The CLT applies, so the sampling distribution of <span class="math inline">\(\hat{p}_1 - \hat{p}_2\)</span> is approximately normally distributed. Moreover, the standard error is</p>
+<p><span class="math display">\[ SE \approx \sqrt{\frac{\hat{p}_1(1-\hat{p}_1)}{n_1}+ \frac{\hat{p}_2(1-\hat{p}_2)}{n_2}} \]</span></p>
+<p>which we can now easily calculate!</p>
+<div class="sourceCode" id="cb390"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb390-1"><a href="inferential-statistics-take-1.html#cb390-1" aria-hidden="true" tabindex="-1"></a>SE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(pHat1<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span> pHat1)<span class="sc">/</span>n1 <span class="sc">+</span>  pHat2<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span> pHat2)<span class="sc">/</span>n2)</span>
+<span id="cb390-2"><a href="inferential-statistics-take-1.html#cb390-2" aria-hidden="true" tabindex="-1"></a>SE</span></code></pre></div>
+<pre><code>## [1] 0.02663677</code></pre>
+<p>This means that if we repeated the study over and over we should expect about changes of about 2.7% between the various differences in sample proportions. We’re finally ready to calculate our confidence interval! Since the sampling distribution is approximately normal, our the critical value for our 95% confidence interval is</p>
+<div class="sourceCode" id="cb392"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb392-1"><a href="inferential-statistics-take-1.html#cb392-1" aria-hidden="true" tabindex="-1"></a>zCrit <span class="ot">&lt;-</span> <span class="fu">qnorm</span>( (<span class="dv">1</span><span class="fl">-.95</span>)<span class="sc">/</span><span class="dv">2</span>, <span class="at">lower.tail =</span> F)</span></code></pre></div>
+<p>and our confidence interval is</p>
+<div class="sourceCode" id="cb393"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb393-1"><a href="inferential-statistics-take-1.html#cb393-1" aria-hidden="true" tabindex="-1"></a>ciDiff <span class="ot">&lt;-</span> pDiff <span class="sc">+</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>)<span class="sc">*</span>zCrit<span class="sc">*</span>SE</span>
+<span id="cb393-2"><a href="inferential-statistics-take-1.html#cb393-2" aria-hidden="true" tabindex="-1"></a>ciDiff</span></code></pre></div>
+<pre><code>## [1] 0.01484171 0.11925591</code></pre>
+<p>How should we interpret this confidence interval? Remember, we’re estimating the difference in cancer rates between dogs who were exposed to the herbicide and those who were not. Thus:</p>
+<p>With 95% confidence, the cancer rate of dogs who are exposed to 2,4-Dichlorophenoxyacetic acid is between 1.5% and 11.9% <em>higher</em> than dogs who were not exposed to the herbicide.</p>
+<p>The next section will go through hypothesis testing using the same data.</p>
 </div>
 <div id="hypothesis-testing-1" class="section level4 hasAnchor" number="6.2.2.2">
 <h4><span class="header-section-number">6.2.2.2</span> Hypothesis testing<a href="inferential-statistics-take-1.html#hypothesis-testing-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
