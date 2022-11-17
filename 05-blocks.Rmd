@@ -707,11 +707,115 @@ The next section will go through hypothesis testing using the same data.
 
 #### Hypothesis testing
 
+Out in the wild you may want to simply check for a difference between two population proportions. The statistical inference for this is, of course, a hypothesis test.  When you're investigating a question like this your null and research hypotheses are
+
+\[
+\begin{array}{cl}
+H_0: & p_1 - p_2 = 0 \\
+H_a: & p_1 - p_2 \neq 0.
+\end{array}
+\]
+
+The alternative hypothesis can by one-sided if you'd like; if it were \(p_1 - p_2 > 0\) you'd be asking if the first proportion is greater than the second and the opposite if it were \(p_1 - p_2 < 0\). You'd could use a one sided hypothesis test to answer a question like "are there proportionally more Republicans in Montana than in Wyoming?"
+
+As usual the CLT is the main tool for performing a 2-sample proportion hypothesis test.  In this case we need to make sure that 
+
+- our observations are independent within and between groups
+
+- each sample has at least 10 *expected* success and failures. 
+
+There's a small difficulty we need to deal with here.  Recall that we **always assume the null hypothesis is true when performing a hypothesis test.** In this case that only means \( p_1 = p_2 \), but it doesn't make any claim about what these proportions are actually equal to.  The remedy is to estimate this value using a *pooled proportion*.  Suppose your first and second samples have $n_1$ and $n_2$ observations respectively and $suc_1$ and $suc_2$ successes. The *pooled sample proportion* is
+
+\[ 
+\begin{array}{ccc}
+\hat{p}_{pool} & = & \frac{suc_1 + suc_2}{n_1 + n_2} \\
+& = & \frac{ \hat{p}_1 n_1 + \hat{p}_2 n_2}{n_1 + n_2}
+\end{array}
+\]
+or, in words, the pooled proportion is the total number of successes in both samples divided by the total number of observations. We use \(\hat{p}_{pool} \) to assess the sample size requirements and in the formula for the standard error if our samples meet the conditions to apply the CLT. Let's see how this plays out using the herbicide and cancer in dogs example from the last section. A two-way table summarizing the results of the experiment is below.
+
+```{r}
+sumTab %>% kable()
+```
+
+The pooled proportion is the sum of the first row of this table divided by the sum of all entries in this table. 
+
+```{r}
+pPool <- sum(sumTab[1,])/sum(sumTab)
+pPool 
+```
+
+In other words, if we ignored herbicide exposure about 34\% of the dogs in our sample developed cancer. We use this proportion to ensure that our samples are both large enough to apply the central limit theorem. 
+
+```{r}
+c( n1*pPool, n1*(1-pPool))
+c( n2*pPool, n2*(1-pPool))
+```
+
+Thus both of our samples have at least 10 expected success and  expected failures, so we can apply the CLT! Remember we're assuming that the null hypothesis is true and in turn that \[p_1 = p_2 \approx \hat{p}_{pool}\]. Thus
+
+\[
+\begin{array}{ccc}
+SE & = & \sqrt{\frac{p_1(1-p_1)}{n_1}+ \frac{p_2(1-p_2)}{n_2}} \\ & \approx & \sqrt{\frac{\hat{p}_{pool}(1-\hat{p}_{pool})}{n_1} + \frac{\hat{p}_{pool}(1-\hat{p}_{pool})}{n_2}} 
+\end{array}
+\]
+
+The calculation for our current working example is below. 
+
+```{r}
+SE <- sqrt( pPool*(1-pPool)/n1 + pPool*(1-pPool)/n2) 
+SE
+```
+
+We're finally ready to calculate the $p$-value for this experiment. Let's perform this hypothesis test with a significance level of $\alpha = .05$. 
+
+Our point estimate of $p_1 - p2$ is `pDiff` below.
+
+```{r}
+pHat1 <- sumTab[1,1] / n1
+pHat2 <- sumTab[1,2] / n2 
+pDiff <- pHat1 - pHat2
+pDiff
+```
+
+The test statistic, which in this case is a $Z$-score, of our data is 
+
+\[ 
+\begin{array}{ccc}
+Z & = &  \frac{\text{point est.} - \text{null value}}{SE} \\
+& = & \frac{ \hat{p}_1 - \hat{p}_2}{SE}
+\end{array}
+\]
+
+or as follows in R. 
+
+```{r}
+Z <- pDiff / SE 
+Z
+```
+
+Since $Z >0$ the $p$-value of our hypothesis test is
+
+```{r}
+pVal <- 2*pnorm(Z,lower.tail = FALSE)
+pVal
+```
+
+In other words, if there were no difference between cancer rates in dogs exposed to the herbicide and those who were not there would be a `r round(pVal, 3)*100`\% chance of observing data like our own or more extreme.  
+
+Since $p < \alpha = .05$, we reject the null and accept the research: The data provide compelling evidence to believe that there the cancer rate of dogs exposed to the herbicide is different from the rate of dogs who were not exposed. 
+
+Note that this may have been a good candidate for a one-sided hypothesis test since we're not simply interested in detecting a difference. We may be more interested in seeing if dogs exposed to the herbicide developed cancer at greater rates than those who were not exposed.  In this situation, it is common to perform a two-sided hypothesis test, but also report a confidence interval to indicate which side of the null value the true difference falls on if your tests results in a rejection of the null. 
+
+### Chi-squared tests
+
+To do
+
+#### Chi-squared goodness of fit
 
 
-### Chi-squared goodness of fit test
 
-### Chi-squared test of independence
+#### Chi-squared test of independence
 
 ## Analyzing numerical variables 
 

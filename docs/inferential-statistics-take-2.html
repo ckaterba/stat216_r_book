@@ -97,7 +97,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -110,7 +110,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -217,8 +217,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="6.2.1" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html#single-sample-proportion"><i class="fa fa-check"></i><b>6.2.1</b> Single sample proportion</a></li>
 <li class="chapter" data-level="6.2.2" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html#two-sample-proportion"><i class="fa fa-check"></i><b>6.2.2</b> Two sample proportion</a></li>
-<li class="chapter" data-level="6.2.3" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html#chi-squared-goodness-of-fit-test"><i class="fa fa-check"></i><b>6.2.3</b> Chi-squared goodness of fit test</a></li>
-<li class="chapter" data-level="6.2.4" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html#chi-squared-test-of-independence"><i class="fa fa-check"></i><b>6.2.4</b> Chi-squared test of independence</a></li>
+<li class="chapter" data-level="6.2.3" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html#chi-squared-tests"><i class="fa fa-check"></i><b>6.2.3</b> Chi-squared tests</a></li>
 </ul></li>
 <li class="chapter" data-level="6.3" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html#analyzing-numerical-variables"><i class="fa fa-check"></i><b>6.3</b> Analyzing numerical variables</a>
 <ul>
@@ -234,7 +233,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="7.1.1" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#single-sample-proportions"><i class="fa fa-check"></i><b>7.1.1</b> Single sample proportions</a></li>
 <li class="chapter" data-level="7.1.2" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#two-sample-proportions"><i class="fa fa-check"></i><b>7.1.2</b> Two sample proportions</a></li>
-<li class="chapter" data-level="7.1.3" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#chi-squared-goodness-of-fit-test-1"><i class="fa fa-check"></i><b>7.1.3</b> Chi-squared goodness of fit test</a></li>
+<li class="chapter" data-level="7.1.3" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#chi-squared-goodness-of-fit-test"><i class="fa fa-check"></i><b>7.1.3</b> Chi-squared goodness of fit test</a></li>
 <li class="chapter" data-level="7.1.4" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#chi-squared-test-of-independence-1"><i class="fa fa-check"></i><b>7.1.4</b> Chi-squared test of independence</a></li>
 </ul></li>
 <li class="chapter" data-level="7.2" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#analyzing-numerical-variables-1"><i class="fa fa-check"></i><b>7.2</b> Analyzing numerical variables</a>
@@ -285,8 +284,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">7.1.2</span> Two sample proportions<a href="inferential-statistics-take-2.html#two-sample-proportions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The main function we will use in this section is again <code>prop.test(...)</code>; it’s a workhorse!</p>
 </div>
-<div id="chi-squared-goodness-of-fit-test-1" class="section level3 hasAnchor" number="7.1.3">
-<h3><span class="header-section-number">7.1.3</span> Chi-squared goodness of fit test<a href="inferential-statistics-take-2.html#chi-squared-goodness-of-fit-test-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="chi-squared-goodness-of-fit-test" class="section level3 hasAnchor" number="7.1.3">
+<h3><span class="header-section-number">7.1.3</span> Chi-squared goodness of fit test<a href="inferential-statistics-take-2.html#chi-squared-goodness-of-fit-test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 </div>
 <div id="chi-squared-test-of-independence-1" class="section level3 hasAnchor" number="7.1.4">
 <h3><span class="header-section-number">7.1.4</span> Chi-squared test of independence<a href="inferential-statistics-take-2.html#chi-squared-test-of-independence-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>

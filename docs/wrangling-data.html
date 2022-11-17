@@ -97,7 +97,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -110,7 +110,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -217,8 +217,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="6.2.1" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html#single-sample-proportion"><i class="fa fa-check"></i><b>6.2.1</b> Single sample proportion</a></li>
 <li class="chapter" data-level="6.2.2" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html#two-sample-proportion"><i class="fa fa-check"></i><b>6.2.2</b> Two sample proportion</a></li>
-<li class="chapter" data-level="6.2.3" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html#chi-squared-goodness-of-fit-test"><i class="fa fa-check"></i><b>6.2.3</b> Chi-squared goodness of fit test</a></li>
-<li class="chapter" data-level="6.2.4" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html#chi-squared-test-of-independence"><i class="fa fa-check"></i><b>6.2.4</b> Chi-squared test of independence</a></li>
+<li class="chapter" data-level="6.2.3" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html#chi-squared-tests"><i class="fa fa-check"></i><b>6.2.3</b> Chi-squared tests</a></li>
 </ul></li>
 <li class="chapter" data-level="6.3" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html#analyzing-numerical-variables"><i class="fa fa-check"></i><b>6.3</b> Analyzing numerical variables</a>
 <ul>
@@ -234,7 +233,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="7.1.1" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#single-sample-proportions"><i class="fa fa-check"></i><b>7.1.1</b> Single sample proportions</a></li>
 <li class="chapter" data-level="7.1.2" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#two-sample-proportions"><i class="fa fa-check"></i><b>7.1.2</b> Two sample proportions</a></li>
-<li class="chapter" data-level="7.1.3" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#chi-squared-goodness-of-fit-test-1"><i class="fa fa-check"></i><b>7.1.3</b> Chi-squared goodness of fit test</a></li>
+<li class="chapter" data-level="7.1.3" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#chi-squared-goodness-of-fit-test"><i class="fa fa-check"></i><b>7.1.3</b> Chi-squared goodness of fit test</a></li>
 <li class="chapter" data-level="7.1.4" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#chi-squared-test-of-independence-1"><i class="fa fa-check"></i><b>7.1.4</b> Chi-squared test of independence</a></li>
 </ul></li>
 <li class="chapter" data-level="7.2" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#analyzing-numerical-variables-1"><i class="fa fa-check"></i><b>7.2</b> Analyzing numerical variables</a>
@@ -384,7 +383,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>but run into an immediate problem. What is the <span class="math inline">\(x\)</span> variable? What is the <span class="math inline">\(y\)</span>? If we use the tidy version of the same data, the answer is clear however: <span class="math inline">\(x\)</span> is the drink, <span class="math inline">\(y\)</span> is the score, since drink is the explanatory variable and taste preference is the response. Using <code>dfTidy</code> from above instead, we’d simply use the following.</p>
 <div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="wrangling-data.html#cb247-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dfTidy, <span class="fu">aes</span>(<span class="at">x =</span> drink, <span class="at">y =</span> score)) <span class="sc">+</span> </span>
 <span id="cb247-2"><a href="wrangling-data.html#cb247-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-105-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-140-1.png" width="672" /></p>
 <p>Essentially <em>all</em> tools in the <code>tidyverse</code> package are designed around having tidy data. In the next section, we’ll learn about one of the main functions from the <code>tidyverse</code> package used in tidying and analyzing data, the pipe.</p>
 </div>
 <div id="the-pipe" class="section level2 hasAnchor" number="4.2">
@@ -457,8 +456,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb256-9"><a href="wrangling-data.html#cb256-9" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(dfTidy1)</span></code></pre></div>
 <pre><code>## Rows: 30
 ## Columns: 2
-## $ drink &lt;chr&gt; &quot;coke&quot;, &quot;pepsi&quot;, &quot;rc&quot;, &quot;coke&quot;, &quot;pepsi&quot;, &quot;rc…
-## $ score &lt;int&gt; 3, 3, 1, 4, 2, 1, 4, 3, 2, 1, 4, 3, 3, 4, 5…</code></pre>
+## $ drink &lt;chr&gt; &quot;coke&quot;, &quot;pepsi&quot;, &quot;rc&quot;, &quot;coke&quot;, &quot;pepsi&quot;, &quot;rc&quot;, &quot;coke…
+## $ score &lt;int&gt; 3, 3, 1, 4, 2, 1, 4, 3, 2, 1, 4, 3, 3, 4, 5, 4, 1, …</code></pre>
 <p>At first it doesn’t seem like this data set is the same as <code>dfTidy</code>, but notice that R arranged the values as “coke”, “pepsi”, “rc”. If we rearrange the rows alphabetically by drink, we’ll see that they are in fact that same data sets.</p>
 <div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb258-1"><a href="wrangling-data.html#cb258-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>( dfTidy <span class="sc">%&gt;%</span> </span>
 <span id="cb258-2"><a href="wrangling-data.html#cb258-2" aria-hidden="true" tabindex="-1"></a>             <span class="fu">arrange</span>(drink), </span>
@@ -523,11 +522,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="wrangling-data.html#cb265-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(gss2010)</span></code></pre></div>
 <pre><code>## Rows: 2,044
 ## Columns: 5
-## $ hrsrelax &lt;int&gt; 2, 4, NA, NA, NA, NA, 3, NA, 0, 5, 5, NA…
-## $ mntlhlth &lt;int&gt; 3, 6, NA, NA, NA, NA, 0, NA, 0, 10, 0, N…
-## $ hrs1     &lt;int&gt; 55, 45, NA, NA, NA, NA, 45, NA, 40, 48, …
-## $ degree   &lt;fct&gt; BACHELOR, BACHELOR, LT HIGH SCHOOL, LT H…
-## $ grass    &lt;fct&gt; NA, LEGAL, NA, NOT LEGAL, NOT LEGAL, LEG…</code></pre>
+## $ hrsrelax &lt;int&gt; 2, 4, NA, NA, NA, NA, 3, NA, 0, 5, 5, NA, 3, NA,…
+## $ mntlhlth &lt;int&gt; 3, 6, NA, NA, NA, NA, 0, NA, 0, 10, 0, NA, 0, NA…
+## $ hrs1     &lt;int&gt; 55, 45, NA, NA, NA, NA, 45, NA, 40, 48, 26, NA, …
+## $ degree   &lt;fct&gt; BACHELOR, BACHELOR, LT HIGH SCHOOL, LT HIGH SCHO…
+## $ grass    &lt;fct&gt; NA, LEGAL, NA, NOT LEGAL, NOT LEGAL, LEGAL, NA, …</code></pre>
 <p>First, let’s add a new column to our data set that gives the total number of hours each person in this survey spend at work or relaxing and another column that reports the proportion of their time spent working or relaxing Monday through Friday. Note that since <code>hrsrelax</code> gives the number of hours they relax in a day, we should add 5 times that amount for total time spent relaxing during the work work.</p>
 <div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="wrangling-data.html#cb267-1" aria-hidden="true" tabindex="-1"></a>new_gss <span class="ot">&lt;-</span> gss2010 <span class="sc">%&gt;%</span></span>
 <span id="cb267-2"><a href="wrangling-data.html#cb267-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">totalHours =</span> <span class="dv">5</span><span class="sc">*</span>hrsrelax <span class="sc">+</span> hrs1, <span class="co">#hours spent working and relaxing</span></span>
@@ -539,10 +538,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## $ hrsrelax        &lt;int&gt; 4, 6, 6, NA, NA, 7, NA
 ## $ mntlhlth        &lt;int&gt; 0, 0, 2, NA, NA, 0, NA
 ## $ hrs1            &lt;int&gt; 55, 35, 9, NA, NA, 20, NA
-## $ degree          &lt;fct&gt; LT HIGH SCHOOL, HIGH SCHOOL, LT H…
-## $ grass           &lt;fct&gt; NOT LEGAL, NA, LEGAL, NA, NA, NA,…
+## $ degree          &lt;fct&gt; LT HIGH SCHOOL, HIGH SCHOOL, LT HIGH SCHO…
+## $ grass           &lt;fct&gt; NOT LEGAL, NA, LEGAL, NA, NA, NA, LEGAL
 ## $ totalHours      &lt;dbl&gt; 75, 65, 39, NA, NA, 55, NA
-## $ propTimeWorking &lt;dbl&gt; 0.6250000, 0.5416667, 0.3250000, …</code></pre>
+## $ propTimeWorking &lt;dbl&gt; 0.6250000, 0.5416667, 0.3250000, NA, NA, …</code></pre>
 <p>Note that whenever one of our variables was unavailable, both of our new columns gave an <code>NA</code> value as well.</p>
 <p>Suppose now that we wanted the same information, but we wanted to exclude all rows with <code>NA</code> values, and we only wanted to see our new columns and the respondent’s degree. This is a perfect situation for <code>transmute(...)</code>.</p>
 <div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="wrangling-data.html#cb269-1" aria-hidden="true" tabindex="-1"></a>new_gss <span class="ot">&lt;-</span> gss2010 <span class="sc">%&gt;%</span></span>
@@ -572,13 +571,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb271-7"><a href="wrangling-data.html#cb271-7" aria-hidden="true" tabindex="-1"></a>             ) <span class="sc">%&gt;%</span></span>
 <span id="cb271-8"><a href="wrangling-data.html#cb271-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(meanHrsWrk)) <span class="co"># arrange results in descending order</span></span></code></pre></div>
 <pre><code>## # A tibble: 5 × 5
-##   degree        meanHrsWrk sdHrsWrk meanHrsRlx meanMntlHlth
-##   &lt;fct&gt;              &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;        &lt;dbl&gt;
-## 1 BACHELOR            42.5     13.6       3.48         2.67
-## 2 JUNIOR COLLE…       41.4     18.1       3.53         3.56
-## 3 GRADUATE            40.8     15.5       3.67         2.40
-## 4 HIGH SCHOOL         39.6     15.0       3.79         4.58
-## 5 LT HIGH SCHO…       38.7     15.8       3.73         4.87</code></pre>
+##   degree         meanHrsWrk sdHrsWrk meanHrsRlx meanMntlHlth
+##   &lt;fct&gt;               &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;        &lt;dbl&gt;
+## 1 BACHELOR             42.5     13.6       3.48         2.67
+## 2 JUNIOR COLLEGE       41.4     18.1       3.53         3.56
+## 3 GRADUATE             40.8     15.5       3.67         2.40
+## 4 HIGH SCHOOL          39.6     15.0       3.79         4.58
+## 5 LT HIGH SCHOOL       38.7     15.8       3.73         4.87</code></pre>
 <p>So everyone works fairly similarly and relax a similar number of hours every night, but we observe that the number of days per month with mental health struggles seems to <em>decrease</em> with an increase in educational attainment.</p>
 <p>We could also see if there’s any sort of relationship between degree and stance on marijuana legalization. First, let’s throw out all the rows with an <code>NA</code> for the <code>grass</code> variable and see how many people have type of degree.</p>
 <div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb273-1"><a href="wrangling-data.html#cb273-1" aria-hidden="true" tabindex="-1"></a>gss2010 <span class="sc">%&gt;%</span></span>

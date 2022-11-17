@@ -97,7 +97,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -110,7 +110,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -217,8 +217,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="6.2.1" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html#single-sample-proportion"><i class="fa fa-check"></i><b>6.2.1</b> Single sample proportion</a></li>
 <li class="chapter" data-level="6.2.2" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html#two-sample-proportion"><i class="fa fa-check"></i><b>6.2.2</b> Two sample proportion</a></li>
-<li class="chapter" data-level="6.2.3" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html#chi-squared-goodness-of-fit-test"><i class="fa fa-check"></i><b>6.2.3</b> Chi-squared goodness of fit test</a></li>
-<li class="chapter" data-level="6.2.4" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html#chi-squared-test-of-independence"><i class="fa fa-check"></i><b>6.2.4</b> Chi-squared test of independence</a></li>
+<li class="chapter" data-level="6.2.3" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html#chi-squared-tests"><i class="fa fa-check"></i><b>6.2.3</b> Chi-squared tests</a></li>
 </ul></li>
 <li class="chapter" data-level="6.3" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html#analyzing-numerical-variables"><i class="fa fa-check"></i><b>6.3</b> Analyzing numerical variables</a>
 <ul>
@@ -234,7 +233,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="7.1.1" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#single-sample-proportions"><i class="fa fa-check"></i><b>7.1.1</b> Single sample proportions</a></li>
 <li class="chapter" data-level="7.1.2" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#two-sample-proportions"><i class="fa fa-check"></i><b>7.1.2</b> Two sample proportions</a></li>
-<li class="chapter" data-level="7.1.3" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#chi-squared-goodness-of-fit-test-1"><i class="fa fa-check"></i><b>7.1.3</b> Chi-squared goodness of fit test</a></li>
+<li class="chapter" data-level="7.1.3" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#chi-squared-goodness-of-fit-test"><i class="fa fa-check"></i><b>7.1.3</b> Chi-squared goodness of fit test</a></li>
 <li class="chapter" data-level="7.1.4" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#chi-squared-test-of-independence-1"><i class="fa fa-check"></i><b>7.1.4</b> Chi-squared test of independence</a></li>
 </ul></li>
 <li class="chapter" data-level="7.2" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#analyzing-numerical-variables-1"><i class="fa fa-check"></i><b>7.2</b> Analyzing numerical variables</a>
@@ -333,7 +332,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb336-3"><a href="inferential-statistics-take-1.html#cb336-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Distribution of sample proportions, n = 2044&quot;</span>, </span>
 <span id="cb336-4"><a href="inferential-statistics-take-1.html#cb336-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Estimating SE for 2010 proportion of Americans without a HS diploma&quot;</span>,</span>
 <span id="cb336-5"><a href="inferential-statistics-take-1.html#cb336-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Sample proportion, p-hat&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-155-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-190-1.png" width="672" /></p>
 <p>Voila! Our sampling distribution does seem to be symmetric and unimodal. Where precisely is the center?</p>
 <div class="sourceCode" id="cb337"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb337-1"><a href="inferential-statistics-take-1.html#cb337-1" aria-hidden="true" tabindex="-1"></a><span class="co">#average sample proportion</span></span>
 <span id="cb337-2"><a href="inferential-statistics-take-1.html#cb337-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(simulated_sampling_distr<span class="sc">$</span>p_hat)</span></code></pre></div>
@@ -367,7 +366,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb343-3"><a href="inferential-statistics-take-1.html#cb343-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Distribution of sample proportions, n = 100&quot;</span>, </span>
 <span id="cb343-4"><a href="inferential-statistics-take-1.html#cb343-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Estimating SE for 2010 proportion of Americans without a HS diploma&quot;</span>,</span>
 <span id="cb343-5"><a href="inferential-statistics-take-1.html#cb343-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Sample proportion, p-hat&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-159-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-194-1.png" width="672" /></p>
 <p>Notice that the center is about the same as our first sampling distribution, but our second is more spread out as we claimed above! To check these claims, let’s look at the average sample proportion and the estimated standard error.</p>
 <div class="sourceCode" id="cb344"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb344-1"><a href="inferential-statistics-take-1.html#cb344-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(sampling_dist2<span class="sc">$</span>p_hat)</span></code></pre></div>
 <pre><code>## [1] 0.14884</code></pre>
@@ -428,19 +427,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span class="math display">\[ H_a: p \neq .5  \]</span></li>
 </ol>
 <p>Samples that are at least as favorable for <span class="math inline">\(H_a\)</span> as our own come in two flavors: samples with a proportion of at least .55 and those with a proportion of <em>at most</em> .45. Notice that the samples with proportions of at most .45 really are just as favorable as those with proportions of at least .55 when we’re checking for a difference because they are equally as far away from the null proportion of .5. Thus, the <span class="math inline">\(p\)</span>-value of a two-sided hypothesis tests will be a two-tailed probability. The plot below helps visualize this <span class="math inline">\(p\)</span>-value as an area in the sampling distribution. We have hidden the plotting code here to prioritize the concepts.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-163-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-198-1.png" width="672" /></p>
 <ol start="2" style="list-style-type: decimal">
 <li><strong>One-sided upper hypothesis test</strong>: In this case, we’re simply checking to see if the population parameter is greater than the null value. For our example:</li>
 </ol>
 <p><span class="math display">\[ H_a: p &gt; .5  \]</span></p>
 <p>Samples that are at least as favorable for <span class="math inline">\(H_a\)</span> as our own only one flavor this time: samples with a proportion of at least .55. Thus the <span class="math inline">\(p\)</span>-value for this hypothesis test is an upper-tail area. The plot below helps us visualize this.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-164-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-199-1.png" width="672" /></p>
 <ol start="3" style="list-style-type: decimal">
 <li><strong>One-sided lower hypothesis test</strong>: In this case, we’re simply checking to see if the population parameter is less than the null value. For our example:</li>
 </ol>
 <p><span class="math display">\[ H_a: p &gt; .5  \]</span></p>
 <p>Samples that are at least as favorable for <span class="math inline">\(H_a\)</span> as our own only one flavor: samples with a proportion of at most .55. Thus the <span class="math inline">\(p\)</span>-value for this hypothesis test is a lower-tail area in the sampling distribution. The plot below helps us visualize this.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-165-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-200-1.png" width="672" /></p>
 <p>Our <span class="math inline">\(p\)</span>-value is large because our sample proportion is above the null value when we thought it was going to be below. We should revise our alternative hypothesis in this case.</p>
 <p>Let’s finish this section using the high school diploma question we started this chapter with. In particular, in 2010 did more than 10% of Americans fail to graduate high school? As a hypothesis test:</p>
 <ul>
@@ -465,7 +464,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb358-3"><a href="inferential-statistics-take-1.html#cb358-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> pHat, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
 <span id="cb358-4"><a href="inferential-statistics-take-1.html#cb358-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Null distribution with p = .1 and n = 2044, pHat = .149&quot;</span>, </span>
 <span id="cb358-5"><a href="inferential-statistics-take-1.html#cb358-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Sample proportion, p-hat&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-167-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-202-1.png" width="672" /></p>
 <p>As we’d expect the null sampling distribution is approximately normal. The plot above indicates that our sample proportion <span class="math inline">\(\hat{p}\)</span> would be quite unlikely if the null hypothesis were true. To estimate exactly how unlikely, let’s <em>estimate</em> the <span class="math inline">\(p\)</span>-value of our sample.</p>
 <div class="sourceCode" id="cb359"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb359-1"><a href="inferential-statistics-take-1.html#cb359-1" aria-hidden="true" tabindex="-1"></a><span class="co"># count the number of simulated samples with proportions at least as large as </span></span>
 <span id="cb359-2"><a href="inferential-statistics-take-1.html#cb359-2" aria-hidden="true" tabindex="-1"></a><span class="co"># our actual sample proportion, divide by number of samples in simulated dist.</span></span>
@@ -507,7 +506,7 @@ In other words, you can approximate the standard error using the sample proporti
 <p><span class="math display">\[ \text{point estimate} \pm CV \cdot SE\]</span></p>
 <p>where <span class="math inline">\(CV\)</span> is the critical value determined by the confidence level. The <strong>CLT</strong> provides the standard error and our sample gives the point estimate, so we only need to worry about the critical value. Recall that if your confidence level is <span class="math inline">\(CL\)</span>, then <span class="math inline">\(CL\)</span>% of all sample proportions will fall within <span class="math inline">\(CV\)</span> standard deviations of the true population parameter within the sampling distribution. The sampling distribution is normal by the Central Limit theorem, so we can use the <code>qnorm(...)</code> function to find precise critical values.</p>
 <p>As an example, let’s find the critical value for a 95% confidence interval. We want to find the value <span class="math inline">\(z^\ast\)</span> so that 95% of all sample proportions fall within <span class="math inline">\(z^\ast\)</span> standard deviations of the population proportion. In other words, we need to find <span class="math inline">\(z^\ast\)</span> so that <span class="math inline">\(P ( |Z| \leq z^\ast ) = .95\)</span>. The graph below helps visualize the setup.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-169-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-204-1.png" width="672" /></p>
 <p>We can see that the bounds are almost <span class="math inline">\(\pm2\)</span>, but not quite. If the central area is .95, then the tail area is .05. The upper and lower tails are symmetric, so the upper tail area is .025. Thus, to find our critical value, we simply evaluate</p>
 <div class="sourceCode" id="cb361"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb361-1"><a href="inferential-statistics-take-1.html#cb361-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(.<span class="dv">025</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <pre><code>## [1] 1.959964</code></pre>
@@ -559,7 +558,7 @@ H_a: p \neq .5
 \end{array}
 \]</span></p>
 <p>and the image below helps us visualize the <span class="math inline">\(p\)</span>-value of our sample with <span class="math inline">\(\hat{p} = .55\)</span></p>
-<p><img src="_main_files/figure-html/unnamed-chunk-173-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-208-1.png" width="672" /></p>
 <p>The upper and lower tails of the <span class="math inline">\(p\)</span>-value are symmetric about the mean, so we can calculate one of them and double it.</p>
 <div class="sourceCode" id="cb367"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb367-1"><a href="inferential-statistics-take-1.html#cb367-1" aria-hidden="true" tabindex="-1"></a>pNull <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
 <span id="cb367-2"><a href="inferential-statistics-take-1.html#cb367-2" aria-hidden="true" tabindex="-1"></a>SE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(pNull<span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> pNull)<span class="sc">/</span><span class="dv">200</span>)</span>
@@ -575,7 +574,7 @@ H_a: p &gt; .5
 \end{array}
 \]</span></p>
 <p>and the image below helps us visualize the <span class="math inline">\(p\)</span>-value of our sample with <span class="math inline">\(\hat{p} = .55\)</span></p>
-<p><img src="_main_files/figure-html/unnamed-chunk-175-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-210-1.png" width="672" /></p>
 <p>The <span class="math inline">\(p\)</span>-value is the shaded upper tail area and can be calculated as follows.</p>
 <div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb369-1"><a href="inferential-statistics-take-1.html#cb369-1" aria-hidden="true" tabindex="-1"></a>pNull <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
 <span id="cb369-2"><a href="inferential-statistics-take-1.html#cb369-2" aria-hidden="true" tabindex="-1"></a>SE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(pNull<span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> pNull)<span class="sc">/</span><span class="dv">200</span>)</span>
@@ -591,7 +590,7 @@ H_a: p &lt; .5
 \end{array}
 \]</span></p>
 <p>and the image below helps us visualize the <span class="math inline">\(p\)</span>-value of our sample with <span class="math inline">\(\hat{p} = .55\)</span></p>
-<p><img src="_main_files/figure-html/unnamed-chunk-177-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-212-1.png" width="672" /></p>
 <p>The <span class="math inline">\(p\)</span>-value is the shaded llower tail area and can be calculated as follows.</p>
 <div class="sourceCode" id="cb371"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb371-1"><a href="inferential-statistics-take-1.html#cb371-1" aria-hidden="true" tabindex="-1"></a>pNull <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
 <span id="cb371-2"><a href="inferential-statistics-take-1.html#cb371-2" aria-hidden="true" tabindex="-1"></a>SE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(pNull<span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> pNull)<span class="sc">/</span><span class="dv">200</span>)</span>
@@ -723,13 +722,104 @@ H_a: p &gt; .1
 </div>
 <div id="hypothesis-testing-1" class="section level4 hasAnchor" number="6.2.2.2">
 <h4><span class="header-section-number">6.2.2.2</span> Hypothesis testing<a href="inferential-statistics-take-1.html#hypothesis-testing-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Out in the wild you may want to simply check for a difference between two population proportions. The statistical inference for this is, of course, a hypothesis test. When you’re investigating a question like this your null and research hypotheses are</p>
+<p><span class="math display">\[
+\begin{array}{cl}
+H_0: &amp; p_1 - p_2 = 0 \\
+H_a: &amp; p_1 - p_2 \neq 0.
+\end{array}
+\]</span></p>
+<p>The alternative hypothesis can by one-sided if you’d like; if it were <span class="math inline">\(p_1 - p_2 &gt; 0\)</span> you’d be asking if the first proportion is greater than the second and the opposite if it were <span class="math inline">\(p_1 - p_2 &lt; 0\)</span>. You’d could use a one sided hypothesis test to answer a question like “are there proportionally more Republicans in Montana than in Wyoming?”</p>
+<p>As usual the CLT is the main tool for performing a 2-sample proportion hypothesis test. In this case we need to make sure that</p>
+<ul>
+<li><p>our observations are independent within and between groups</p></li>
+<li><p>each sample has at least 10 <em>expected</em> success and failures.</p></li>
+</ul>
+<p>There’s a small difficulty we need to deal with here. Recall that we <strong>always assume the null hypothesis is true when performing a hypothesis test.</strong> In this case that only means <span class="math inline">\(p_1 = p_2\)</span>, but it doesn’t make any claim about what these proportions are actually equal to. The remedy is to estimate this value using a <em>pooled proportion</em>. Suppose your first and second samples have <span class="math inline">\(n_1\)</span> and <span class="math inline">\(n_2\)</span> observations respectively and <span class="math inline">\(suc_1\)</span> and <span class="math inline">\(suc_2\)</span> successes. The <em>pooled sample proportion</em> is</p>
+<p><span class="math display">\[
+\begin{array}{ccc}
+\hat{p}_{pool} &amp; = &amp; \frac{suc_1 + suc_2}{n_1 + n_2} \\
+&amp; = &amp; \frac{ \hat{p}_1 n_1 + \hat{p}_2 n_2}{n_1 + n_2}
+\end{array}
+\]</span>
+or, in words, the pooled proportion is the total number of successes in both samples divided by the total number of observations. We use <span class="math inline">\(\hat{p}_{pool}\)</span> to assess the sample size requirements and in the formula for the standard error if our samples meet the conditions to apply the CLT. Let’s see how this plays out using the herbicide and cancer in dogs example from the last section. A two-way table summarizing the results of the experiment is below.</p>
+<div class="sourceCode" id="cb395"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb395-1"><a href="inferential-statistics-take-1.html#cb395-1" aria-hidden="true" tabindex="-1"></a>sumTab <span class="sc">%&gt;%</span> <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">2,4-D</th>
+<th align="right">no 2,4-D</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">cancer</td>
+<td align="right">191</td>
+<td align="right">300</td>
+</tr>
+<tr class="even">
+<td align="left">no cancer</td>
+<td align="right">304</td>
+<td align="right">641</td>
+</tr>
+</tbody>
+</table>
+<p>The pooled proportion is the sum of the first row of this table divided by the sum of all entries in this table.</p>
+<div class="sourceCode" id="cb396"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb396-1"><a href="inferential-statistics-take-1.html#cb396-1" aria-hidden="true" tabindex="-1"></a>pPool <span class="ot">&lt;-</span> <span class="fu">sum</span>(sumTab[<span class="dv">1</span>,])<span class="sc">/</span><span class="fu">sum</span>(sumTab)</span>
+<span id="cb396-2"><a href="inferential-statistics-take-1.html#cb396-2" aria-hidden="true" tabindex="-1"></a>pPool </span></code></pre></div>
+<pre><code>## [1] 0.341922</code></pre>
+<p>In other words, if we ignored herbicide exposure about 34% of the dogs in our sample developed cancer. We use this proportion to ensure that our samples are both large enough to apply the central limit theorem.</p>
+<div class="sourceCode" id="cb398"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb398-1"><a href="inferential-statistics-take-1.html#cb398-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>( n1<span class="sc">*</span>pPool, n1<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>pPool))</span></code></pre></div>
+<pre><code>## [1] 169.2514 325.7486</code></pre>
+<div class="sourceCode" id="cb400"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb400-1"><a href="inferential-statistics-take-1.html#cb400-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>( n2<span class="sc">*</span>pPool, n2<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>pPool))</span></code></pre></div>
+<pre><code>## [1] 321.7486 619.2514</code></pre>
+<p>Thus both of our samples have at least 10 expected success and expected failures, so we can apply the CLT! Remember we’re assuming that the null hypothesis is true and in turn that <span class="math display">\[p_1 = p_2 \approx \hat{p}_{pool}\]</span>. Thus</p>
+<p><span class="math display">\[
+\begin{array}{ccc}
+SE &amp; = &amp; \sqrt{\frac{p_1(1-p_1)}{n_1}+ \frac{p_2(1-p_2)}{n_2}} \\ &amp; \approx &amp; \sqrt{\frac{\hat{p}_{pool}(1-\hat{p}_{pool})}{n_1} + \frac{\hat{p}_{pool}(1-\hat{p}_{pool})}{n_2}}
+\end{array}
+\]</span></p>
+<p>The calculation for our current working example is below.</p>
+<div class="sourceCode" id="cb402"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb402-1"><a href="inferential-statistics-take-1.html#cb402-1" aria-hidden="true" tabindex="-1"></a>SE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>( pPool<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>pPool)<span class="sc">/</span>n1 <span class="sc">+</span> pPool<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>pPool)<span class="sc">/</span>n2) </span>
+<span id="cb402-2"><a href="inferential-statistics-take-1.html#cb402-2" aria-hidden="true" tabindex="-1"></a>SE</span></code></pre></div>
+<pre><code>## [1] 0.02633795</code></pre>
+<p>We’re finally ready to calculate the <span class="math inline">\(p\)</span>-value for this experiment. Let’s perform this hypothesis test with a significance level of <span class="math inline">\(\alpha = .05\)</span>.</p>
+<p>Our point estimate of <span class="math inline">\(p_1 - p2\)</span> is <code>pDiff</code> below.</p>
+<div class="sourceCode" id="cb404"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb404-1"><a href="inferential-statistics-take-1.html#cb404-1" aria-hidden="true" tabindex="-1"></a>pHat1 <span class="ot">&lt;-</span> sumTab[<span class="dv">1</span>,<span class="dv">1</span>] <span class="sc">/</span> n1</span>
+<span id="cb404-2"><a href="inferential-statistics-take-1.html#cb404-2" aria-hidden="true" tabindex="-1"></a>pHat2 <span class="ot">&lt;-</span> sumTab[<span class="dv">1</span>,<span class="dv">2</span>] <span class="sc">/</span> n2 </span>
+<span id="cb404-3"><a href="inferential-statistics-take-1.html#cb404-3" aria-hidden="true" tabindex="-1"></a>pDiff <span class="ot">&lt;-</span> pHat1 <span class="sc">-</span> pHat2</span>
+<span id="cb404-4"><a href="inferential-statistics-take-1.html#cb404-4" aria-hidden="true" tabindex="-1"></a>pDiff</span></code></pre></div>
+<pre><code>## [1] 0.06704881</code></pre>
+<p>The test statistic, which in this case is a <span class="math inline">\(Z\)</span>-score, of our data is</p>
+<p><span class="math display">\[
+\begin{array}{ccc}
+Z &amp; = &amp;  \frac{\text{point est.} - \text{null value}}{SE} \\
+&amp; = &amp; \frac{ \hat{p}_1 - \hat{p}_2}{SE}
+\end{array}
+\]</span></p>
+<p>or as follows in R.</p>
+<div class="sourceCode" id="cb406"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb406-1"><a href="inferential-statistics-take-1.html#cb406-1" aria-hidden="true" tabindex="-1"></a>Z <span class="ot">&lt;-</span> pDiff <span class="sc">/</span> SE </span>
+<span id="cb406-2"><a href="inferential-statistics-take-1.html#cb406-2" aria-hidden="true" tabindex="-1"></a>Z</span></code></pre></div>
+<pre><code>## [1] 2.545711</code></pre>
+<p>Since <span class="math inline">\(Z &gt;0\)</span> the <span class="math inline">\(p\)</span>-value of our hypothesis test is</p>
+<div class="sourceCode" id="cb408"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb408-1"><a href="inferential-statistics-take-1.html#cb408-1" aria-hidden="true" tabindex="-1"></a>pVal <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(Z,<span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb408-2"><a href="inferential-statistics-take-1.html#cb408-2" aria-hidden="true" tabindex="-1"></a>pVal</span></code></pre></div>
+<pre><code>## [1] 0.01090555</code></pre>
+<p>In other words, if there were no difference between cancer rates in dogs exposed to the herbicide and those who were not there would be a 1.1% chance of observing data like our own or more extreme.</p>
+<p>Since <span class="math inline">\(p &lt; \alpha = .05\)</span>, we reject the null and accept the research: The data provide compelling evidence to believe that there the cancer rate of dogs exposed to the herbicide is different from the rate of dogs who were not exposed.</p>
+<p>Note that this may have been a good candidate for a one-sided hypothesis test since we’re not simply interested in detecting a difference. We may be more interested in seeing if dogs exposed to the herbicide developed cancer at greater rates than those who were not exposed. In this situation, it is common to perform a two-sided hypothesis test, but also report a confidence interval to indicate which side of the null value the true difference falls on if your tests results in a rejection of the null.</p>
 </div>
 </div>
-<div id="chi-squared-goodness-of-fit-test" class="section level3 hasAnchor" number="6.2.3">
-<h3><span class="header-section-number">6.2.3</span> Chi-squared goodness of fit test<a href="inferential-statistics-take-1.html#chi-squared-goodness-of-fit-test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="chi-squared-tests" class="section level3 hasAnchor" number="6.2.3">
+<h3><span class="header-section-number">6.2.3</span> Chi-squared tests<a href="inferential-statistics-take-1.html#chi-squared-tests" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>To do</p>
+<div id="chi-squared-goodness-of-fit" class="section level4 hasAnchor" number="6.2.3.1">
+<h4><span class="header-section-number">6.2.3.1</span> Chi-squared goodness of fit<a href="inferential-statistics-take-1.html#chi-squared-goodness-of-fit" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 </div>
-<div id="chi-squared-test-of-independence" class="section level3 hasAnchor" number="6.2.4">
-<h3><span class="header-section-number">6.2.4</span> Chi-squared test of independence<a href="inferential-statistics-take-1.html#chi-squared-test-of-independence" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="chi-squared-test-of-independence" class="section level4 hasAnchor" number="6.2.3.2">
+<h4><span class="header-section-number">6.2.3.2</span> Chi-squared test of independence<a href="inferential-statistics-take-1.html#chi-squared-test-of-independence" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+</div>
 </div>
 </div>
 <div id="analyzing-numerical-variables" class="section level2 hasAnchor" number="6.3">

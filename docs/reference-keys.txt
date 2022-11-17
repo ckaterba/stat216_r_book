@@ -61,7 +61,8 @@ hypothesis-testing
 two-sample-proportion
 confidence-intervals-2
 hypothesis-testing-1
-chi-squared-goodness-of-fit-test
+chi-squared-tests
+chi-squared-goodness-of-fit
 chi-squared-test-of-independence
 analyzing-numerical-variables
 single-sample-mean
@@ -78,7 +79,7 @@ inferential-statistics-take-2
 analyzing-categorical-variables-1
 single-sample-proportions
 two-sample-proportions
-chi-squared-goodness-of-fit-test-1
+chi-squared-goodness-of-fit-test
 chi-squared-test-of-independence-1
 analyzing-numerical-variables-1
 single-sample-mean-1
