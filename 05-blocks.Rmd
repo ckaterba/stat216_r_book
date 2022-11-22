@@ -809,11 +809,172 @@ Note that this may have been a good candidate for a one-sided hypothesis test si
 
 ### Chi-squared tests
 
-To do
+We can get a lot of mileage making inferences about categorical variables  using single and two sample proportion tests and confidence intervals, but they don't do everything we need. A single proportion may not always capture the subtleties we're interested in. For example, if you want to the test whether or not the outcomes of a die toss really are equally likely, it isn't enough to check  if a 1 occurs 1/6 of the time using a single sample proportion test because say 4's could be less likely and 6's more likely.  Similarly, when we're testing for an association between two categorical variables a 2-sample proportion test may miss some differences or subtleties we're interested in.  For instance, if you're testing for an association between smoking and socio-economic status, it is possible that lower and upper class individuals smoke at the same rate, but that middle class people smoke at a different rate. We thus need to develop a tool that can capture these differences that our previous techniques miss. This is where chi-squared (or $\chi^2$) tests come in.  
+
+These tests are different from our the previous ones because you analyze *counts* instead of *proportions*.  Counts are summarized in either **one-way or two-way tables**; one-way tables display the counts of the values a single categorical variable in a sample while two-way tables display the counts of the values of two categorical variables.  
+
+The data set `sp500_seq` from the `openintro` package is a summary of the all S&P500 trading day outcomes from 1950 to 2018. To get to the data set in question, first label each day as a down day or an up day, then count the number of days between two up days. The outcomes in this data set are 1, 2, 3, ..., 7+ and we treat these values as an ordered categorical variables because of the 7+. Below we see a  **one-way table** for the counts of lag times between up days. We will analyze this data set in the next section, but we will use it to test to see if the direction of the S&P500 on one day is independent from its direction on the previous day. 
+
+```{r}
+table(sp500_seq$race)
+```
+
+For an example of a two-way table, we'll use the `smoking` data set from the `openintro` package.  This data set presents some survey data on smoking habits in the UK. You might wonder if there's an association between marital status and smoking in the UK. This data set could provide some insight on this question and you could attempt to answer it by analyzing the following **two-way table**. 
+
+```{r}
+table(smoking$smoke, smoking$marital_status)
+```
+
+The basic idea behind all chi-squared tests is that under the null hypothesis each cell of your tabular data has an expected count; the goal is then is to measure the deviation between the *observed* counts and the *expected* counts. Moreover, we want a single test statistic that summarizes this. 
+
+You might start by simply looking at the difference between the observed $O$ and expected $E$ counts, then adding these differences up. Here we run into a dilemma that we've encountered before: positive and negative differences will possibly cancel each other out and make it look like there are no differences when in fact the differences are extreme.   Instead, we square the difference between the observed and expected counts: \( (O - E)^2 \).  
+
+We still have a small dilemma. Suppose you have two cells with observed counts 11 and 101. The expected counts for these cells are 10 and 100 respectively; \((O- E)^2 = 1\) for both of these cells, but the first observed count is 10\% different from the expected while the second is only 1\% different from the expected. We thus need to measure the squared deviation from the expected counts *relative to the expected counts* in each cell.  For each cell in our summary table, we calculate
+
+\[ \frac{(O-E)^2}{E}\]
+
+This value ends up being a squared $Z$-score! The single test statistic we calculate from our sample is the sum of these squared $Z$-scores and is called a \(\chi^2\)-test statistic (or chi-squared test statistic).
+
+\[ \chi^2 = \sum_{all \, cells \\ in \, table } \frac{(O-E)^2}{E}\]
+
+Since the test statistics are sums of squared $Z$-scores, the corresponding sampling distribution is a sum of squared standard normal distributions. The number of squared normal distributions is a parameter called **degrees of freedom**, $df$. Thus you completely determine a chi-squared distribution with $df$. 
+
+Once you've calculated your $\chi^2$-test statistic and have determined $df$, you can calculate a $p$-value and execute your hypothesis test. For any chi-squared test, "more favorable for the alternative hypothesis" will always mean roughly more deviation from the expected counts, so $p$-values are always upper tail areas.  For example, suppose you're performing some hypothesis test and find
+
+\[ 
+\begin{array}{ccl}
+df & = & 5 \text{ and } \\
+\chi^2 & = & 6.2.
+\end{array}
+\]
+
+The image below shows a plot of the chi-squared distribtuion with $df = 5$ and shades the $p$-value of our imaginary hypothesis test.
+
+```{r}
+ggplot(tibble(x = c(0, 18)), aes(x = x)) + 
+  geom_function(fun = dchisq,
+                args = list(df = 5)) +
+  stat_function(fun = dchisq,
+                args = list(df = 5),
+                geom = "area",
+                xlim = c(6.2, 18),
+                fill = "steelblue") +
+  labs( x = "chi-squared", y = "",
+        title = "Chi-squared distribution with df = 5",
+        subtitle = "p-value for chi-squared = 6.2 shaded")
+```
+
+From this we see that we can calculate $p$-values for chi-squared tests using the function `pchisq(test_stat, df = df, lower.tail = FALSE)`.  For example, the $p$-value for our imaginary hypothesis test would be
+
+```{r}
+pchisq(6.2, df = 5, lower.tail=FALSE)
+```
+
+For more information about R's functions for chi-squared distributions, see Chapter 4's section on these distributions. 
+
+This section summarized the basics of all chi-squared tests from a big picture. From this summary note that we essentially only need to figure out two things. 
+
+1.  How does one determine the expected counts for each cell of the table?
+
+2. What are the appropriate numbers of degrees of freedom for the hypothesis test? 
+
+The answers to these questions depends on the type of chi-squared test you're performing. The next sections provide these answers for the two types of chi-squared tests. 
 
 #### Chi-squared goodness of fit
 
+These hypothesis tests are used to see if your sample data deviates from its expected distribution. For example, we expect the outcomes of a single die to be equally likely and could use a chi-squared goodness of fit test to check this. 
 
+The null and alternative hypothesis for a goodness of fit test are 
+
+\[ 
+\begin{array}{cl}
+H_0 & \text{the data follow the expected distribution} H_a &  \text{the data do not follow the expected distribution}
+\end{array}
+\]
+
+and rejecting the hypothesis implies that the population distribution differs from the expected distribution.No surprise, the expected distribution determines the expected counts for each cell in your table. For example, if you toss a single die 120 times and record the outcome, you'd expect to get \(120/6 = 20\) of each number 1-6.  
+
+To perform these hypothesis tests we need to know the number of degrees of freedom. You can think of this as the minimum number of cell counts in your table you need to completely determine the remaining cells. For example, if you toss a die 120 times and know the counts of the outcomes 1 through 5, you can figure out how many 6's you got (120 minus the sum of 1-5 counts). But if you removed any of the other counts, you wouldn't have enough information to complete the table. Thus you have 5 degrees of freedom in the die toss example. For one-way tables and goodness of fit tests 
+
+\[ df = k -1\]
+
+where $k$ is the number of cells in your table. 
+
+Determining the expected counts can be slightly more involved than the die toss example. Let's return to the S&P500 example mentioned in the previous section. We want to test to see if the direction of the stock market on one day is independent from the direction of the stock market on the previous day.  If we assume that the directions are independent, then the probability of the market going up on any day is the same. This might be tough to test on its own, but notice that we can count the number of days between two consecutive up days. For instance, "up up" would give a count of one, "up down up" a count of two, etc. The table below tallies all such runs from 1990 to 2011.  
+
+```{r}
+spTable <- table(sp500_seq$race)
+spTable
+```
+
+If the daily directions are independent, what would the table above look like? The number of days between consecutive "up" days should follow a **geometric distribution**! To determine a geometric distribution, we need to know the probability of a success, which is the probability that the S&P500 goes up on a given day. We can estimate this probability using the following code chunk looks at  the raw S&P500 data from 1990 to 2011.
+
+```{r}
+sp500_1950_2018 %>% 
+  filter( as.character(Date) >= '1990' & 
+            as.character(Date) <= '2012') %>% 
+  mutate(dir = if_else( Close > Open, TRUE, FALSE)) %>%
+  summarize( upProb = sum(dir)/length(dir))
+```
+
+So the probability that the S&P500 goes up on a given day is rough 53.1\%. Using this, we can generate a table of expected counts. 
+
+```{r}
+# total number of up-to-up runs
+n <-sum(spTable)
+#list of factors
+days <- c(1:6, "7+")
+#probability/proportion of each factor level
+probs <- c( dgeom(0:5,.531), pgeom(5, .531, lower.tail = F))
+# expected counts 
+expected <- n*probs
+expected
+# display all of the above in a horizontally organized table
+t( tibble(days, prob = round(probs, 3), expected = round(expected, 3))) %>% kable()
+```
+
+We're finally ready to calculate our test statistic and execute a hypothesis test. Let's use a significance level of $\alpha = .05$. We're specifically testing 
+
+\[
+\begin{array}{cl}
+H_0: & \text{the number of days between consecutive "up" days} \\
+& \text{on the S&P500 follows a geometric distribution} \\
+H_a: & \text{the count does not follow a geometric distribution.}
+\end{array}
+\]
+
+Note that our table has 7 cells in it, so 
+
+\[ df = 7 - 1 = 6. \]
+
+We will calculate our test statistic in a few steps. Recall that it is 
+
+\[ \chi^2 = \sum_{all \\cells} \frac{(O-E)^2}{E} \]
+
+```{r}
+# each individual squared z-score
+(spTable - expected)^2/expected 
+
+# test stat
+chi.sq <- sum((spTable - expected)^2/expected)
+chi.sq
+```
+
+Now that we have our test statistic in hand we can calculate a $p$-value. 
+
+```{r}
+pchisq(chi.sq, df = 6, lower.tail = FALSE)
+```
+
+Since our $p$-value is less than .05, we reject the null and accept the alternative. In other words, the counts of runs of different lengths do *not* appear to follow a geometric distribution. This implies that the direction of the S&P500 on one day **depends** on the direction of the previous day. 
+
+This seems like it could be useful information! But how could one use it? This is a harder question and for the most part beyond the scope of this course. For fun, let's look at the z-scores of each cell instead of the squared z-scores. 
+
+```{r}
+(spTable - expected)/sqrt(expected)
+```
+
+The only two run lengths that seem particularly unusual are runs of length 4 and 7 or more. In particular there are more runs of length 4 than we'd expect and fewer runs of length seven or more. Does that mean you should bet on the market going up if there are three down days in a row?  Not without more analysis! At a bare minimum you'd want to calculate a conditional probability.  
 
 #### Chi-squared test of independence
 

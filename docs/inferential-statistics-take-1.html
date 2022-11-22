@@ -332,7 +332,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb336-3"><a href="inferential-statistics-take-1.html#cb336-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Distribution of sample proportions, n = 2044&quot;</span>, </span>
 <span id="cb336-4"><a href="inferential-statistics-take-1.html#cb336-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Estimating SE for 2010 proportion of Americans without a HS diploma&quot;</span>,</span>
 <span id="cb336-5"><a href="inferential-statistics-take-1.html#cb336-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Sample proportion, p-hat&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-190-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-182-1.png" width="672" /></p>
 <p>Voila! Our sampling distribution does seem to be symmetric and unimodal. Where precisely is the center?</p>
 <div class="sourceCode" id="cb337"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb337-1"><a href="inferential-statistics-take-1.html#cb337-1" aria-hidden="true" tabindex="-1"></a><span class="co">#average sample proportion</span></span>
 <span id="cb337-2"><a href="inferential-statistics-take-1.html#cb337-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(simulated_sampling_distr<span class="sc">$</span>p_hat)</span></code></pre></div>
@@ -366,7 +366,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb343-3"><a href="inferential-statistics-take-1.html#cb343-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Distribution of sample proportions, n = 100&quot;</span>, </span>
 <span id="cb343-4"><a href="inferential-statistics-take-1.html#cb343-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Estimating SE for 2010 proportion of Americans without a HS diploma&quot;</span>,</span>
 <span id="cb343-5"><a href="inferential-statistics-take-1.html#cb343-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Sample proportion, p-hat&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-194-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-186-1.png" width="672" /></p>
 <p>Notice that the center is about the same as our first sampling distribution, but our second is more spread out as we claimed above! To check these claims, let’s look at the average sample proportion and the estimated standard error.</p>
 <div class="sourceCode" id="cb344"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb344-1"><a href="inferential-statistics-take-1.html#cb344-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(sampling_dist2<span class="sc">$</span>p_hat)</span></code></pre></div>
 <pre><code>## [1] 0.14884</code></pre>
@@ -427,19 +427,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span class="math display">\[ H_a: p \neq .5  \]</span></li>
 </ol>
 <p>Samples that are at least as favorable for <span class="math inline">\(H_a\)</span> as our own come in two flavors: samples with a proportion of at least .55 and those with a proportion of <em>at most</em> .45. Notice that the samples with proportions of at most .45 really are just as favorable as those with proportions of at least .55 when we’re checking for a difference because they are equally as far away from the null proportion of .5. Thus, the <span class="math inline">\(p\)</span>-value of a two-sided hypothesis tests will be a two-tailed probability. The plot below helps visualize this <span class="math inline">\(p\)</span>-value as an area in the sampling distribution. We have hidden the plotting code here to prioritize the concepts.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-198-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-190-1.png" width="672" /></p>
 <ol start="2" style="list-style-type: decimal">
 <li><strong>One-sided upper hypothesis test</strong>: In this case, we’re simply checking to see if the population parameter is greater than the null value. For our example:</li>
 </ol>
 <p><span class="math display">\[ H_a: p &gt; .5  \]</span></p>
 <p>Samples that are at least as favorable for <span class="math inline">\(H_a\)</span> as our own only one flavor this time: samples with a proportion of at least .55. Thus the <span class="math inline">\(p\)</span>-value for this hypothesis test is an upper-tail area. The plot below helps us visualize this.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-199-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-191-1.png" width="672" /></p>
 <ol start="3" style="list-style-type: decimal">
 <li><strong>One-sided lower hypothesis test</strong>: In this case, we’re simply checking to see if the population parameter is less than the null value. For our example:</li>
 </ol>
 <p><span class="math display">\[ H_a: p &gt; .5  \]</span></p>
 <p>Samples that are at least as favorable for <span class="math inline">\(H_a\)</span> as our own only one flavor: samples with a proportion of at most .55. Thus the <span class="math inline">\(p\)</span>-value for this hypothesis test is a lower-tail area in the sampling distribution. The plot below helps us visualize this.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-200-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-192-1.png" width="672" /></p>
 <p>Our <span class="math inline">\(p\)</span>-value is large because our sample proportion is above the null value when we thought it was going to be below. We should revise our alternative hypothesis in this case.</p>
 <p>Let’s finish this section using the high school diploma question we started this chapter with. In particular, in 2010 did more than 10% of Americans fail to graduate high school? As a hypothesis test:</p>
 <ul>
@@ -464,7 +464,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb358-3"><a href="inferential-statistics-take-1.html#cb358-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> pHat, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
 <span id="cb358-4"><a href="inferential-statistics-take-1.html#cb358-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Null distribution with p = .1 and n = 2044, pHat = .149&quot;</span>, </span>
 <span id="cb358-5"><a href="inferential-statistics-take-1.html#cb358-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Sample proportion, p-hat&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-202-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-194-1.png" width="672" /></p>
 <p>As we’d expect the null sampling distribution is approximately normal. The plot above indicates that our sample proportion <span class="math inline">\(\hat{p}\)</span> would be quite unlikely if the null hypothesis were true. To estimate exactly how unlikely, let’s <em>estimate</em> the <span class="math inline">\(p\)</span>-value of our sample.</p>
 <div class="sourceCode" id="cb359"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb359-1"><a href="inferential-statistics-take-1.html#cb359-1" aria-hidden="true" tabindex="-1"></a><span class="co"># count the number of simulated samples with proportions at least as large as </span></span>
 <span id="cb359-2"><a href="inferential-statistics-take-1.html#cb359-2" aria-hidden="true" tabindex="-1"></a><span class="co"># our actual sample proportion, divide by number of samples in simulated dist.</span></span>
@@ -506,7 +506,7 @@ In other words, you can approximate the standard error using the sample proporti
 <p><span class="math display">\[ \text{point estimate} \pm CV \cdot SE\]</span></p>
 <p>where <span class="math inline">\(CV\)</span> is the critical value determined by the confidence level. The <strong>CLT</strong> provides the standard error and our sample gives the point estimate, so we only need to worry about the critical value. Recall that if your confidence level is <span class="math inline">\(CL\)</span>, then <span class="math inline">\(CL\)</span>% of all sample proportions will fall within <span class="math inline">\(CV\)</span> standard deviations of the true population parameter within the sampling distribution. The sampling distribution is normal by the Central Limit theorem, so we can use the <code>qnorm(...)</code> function to find precise critical values.</p>
 <p>As an example, let’s find the critical value for a 95% confidence interval. We want to find the value <span class="math inline">\(z^\ast\)</span> so that 95% of all sample proportions fall within <span class="math inline">\(z^\ast\)</span> standard deviations of the population proportion. In other words, we need to find <span class="math inline">\(z^\ast\)</span> so that <span class="math inline">\(P ( |Z| \leq z^\ast ) = .95\)</span>. The graph below helps visualize the setup.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-204-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-196-1.png" width="672" /></p>
 <p>We can see that the bounds are almost <span class="math inline">\(\pm2\)</span>, but not quite. If the central area is .95, then the tail area is .05. The upper and lower tails are symmetric, so the upper tail area is .025. Thus, to find our critical value, we simply evaluate</p>
 <div class="sourceCode" id="cb361"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb361-1"><a href="inferential-statistics-take-1.html#cb361-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(.<span class="dv">025</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <pre><code>## [1] 1.959964</code></pre>
@@ -558,7 +558,7 @@ H_a: p \neq .5
 \end{array}
 \]</span></p>
 <p>and the image below helps us visualize the <span class="math inline">\(p\)</span>-value of our sample with <span class="math inline">\(\hat{p} = .55\)</span></p>
-<p><img src="_main_files/figure-html/unnamed-chunk-208-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-200-1.png" width="672" /></p>
 <p>The upper and lower tails of the <span class="math inline">\(p\)</span>-value are symmetric about the mean, so we can calculate one of them and double it.</p>
 <div class="sourceCode" id="cb367"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb367-1"><a href="inferential-statistics-take-1.html#cb367-1" aria-hidden="true" tabindex="-1"></a>pNull <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
 <span id="cb367-2"><a href="inferential-statistics-take-1.html#cb367-2" aria-hidden="true" tabindex="-1"></a>SE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(pNull<span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> pNull)<span class="sc">/</span><span class="dv">200</span>)</span>
@@ -574,7 +574,7 @@ H_a: p &gt; .5
 \end{array}
 \]</span></p>
 <p>and the image below helps us visualize the <span class="math inline">\(p\)</span>-value of our sample with <span class="math inline">\(\hat{p} = .55\)</span></p>
-<p><img src="_main_files/figure-html/unnamed-chunk-210-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-202-1.png" width="672" /></p>
 <p>The <span class="math inline">\(p\)</span>-value is the shaded upper tail area and can be calculated as follows.</p>
 <div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb369-1"><a href="inferential-statistics-take-1.html#cb369-1" aria-hidden="true" tabindex="-1"></a>pNull <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
 <span id="cb369-2"><a href="inferential-statistics-take-1.html#cb369-2" aria-hidden="true" tabindex="-1"></a>SE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(pNull<span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> pNull)<span class="sc">/</span><span class="dv">200</span>)</span>
@@ -590,7 +590,7 @@ H_a: p &lt; .5
 \end{array}
 \]</span></p>
 <p>and the image below helps us visualize the <span class="math inline">\(p\)</span>-value of our sample with <span class="math inline">\(\hat{p} = .55\)</span></p>
-<p><img src="_main_files/figure-html/unnamed-chunk-212-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-204-1.png" width="672" /></p>
 <p>The <span class="math inline">\(p\)</span>-value is the shaded llower tail area and can be calculated as follows.</p>
 <div class="sourceCode" id="cb371"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb371-1"><a href="inferential-statistics-take-1.html#cb371-1" aria-hidden="true" tabindex="-1"></a>pNull <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
 <span id="cb371-2"><a href="inferential-statistics-take-1.html#cb371-2" aria-hidden="true" tabindex="-1"></a>SE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(pNull<span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> pNull)<span class="sc">/</span><span class="dv">200</span>)</span>
@@ -813,9 +813,168 @@ Z &amp; = &amp;  \frac{\text{point est.} - \text{null value}}{SE} \\
 </div>
 <div id="chi-squared-tests" class="section level3 hasAnchor" number="6.2.3">
 <h3><span class="header-section-number">6.2.3</span> Chi-squared tests<a href="inferential-statistics-take-1.html#chi-squared-tests" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>To do</p>
+<p>We can get a lot of mileage making inferences about categorical variables using single and two sample proportion tests and confidence intervals, but they don’t do everything we need. A single proportion may not always capture the subtleties we’re interested in. For example, if you want to the test whether or not the outcomes of a die toss really are equally likely, it isn’t enough to check if a 1 occurs 1/6 of the time using a single sample proportion test because say 4’s could be less likely and 6’s more likely. Similarly, when we’re testing for an association between two categorical variables a 2-sample proportion test may miss some differences or subtleties we’re interested in. For instance, if you’re testing for an association between smoking and socio-economic status, it is possible that lower and upper class individuals smoke at the same rate, but that middle class people smoke at a different rate. We thus need to develop a tool that can capture these differences that our previous techniques miss. This is where chi-squared (or <span class="math inline">\(\chi^2\)</span>) tests come in.</p>
+<p>These tests are different from our the previous ones because you analyze <em>counts</em> instead of <em>proportions</em>. Counts are summarized in either <strong>one-way or two-way tables</strong>; one-way tables display the counts of the values a single categorical variable in a sample while two-way tables display the counts of the values of two categorical variables.</p>
+<p>The data set <code>sp500_seq</code> from the <code>openintro</code> package is a summary of the all S&amp;P500 trading day outcomes from 1950 to 2018. To get to the data set in question, first label each day as a down day or an up day, then count the number of days between two up days. The outcomes in this data set are 1, 2, 3, …, 7+ and we treat these values as an ordered categorical variables because of the 7+. Below we see a <strong>one-way table</strong> for the counts of lag times between up days. We will analyze this data set in the next section, but we will use it to test to see if the direction of the S&amp;P500 on one day is independent from its direction on the previous day.</p>
+<div class="sourceCode" id="cb410"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb410-1"><a href="inferential-statistics-take-1.html#cb410-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(sp500_seq<span class="sc">$</span>race)</span></code></pre></div>
+<pre><code>## 
+##    1    2    3    4    5    6   7+ 
+## 1532  760  338  194   74   33   17</code></pre>
+<p>For an example of a two-way table, we’ll use the <code>smoking</code> data set from the <code>openintro</code> package. This data set presents some survey data on smoking habits in the UK. You might wonder if there’s an association between marital status and smoking in the UK. This data set could provide some insight on this question and you could attempt to answer it by analyzing the following <strong>two-way table</strong>.</p>
+<div class="sourceCode" id="cb412"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb412-1"><a href="inferential-statistics-take-1.html#cb412-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(smoking<span class="sc">$</span>smoke, smoking<span class="sc">$</span>marital_status)</span></code></pre></div>
+<pre><code>##      
+##       Divorced Married Separated Single Widowed
+##   No       103     669        46    269     183
+##   Yes       58     143        22    158      40</code></pre>
+<p>The basic idea behind all chi-squared tests is that under the null hypothesis each cell of your tabular data has an expected count; the goal is then is to measure the deviation between the <em>observed</em> counts and the <em>expected</em> counts. Moreover, we want a single test statistic that summarizes this.</p>
+<p>You might start by simply looking at the difference between the observed <span class="math inline">\(O\)</span> and expected <span class="math inline">\(E\)</span> counts, then adding these differences up. Here we run into a dilemma that we’ve encountered before: positive and negative differences will possibly cancel each other out and make it look like there are no differences when in fact the differences are extreme. Instead, we square the difference between the observed and expected counts: <span class="math inline">\((O - E)^2\)</span>.</p>
+<p>We still have a small dilemma. Suppose you have two cells with observed counts 11 and 101. The expected counts for these cells are 10 and 100 respectively; <span class="math inline">\((O- E)^2 = 1\)</span> for both of these cells, but the first observed count is 10% different from the expected while the second is only 1% different from the expected. We thus need to measure the squared deviation from the expected counts <em>relative to the expected counts</em> in each cell. For each cell in our summary table, we calculate</p>
+<p><span class="math display">\[ \frac{(O-E)^2}{E}\]</span></p>
+<p>This value ends up being a squared <span class="math inline">\(Z\)</span>-score! The single test statistic we calculate from our sample is the sum of these squared <span class="math inline">\(Z\)</span>-scores and is called a <span class="math inline">\(\chi^2\)</span>-test statistic (or chi-squared test statistic).</p>
+<p><span class="math display">\[ \chi^2 = \sum_{all \, cells \\ in \, table } \frac{(O-E)^2}{E}\]</span></p>
+<p>Since the test statistics are sums of squared <span class="math inline">\(Z\)</span>-scores, the corresponding sampling distribution is a sum of squared standard normal distributions. The number of squared normal distributions is a parameter called <strong>degrees of freedom</strong>, <span class="math inline">\(df\)</span>. Thus you completely determine a chi-squared distribution with <span class="math inline">\(df\)</span>.</p>
+<p>Once you’ve calculated your <span class="math inline">\(\chi^2\)</span>-test statistic and have determined <span class="math inline">\(df\)</span>, you can calculate a <span class="math inline">\(p\)</span>-value and execute your hypothesis test. For any chi-squared test, “more favorable for the alternative hypothesis” will always mean roughly more deviation from the expected counts, so <span class="math inline">\(p\)</span>-values are always upper tail areas. For example, suppose you’re performing some hypothesis test and find</p>
+<p><span class="math display">\[
+\begin{array}{ccl}
+df &amp; = &amp; 5 \text{ and } \\
+\chi^2 &amp; = &amp; 6.2.
+\end{array}
+\]</span></p>
+<p>The image below shows a plot of the chi-squared distribtuion with <span class="math inline">\(df = 5\)</span> and shades the <span class="math inline">\(p\)</span>-value of our imaginary hypothesis test.</p>
+<div class="sourceCode" id="cb414"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb414-1"><a href="inferential-statistics-take-1.html#cb414-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">tibble</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">18</span>)), <span class="fu">aes</span>(<span class="at">x =</span> x)) <span class="sc">+</span> </span>
+<span id="cb414-2"><a href="inferential-statistics-take-1.html#cb414-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_function</span>(<span class="at">fun =</span> dchisq,</span>
+<span id="cb414-3"><a href="inferential-statistics-take-1.html#cb414-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">args =</span> <span class="fu">list</span>(<span class="at">df =</span> <span class="dv">5</span>)) <span class="sc">+</span></span>
+<span id="cb414-4"><a href="inferential-statistics-take-1.html#cb414-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dchisq,</span>
+<span id="cb414-5"><a href="inferential-statistics-take-1.html#cb414-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">args =</span> <span class="fu">list</span>(<span class="at">df =</span> <span class="dv">5</span>),</span>
+<span id="cb414-6"><a href="inferential-statistics-take-1.html#cb414-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">geom =</span> <span class="st">&quot;area&quot;</span>,</span>
+<span id="cb414-7"><a href="inferential-statistics-take-1.html#cb414-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">xlim =</span> <span class="fu">c</span>(<span class="fl">6.2</span>, <span class="dv">18</span>),</span>
+<span id="cb414-8"><a href="inferential-statistics-take-1.html#cb414-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">fill =</span> <span class="st">&quot;steelblue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb414-9"><a href="inferential-statistics-take-1.html#cb414-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>( <span class="at">x =</span> <span class="st">&quot;chi-squared&quot;</span>, <span class="at">y =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb414-10"><a href="inferential-statistics-take-1.html#cb414-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">&quot;Chi-squared distribution with df = 5&quot;</span>,</span>
+<span id="cb414-11"><a href="inferential-statistics-take-1.html#cb414-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="st">&quot;p-value for chi-squared = 6.2 shaded&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-225-1.png" width="672" /></p>
+<p>From this we see that we can calculate <span class="math inline">\(p\)</span>-values for chi-squared tests using the function <code>pchisq(test_stat, df = df, lower.tail = FALSE)</code>. For example, the <span class="math inline">\(p\)</span>-value for our imaginary hypothesis test would be</p>
+<div class="sourceCode" id="cb415"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb415-1"><a href="inferential-statistics-take-1.html#cb415-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pchisq</span>(<span class="fl">6.2</span>, <span class="at">df =</span> <span class="dv">5</span>, <span class="at">lower.tail=</span><span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## [1] 0.2872417</code></pre>
+<p>For more information about R’s functions for chi-squared distributions, see Chapter 4’s section on these distributions.</p>
+<p>This section summarized the basics of all chi-squared tests from a big picture. From this summary note that we essentially only need to figure out two things.</p>
+<ol style="list-style-type: decimal">
+<li><p>How does one determine the expected counts for each cell of the table?</p></li>
+<li><p>What are the appropriate numbers of degrees of freedom for the hypothesis test?</p></li>
+</ol>
+<p>The answers to these questions depends on the type of chi-squared test you’re performing. The next sections provide these answers for the two types of chi-squared tests.</p>
 <div id="chi-squared-goodness-of-fit" class="section level4 hasAnchor" number="6.2.3.1">
 <h4><span class="header-section-number">6.2.3.1</span> Chi-squared goodness of fit<a href="inferential-statistics-take-1.html#chi-squared-goodness-of-fit" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>These hypothesis tests are used to see if your sample data deviates from its expected distribution. For example, we expect the outcomes of a single die to be equally likely and could use a chi-squared goodness of fit test to check this.</p>
+<p>The null and alternative hypothesis for a goodness of fit test are</p>
+<p><span class="math display">\[
+\begin{array}{cl}
+H_0 &amp; \text{the data follow the expected distribution} H_a &amp;  \text{the data do not follow the expected distribution}
+\end{array}
+\]</span></p>
+<p>and rejecting the hypothesis implies that the population distribution differs from the expected distribution.No surprise, the expected distribution determines the expected counts for each cell in your table. For example, if you toss a single die 120 times and record the outcome, you’d expect to get <span class="math inline">\(120/6 = 20\)</span> of each number 1-6.</p>
+<p>To perform these hypothesis tests we need to know the number of degrees of freedom. You can think of this as the minimum number of cell counts in your table you need to completely determine the remaining cells. For example, if you toss a die 120 times and know the counts of the outcomes 1 through 5, you can figure out how many 6’s you got (120 minus the sum of 1-5 counts). But if you removed any of the other counts, you wouldn’t have enough information to complete the table. Thus you have 5 degrees of freedom in the die toss example. For one-way tables and goodness of fit tests</p>
+<p><span class="math display">\[ df = k -1\]</span></p>
+<p>where <span class="math inline">\(k\)</span> is the number of cells in your table.</p>
+<p>Determining the expected counts can be slightly more involved than the die toss example. Let’s return to the S&amp;P500 example mentioned in the previous section. We want to test to see if the direction of the stock market on one day is independent from the direction of the stock market on the previous day. If we assume that the directions are independent, then the probability of the market going up on any day is the same. This might be tough to test on its own, but notice that we can count the number of days between two consecutive up days. For instance, “up up” would give a count of one, “up down up” a count of two, etc. The table below tallies all such runs from 1990 to 2011.</p>
+<div class="sourceCode" id="cb417"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb417-1"><a href="inferential-statistics-take-1.html#cb417-1" aria-hidden="true" tabindex="-1"></a>spTable <span class="ot">&lt;-</span> <span class="fu">table</span>(sp500_seq<span class="sc">$</span>race)</span>
+<span id="cb417-2"><a href="inferential-statistics-take-1.html#cb417-2" aria-hidden="true" tabindex="-1"></a>spTable</span></code></pre></div>
+<pre><code>## 
+##    1    2    3    4    5    6   7+ 
+## 1532  760  338  194   74   33   17</code></pre>
+<p>If the daily directions are independent, what would the table above look like? The number of days between consecutive “up” days should follow a <strong>geometric distribution</strong>! To determine a geometric distribution, we need to know the probability of a success, which is the probability that the S&amp;P500 goes up on a given day. We can estimate this probability using the following code chunk looks at the raw S&amp;P500 data from 1990 to 2011.</p>
+<div class="sourceCode" id="cb419"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb419-1"><a href="inferential-statistics-take-1.html#cb419-1" aria-hidden="true" tabindex="-1"></a>sp500_1950_2018 <span class="sc">%&gt;%</span> </span>
+<span id="cb419-2"><a href="inferential-statistics-take-1.html#cb419-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>( <span class="fu">as.character</span>(Date) <span class="sc">&gt;=</span> <span class="st">&#39;1990&#39;</span> <span class="sc">&amp;</span> </span>
+<span id="cb419-3"><a href="inferential-statistics-take-1.html#cb419-3" aria-hidden="true" tabindex="-1"></a>            <span class="fu">as.character</span>(Date) <span class="sc">&lt;=</span> <span class="st">&#39;2012&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb419-4"><a href="inferential-statistics-take-1.html#cb419-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dir =</span> <span class="fu">if_else</span>( Close <span class="sc">&gt;</span> Open, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb419-5"><a href="inferential-statistics-take-1.html#cb419-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>( <span class="at">upProb =</span> <span class="fu">sum</span>(dir)<span class="sc">/</span><span class="fu">length</span>(dir))</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 1
+##   upProb
+##    &lt;dbl&gt;
+## 1  0.531</code></pre>
+<p>So the probability that the S&amp;P500 goes up on a given day is rough 53.1%. Using this, we can generate a table of expected counts.</p>
+<div class="sourceCode" id="cb421"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb421-1"><a href="inferential-statistics-take-1.html#cb421-1" aria-hidden="true" tabindex="-1"></a><span class="co"># total number of up-to-up runs</span></span>
+<span id="cb421-2"><a href="inferential-statistics-take-1.html#cb421-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span><span class="fu">sum</span>(spTable)</span>
+<span id="cb421-3"><a href="inferential-statistics-take-1.html#cb421-3" aria-hidden="true" tabindex="-1"></a><span class="co">#list of factors</span></span>
+<span id="cb421-4"><a href="inferential-statistics-take-1.html#cb421-4" aria-hidden="true" tabindex="-1"></a>days <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="st">&quot;7+&quot;</span>)</span>
+<span id="cb421-5"><a href="inferential-statistics-take-1.html#cb421-5" aria-hidden="true" tabindex="-1"></a><span class="co">#probability/proportion of each factor level</span></span>
+<span id="cb421-6"><a href="inferential-statistics-take-1.html#cb421-6" aria-hidden="true" tabindex="-1"></a>probs <span class="ot">&lt;-</span> <span class="fu">c</span>( <span class="fu">dgeom</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">5</span>,.<span class="dv">531</span>), <span class="fu">pgeom</span>(<span class="dv">5</span>, .<span class="dv">531</span>, <span class="at">lower.tail =</span> F))</span>
+<span id="cb421-7"><a href="inferential-statistics-take-1.html#cb421-7" aria-hidden="true" tabindex="-1"></a><span class="co"># expected counts </span></span>
+<span id="cb421-8"><a href="inferential-statistics-take-1.html#cb421-8" aria-hidden="true" tabindex="-1"></a>expected <span class="ot">&lt;-</span> n<span class="sc">*</span>probs</span>
+<span id="cb421-9"><a href="inferential-statistics-take-1.html#cb421-9" aria-hidden="true" tabindex="-1"></a>expected</span></code></pre></div>
+<pre><code>## [1] 1565.38800  734.16697  344.32431  161.48810   75.73792   35.52108
+## [7]   31.37361</code></pre>
+<div class="sourceCode" id="cb423"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb423-1"><a href="inferential-statistics-take-1.html#cb423-1" aria-hidden="true" tabindex="-1"></a><span class="co"># display all of the above in a horizontally organized table</span></span>
+<span id="cb423-2"><a href="inferential-statistics-take-1.html#cb423-2" aria-hidden="true" tabindex="-1"></a><span class="fu">t</span>( <span class="fu">tibble</span>(days, <span class="at">prob =</span> <span class="fu">round</span>(probs, <span class="dv">3</span>), <span class="at">expected =</span> <span class="fu">round</span>(expected, <span class="dv">3</span>))) <span class="sc">%&gt;%</span> <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left">days</td>
+<td align="left">1</td>
+<td align="left">2</td>
+<td align="left">3</td>
+<td align="left">4</td>
+<td align="left">5</td>
+<td align="left">6</td>
+<td align="left">7+</td>
+</tr>
+<tr class="even">
+<td align="left">prob</td>
+<td align="left">0.531</td>
+<td align="left">0.249</td>
+<td align="left">0.117</td>
+<td align="left">0.055</td>
+<td align="left">0.026</td>
+<td align="left">0.012</td>
+<td align="left">0.011</td>
+</tr>
+<tr class="odd">
+<td align="left">expected</td>
+<td align="left">1565.388</td>
+<td align="left">734.167</td>
+<td align="left">344.324</td>
+<td align="left">161.488</td>
+<td align="left">75.738</td>
+<td align="left">35.521</td>
+<td align="left">31.374</td>
+</tr>
+</tbody>
+</table>
+<p>We’re finally ready to calculate our test statistic and execute a hypothesis test. Let’s use a significance level of <span class="math inline">\(\alpha = .05\)</span>. We’re specifically testing</p>
+<p><span class="math display">\[
+\begin{array}{cl}
+H_0: &amp; \text{the number of days between consecutive &quot;up&quot; days} \\
+&amp; \text{on the S&amp;P500 follows a geometric distribution} \\
+H_a: &amp; \text{the count does not follow a geometric distribution.}
+\end{array}
+\]</span></p>
+<p>Note that our table has 7 cells in it, so</p>
+<p><span class="math display">\[ df = 7 - 1 = 6. \]</span></p>
+<p>We will calculate our test statistic in a few steps. Recall that it is</p>
+<p><span class="math display">\[ \chi^2 = \sum_{all \\cells} \frac{(O-E)^2}{E} \]</span></p>
+<div class="sourceCode" id="cb424"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb424-1"><a href="inferential-statistics-take-1.html#cb424-1" aria-hidden="true" tabindex="-1"></a><span class="co"># each individual squared z-score</span></span>
+<span id="cb424-2"><a href="inferential-statistics-take-1.html#cb424-2" aria-hidden="true" tabindex="-1"></a>(spTable <span class="sc">-</span> expected)<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>expected </span></code></pre></div>
+<pre><code>## 
+##          1          2          3          4          5          6 
+## 0.71212923 0.90898305 0.11616053 6.54551974 0.03987916 0.17893220 
+##         7+ 
+## 6.58517561</code></pre>
+<div class="sourceCode" id="cb426"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb426-1"><a href="inferential-statistics-take-1.html#cb426-1" aria-hidden="true" tabindex="-1"></a><span class="co"># test stat</span></span>
+<span id="cb426-2"><a href="inferential-statistics-take-1.html#cb426-2" aria-hidden="true" tabindex="-1"></a>chi.sq <span class="ot">&lt;-</span> <span class="fu">sum</span>((spTable <span class="sc">-</span> expected)<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>expected)</span>
+<span id="cb426-3"><a href="inferential-statistics-take-1.html#cb426-3" aria-hidden="true" tabindex="-1"></a>chi.sq</span></code></pre></div>
+<pre><code>## [1] 15.08678</code></pre>
+<p>Now that we have our test statistic in hand we can calculate a <span class="math inline">\(p\)</span>-value.</p>
+<div class="sourceCode" id="cb428"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb428-1"><a href="inferential-statistics-take-1.html#cb428-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pchisq</span>(chi.sq, <span class="at">df =</span> <span class="dv">6</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## [1] 0.0195924</code></pre>
+<p>Since our <span class="math inline">\(p\)</span>-value is less than .05, we reject the null and accept the alternative. In other words, the counts of runs of different lengths do <em>not</em> appear to follow a geometric distribution. This implies that the direction of the S&amp;P500 on one day <strong>depends</strong> on the direction of the previous day.</p>
+<p>This seems like it could be useful information! But how could one use it? This is a harder question and for the most part beyond the scope of this course. For fun, let’s look at the z-scores of each cell instead of the squared z-scores.</p>
+<div class="sourceCode" id="cb430"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb430-1"><a href="inferential-statistics-take-1.html#cb430-1" aria-hidden="true" tabindex="-1"></a>(spTable <span class="sc">-</span> expected)<span class="sc">/</span><span class="fu">sqrt</span>(expected)</span></code></pre></div>
+<pre><code>## 
+##          1          2          3          4          5          6 
+## -0.8438775  0.9534060 -0.3408233  2.5584213 -0.1996977 -0.4230038 
+##         7+ 
+## -2.5661597</code></pre>
+<p>The only two run lengths that seem particularly unusual are runs of length 4 and 7 or more. In particular there are more runs of length 4 than we’d expect and fewer runs of length seven or more. Does that mean you should bet on the market going up if there are three down days in a row? Not without more analysis! At a bare minimum you’d want to calculate a conditional probability.</p>
 </div>
 <div id="chi-squared-test-of-independence" class="section level4 hasAnchor" number="6.2.3.2">
 <h4><span class="header-section-number">6.2.3.2</span> Chi-squared test of independence<a href="inferential-statistics-take-1.html#chi-squared-test-of-independence" class="anchor-section" aria-label="Anchor link to header"></a></h4>
