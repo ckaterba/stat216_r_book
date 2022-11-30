@@ -68,10 +68,10 @@ analyzing-numerical-variables
 single-sample-mean
 confidence-intervals-3
 hypothesis-testing-2
-two-sample-mean
+paired-data
 confidence-intervals-4
 hypothesis-testing-3
-paired-data
+two-sample-mean
 confidence-intervals-5
 hypothesis-testing-4
 analysis-of-variance-anova

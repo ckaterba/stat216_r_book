@@ -8,7 +8,7 @@
   <meta name="description" content="<p>This is a minimal example of using the bookdown package to write a book.
 The HTML output format for this example is bookdown::gitbook,
 set in the _output.yml file.</p>" />
-  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 5 Distribution calculations | R and RStudio for STAT216" />
   <meta property="og:type" content="book" />
@@ -222,8 +222,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.3" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html#analyzing-numerical-variables"><i class="fa fa-check"></i><b>6.3</b> Analyzing numerical variables</a>
 <ul>
 <li class="chapter" data-level="6.3.1" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html#single-sample-mean"><i class="fa fa-check"></i><b>6.3.1</b> Single sample mean</a></li>
-<li class="chapter" data-level="6.3.2" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html#two-sample-mean"><i class="fa fa-check"></i><b>6.3.2</b> Two sample mean</a></li>
-<li class="chapter" data-level="6.3.3" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html#paired-data"><i class="fa fa-check"></i><b>6.3.3</b> Paired data</a></li>
+<li class="chapter" data-level="6.3.2" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html#paired-data"><i class="fa fa-check"></i><b>6.3.2</b> Paired data</a></li>
+<li class="chapter" data-level="6.3.3" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html#two-sample-mean"><i class="fa fa-check"></i><b>6.3.3</b> Two sample mean</a></li>
 <li class="chapter" data-level="6.3.4" data-path="inferential-statistics-take-1.html"><a href="inferential-statistics-take-1.html#analysis-of-variance-anova"><i class="fa fa-check"></i><b>6.3.4</b> Analysis of variance (ANOVA)</a></li>
 </ul></li>
 </ul></li>
@@ -477,7 +477,7 @@ Let’s learn how to make these calculations in R from an example. Suppose you a
 <span id="cb282-6"><a href="distribution-calculations.html#cb282-6" aria-hidden="true" tabindex="-1"></a>   <span class="fu">xlab</span>(<span class="st">&quot;k&quot;</span>) <span class="sc">+</span></span>
 <span id="cb282-7"><a href="distribution-calculations.html#cb282-7" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ylab</span>(<span class="st">&quot;P(X=k)&quot;</span>) <span class="sc">+</span></span>
 <span id="cb282-8"><a href="distribution-calculations.html#cb282-8" aria-hidden="true" tabindex="-1"></a>   <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Binomial Prob dist w/ p = .43 and n = 15&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-153-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-125-1.png" width="672" /></p>
 <p>Now let’s use R to answer the following questions:</p>
 <ol style="list-style-type: decimal">
 <li><p>What is the probability of exactly 4 independents in your poll?</p>
@@ -533,7 +533,7 @@ Let’s learn how to make these calculations in R from an example. Suppose you a
 <span id="cb295-6"><a href="distribution-calculations.html#cb295-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;k&quot;</span>) <span class="sc">+</span></span>
 <span id="cb295-7"><a href="distribution-calculations.html#cb295-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;P(X=k)&quot;</span>) <span class="sc">+</span></span>
 <span id="cb295-8"><a href="distribution-calculations.html#cb295-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Geometric Prob. dist. w/ p = .43 for k = 1 to 15&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-159-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-131-1.png" width="672" /></p>
 <ol style="list-style-type: decimal">
 <li><p>What is the probability you the 6th person you poll is the first independent?</p>
 <p>We’re trying to find <span class="math inline">\(P(X = 6)\)</span>, so</p>
@@ -593,7 +593,7 @@ Let’s learn how to make these calculations in R from an example. Suppose you a
 <span id="cb310-4"><a href="distribution-calculations.html#cb310-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Z&quot;</span>) <span class="sc">+</span></span>
 <span id="cb310-5"><a href="distribution-calculations.html#cb310-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="sc">+</span> </span>
 <span id="cb310-6"><a href="distribution-calculations.html#cb310-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Prob. Density Fun. of Std. Normal Dist.&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-165-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-137-1.png" width="672" /></p>
 <p>The standard normal is distinguished because any normal distribution <span class="math inline">\(X\)</span> can be transformed into the standard normal by taking <strong>Z-scores</strong>. The <span class="math inline">\(Z\)</span>-score of a measurement <span class="math inline">\(x\)</span> from a normal distribution $ X N( , )$ is</p>
 <p><span class="math display">\[ z = \frac{x - \mu}{\sigma}.\]</span></p>
 <p>Notice that if</p>
@@ -624,7 +624,7 @@ Let’s learn how to make these calculations in R from an example. Suppose you a
 <span id="cb312-4"><a href="distribution-calculations.html#cb312-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">fill =</span> <span class="st">&quot;steelblue&quot;</span>) <span class="sc">+</span></span>
 <span id="cb312-5"><a href="distribution-calculations.html#cb312-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;height (cm)&quot;</span>, </span>
 <span id="cb312-6"><a href="distribution-calculations.html#cb312-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">&quot;Height of active men&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-167-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-139-1.png" width="672" /></p>
 <p>the mean and standard deviation of this sample are</p>
 <div class="sourceCode" id="cb313"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb313-1"><a href="distribution-calculations.html#cb313-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">mean</span>(maleBdim<span class="sc">$</span>hgt)</span>
 <span id="cb313-2"><a href="distribution-calculations.html#cb313-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">sd</span>(maleBdim<span class="sc">$</span>hgt)</span>
@@ -644,7 +644,7 @@ Let’s learn how to make these calculations in R from an example. Suppose you a
 <span id="cb315-11"><a href="distribution-calculations.html#cb315-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
 <span id="cb315-12"><a href="distribution-calculations.html#cb315-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;height (cm)&quot;</span>, </span>
 <span id="cb315-13"><a href="distribution-calculations.html#cb315-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">&quot;Height of active men&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-169-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-141-1.png" width="672" /></p>
 <p>It’s not a perfect fit, of course, but it’s looking pretty good! If we think of our sample as an approximation of the population we’re sampling from, we can use the normal distribution above to make probability calculations for the population.</p>
 <p>Below we’ll answer these questions and plot the regions corresponding to the probabilities in question.</p>
 <ol style="list-style-type: decimal">
@@ -667,7 +667,7 @@ Let’s learn how to make these calculations in R from an example. Suppose you a
 <span id="cb316-15"><a href="distribution-calculations.html#cb316-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
 <span id="cb316-16"><a href="distribution-calculations.html#cb316-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;height (cm)&quot;</span>, <span class="at">y =</span> <span class="st">&quot;density&quot;</span>,</span>
 <span id="cb316-17"><a href="distribution-calculations.html#cb316-17" aria-hidden="true" tabindex="-1"></a>   <span class="at">title =</span> <span class="st">&quot;Height of active men, P(H &lt;= 185)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-170-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-142-1.png" width="672" /></p>
 <p>From the image above, we infer that the probability better be greater than .5. To make this calculation exactly we use</p>
 <div class="sourceCode" id="cb317"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb317-1"><a href="distribution-calculations.html#cb317-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pnorm</span>(<span class="dv">185</span>, <span class="at">mean =</span> m, <span class="at">sd =</span> s)</span></code></pre></div>
 <pre><code>## [1] 0.8437254</code></pre>
@@ -691,7 +691,7 @@ Let’s learn how to make these calculations in R from an example. Suppose you a
 <span id="cb319-15"><a href="distribution-calculations.html#cb319-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
 <span id="cb319-16"><a href="distribution-calculations.html#cb319-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;height (cm)&quot;</span>, <span class="at">y =</span> <span class="st">&quot;density&quot;</span>,</span>
 <span id="cb319-17"><a href="distribution-calculations.html#cb319-17" aria-hidden="true" tabindex="-1"></a>   <span class="at">title =</span> <span class="st">&quot;Height of active men, P(H &gt;= 175)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-172-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-144-1.png" width="672" /></p>
 <p>The exact probablity can be calculated as</p>
 <div class="sourceCode" id="cb320"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb320-1"><a href="distribution-calculations.html#cb320-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pnorm</span>(<span class="dv">175</span>, <span class="at">mean =</span> m, <span class="at">sd =</span> s, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <pre><code>## [1] 0.6488312</code></pre></li>
@@ -714,7 +714,7 @@ Let’s learn how to make these calculations in R from an example. Suppose you a
 <span id="cb322-15"><a href="distribution-calculations.html#cb322-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
 <span id="cb322-16"><a href="distribution-calculations.html#cb322-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;height (cm)&quot;</span>, <span class="at">y =</span> <span class="st">&quot;density&quot;</span>,</span>
 <span id="cb322-17"><a href="distribution-calculations.html#cb322-17" aria-hidden="true" tabindex="-1"></a>   <span class="at">title =</span> <span class="st">&quot;Height of active men, P(165 &lt;= H &lt;= 175)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-174-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-146-1.png" width="672" /></p>
 <p>To calculate the probability, observe that <span class="math inline">\(P(165 \leq H \leq 175) = P(H \leq 175) - P(H \leq 165)\)</span>. In other words, we take the larger lower tail and subtract off the smaller lower tail. Making this calculation in R:</p>
 <div class="sourceCode" id="cb323"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb323-1"><a href="distribution-calculations.html#cb323-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pnorm</span>(<span class="dv">175</span>, <span class="at">mean =</span> m, <span class="at">sd =</span> s) <span class="sc">-</span> <span class="fu">pnorm</span>(<span class="dv">165</span>, <span class="at">mean =</span> m, <span class="at">sd =</span> s)</span></code></pre></div>
 <pre><code>## [1] 0.3131555</code></pre></li>
@@ -813,7 +813,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

@@ -1,4 +1,4 @@
-h1:inferential-statistics-take-1 Inferential statistics, take 1
+h1:inferential-statistics-take-1 Inferential statistics: Take 1
 h2:basics-of-statistical-inference Basics of statistical inference
 h3:sampling-distributions Sampling distributions
 h3:confidence-intervals Confidence intervals
@@ -10,16 +10,17 @@ h4:hypothesis-testing Hypothesis testing
 h3:two-sample-proportion Two sample proportion
 h4:confidence-intervals-2 Confidence intervals
 h4:hypothesis-testing-1 Hypothesis testing
-h3:chi-squared-goodness-of-fit-test Chi-squared goodness of fit test
-h3:chi-squared-test-of-independence Chi-squared test of independence
+h3:chi-squared-tests Chi-squared tests
+h4:chi-squared-goodness-of-fit Chi-squared goodness of fit
+h4:chi-squared-test-of-independence Chi-squared test of independence
 h2:analyzing-numerical-variables Analyzing numerical variables
 h3:single-sample-mean Single sample mean
 h4:confidence-intervals-3 Confidence intervals
 h4:hypothesis-testing-2 Hypothesis testing
-h3:two-sample-mean Two sample mean
+h3:paired-data Paired data
 h4:confidence-intervals-4 Confidence intervals
 h4:hypothesis-testing-3 Hypothesis testing
-h3:paired-data Paired data
+h3:two-sample-mean Two sample mean
 h4:confidence-intervals-5 Confidence intervals
 h4:hypothesis-testing-4 Hypothesis testing
 h3:analysis-of-variance-anova Analysis of variance (ANOVA)

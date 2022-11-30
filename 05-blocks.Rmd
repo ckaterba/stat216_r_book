@@ -8,8 +8,10 @@ The code chunk below attaches all packages we'll use in this chapter and sets a 
 
 ```{r, message = F, warning = F}
 library(tidyverse)
+library(knitr)
 library(openintro)
 library(infer)
+library(patchwork)
 set.seed(1187)
 ```
 
@@ -974,25 +976,262 @@ This seems like it could be useful information! But how could one use it? This i
 (spTable - expected)/sqrt(expected)
 ```
 
-The only two run lengths that seem particularly unusual are runs of length 4 and 7 or more. In particular there are more runs of length 4 than we'd expect and fewer runs of length seven or more. Does that mean you should bet on the market going up if there are three down days in a row?  Not without more analysis! At a bare minimum you'd want to calculate a conditional probability.  
+The only two run lengths that seem particularly unusual are runs of length 4 and 7 or more. In particular there are more runs of length 4 than we'd expect and fewer runs of length seven or more. Does that mean you should bet on the market going up if there are three down days in a row?  Not without more analysis! At a bare minimum you'd want to calculate a conditional probability: what's the probability the market goes up after three down days? 
+
+**Note:** This is, of course, far from anything related to actual financial advice! This example is merely to demonstrate one of the myriad of things you can investigate with goodness of fit tests. 
 
 #### Chi-squared test of independence
 
+These tests are used to check for an association between two categorical variables. Because of this you will likely see chi-squared tests of independence all over the place. For example, the results of clinical trials in medicine are often analyzed using chi-squared tests of independence since you have two groups of individuals (those in the treatment group and those in the placebo group) and there are often two or more outcomes (symptoms improve, symptoms don't improve, etc.).  Recall from above that one applies these tests to two-way tables.  We'll work through the example testing for an association between marital status and smoking in the United Kingdom (the data comes from the `smoking` data set from the `openintro` package). The observed counts from a survey are displayed below.
+
+```{r}
+observed <- table(smoking$smoke, smoking$marital_status)
+observed 
+```
+
+The null and research hypotheses for a test of independence are 
+
+\[ 
+\begin{array}{cl}
+H_0: & \text{the variables are independent} \\ 
+H_a: &  \text{the variables are dependent}
+\end{array}
+\]
+
+For our example, the null hypothesis is that smoking and marital status are not associated; the research hypothesis is that there is an association between smoking and marital status. 
+
+As with goodness of fit tests, we need to determine the *expected* counts for our two-way table assuming the null hypothesis is true. Recall from probability that if two events $A$ and $B$ are independent, then $P(A \& B) = P(A)P(B)$ (**caution! This is only true when the events are independent**).  Suppose event $A$ corresponds to row $i$ in your two way table and event $B$ to column $j$.  Let $n$ denote the sum of all entries in your table; $n$ is sometimes called the grand total. Then 
+
+\[
+P(A) = \frac{\text{row i total }}{n} \quad \text{and} \quad  P(B) = \frac{\text{column j total }}{n}
+\]
+
+so if $A$ and $B$ are independent
+
+\[ P( A \& B ) = \frac{\text{row i total }}{n} \frac{\text{column j total }}{n} = \frac{\text{row i total}\cdot \text{column j total }}{n^2}  \]
+
+Thus the expected count in the $(i,j)$-cell of our two-way table is
+
+\[ n \cdot P( A \& B ) =  \frac{\text{row i total}\cdot \text{column j total }}{n}  \]
+
+To make this more concrete, let's find the expected count for the $(1,1)$-cell in our `observed` two-way table above. This cell corresponds to divorced people who do not smoke. The code chunk below calculates the corresponding row and column totals along with the grand total. 
+
+```{r}
+ n <- sum(observed)
+row1 <- sum(observed[1,])
+column1 <- sum(observed[,1])
+c(n, row1, column1)
+```
+
+So if the smoking and marital status are independent, we'd expect to see 
+
+```{r}
+exp11 <- row1*column1/n
+exp11 
+```
+
+divorced non-smokers in our survey results. The squared $z$-score for this cell would then be
+
+```{r}
+(observed[1,1]- exp11)^2/exp11
+```
+
+Now let's make a table of expected counts. In practice, you'd use one of `R`'s in-built functions to perform this test, but here we're demonstrating what's going on "beneath the hood." We use two nested "for" loops to make the table of expected counts. 
+
+```{r}
+# define an matrix with the right dimensions of all zeroes
+expected <- matrix( rep(0, prod(dim(observed))),
+                    nrow = dim(observed)[1],
+                    ncol = dim(observed)[2])
+# iterate over all rows
+for(i in 1:dim(observed)[1]){
+  #iterage over all columns
+  for(j in 1:dim(observed)[2]){
+    #update i,j-th entry with expected count 
+    expected[i,j] <- sum(observed[i,])*sum(observed[,j])/sum(observed)
+  }
+}
+expected
+```
+
+Is it a problem that none of the entries in the table above are integers? No! We should think of the expected counts as average outcomes.
+
+We can now easily calculate our table of squared $z$-scores and our chi-squared test statistic. After that, to perform out hypothesis test, we simply need to determine the appropriate number of degrees of freedom $df$. 
+
+```{r}
+(observed - expected)^2/expected
+```
+
+The chi-squared test statistic is the sum of the entries in the table above. 
+
+```{r}
+chi <- sum((observed - expected)^2/expected)
+chi
+```
+
+To calculate a $p$-value and perform this hypothesis test, we simply need to determine $df$.  As with goodness of fit tests, $df$ is the minimum number of cell counts in your table you need to completely determine the remaining cells. If $R$ and $C$ are the number of rows and columns in your two-way table, then 
+
+\[ df = (R-1)\times (C-1) \]
+
+so for our example
+
+\[ df = (2-1)\times (5 -1 ) = 4. \]\
+
+Thus the $p$-value for our hypothesis test is 
+
+```{r}
+pchisq(chi, df = 4, lower.tail = F)
+```
+
+This $p$-value is smaller than all typical significance levels, so we reject the null and accept the research. In particular, the data provide compelling evidence to believe that there is an association between marital status and smoking. What might this association look like? Let's look at the $z$-scores of our table counts instead of the squared $z$-scores.
+
+```{r}
+(observed - expected)/sqrt(expected)
+```
+
+It appears that married people are way less likely to smoke and single people are way more likely to smoke than expected. As in the previous example for goodness of fit, we could do a more in-depth analysis to describe the association we detected. 
+
 ## Analyzing numerical variables 
+
+We've finished our discussion of analyzing categorical variables and now turn our attention to analyzing numerical variables.  There are many different numerical variables one can analyze but we will focus on making inferences about population averages. We use the Greek letter mu $\mu$ to denote a population average and $\overline{x}$ to denote a sample average.  Similarly, we use the Greek letter $\sigma$ to denote the population standard deviation and $s$ to denote sample standard deviations.  We will use sample averages to make inferences about population averages, but in the process we will have to estimate $\sigma$ using $s$.  This creates a small dilemma that we'll define and address below. 
+
+One distinction that becomes more important and sometimes difficult to make when analyzing numerical variables is the difference between  **population distributions** and **sampling distributions**.  This was an easy distinction to make when we were dealing with categorical variables, because the population distributions were discrete things (proportion of success and proportion of failure), but sampling distributions were continuous.  When dealing with numerical variables, however, the population and sampling distributions are often both continuous. 
+
+As an example, suppose you are trying to investigate the average income of residents in Flathead County. You take a sample of 100 adult county residents. You  sample *from* a population and then *use* the sampling distribution of $\overline{x}$ to make an inference about the county average population. The plot below helps us visualize the difference between these two distributions. The distributions below are made up and serve merely to illustrate the differences between the two distributions. 
+
+```{r, echo = F}
+df <- data.frame(x = c(0, 7.5))
+popPlot <- ggplot( data = df,
+                   aes(x = x)) + 
+  stat_function(fun = dgamma
+                , args = list(shape = 2, scale = 2)) + 
+  labs(
+    title = "Income distribution of Flathead County residents"
+    , x = "Annual income"
+    , y = "Density"
+  ) + 
+  scale_x_continuous(breaks = c(0, 4)
+                     , labels = c("0", "50k")) +
+  theme(axis.ticks.y = element_blank(),
+         axis.text.y = element_blank())
+
+sampPlot <- ggplot(data = df, 
+                   aes(x = x)) + 
+  stat_function(fun = dnorm
+                , args = list(mean = 4, sd = sqrt(8/ 100))  
+                , color = "red") + 
+  labs(
+    title = "Distribution of sample average income"
+    , subtitle = "n = 100"
+    , x = "Average annual income"
+    , y = "Density"
+  ) + 
+  scale_x_continuous(breaks = c(0, 4)
+                     , labels = c("0", "50k")) +
+  theme(axis.ticks.y = element_blank(),
+         axis.text.y = element_blank())
+popPlot + sampPlot
+```
+
+The plots above demonstrate that population distributions can be skewed (or in practice have a totally unknown shape), but under fairly mild hypotheses, the **sampling distribution of \( \overline{x}\) ** will be symmetric and unimodal.  This is the central limit theorem in action again.  As with categorical variables, this will be the main driver of inference about numerical variables for us.
+
+**Central Limit Theorem (for a single sample average)**: Suppose we have $n$ independent observations of a numerical variable. If either
+
+- the population we're sampling from is approximately normal or
+
+- $n$ is sufficiently large or
+
+
+then the sampling distribution of $\overline{x}$ is approximately normal with
+
+\[ E(\overline{x}) = \mu \quad \text{and} \quad SE( \overline{x}) = \frac{\sigma}{\sqrt{n}}\]
+
+No surprise, the standard error of the sampling distribution of $\overline{x}$ depends on the standard deviation of the population. Unfortunately, we almost never know   \(\sigma \) and almost never know if the population we're sampling from is approximately normally distributed. For the latter dilemma we have a few rules of thumb to guide us. 
+
+**Normality conditions:**
+
+- $n <30$ **and** there are no clear outliers in your data, it is common to *assume* your sample comes from an approximately normal population. Note that this is simply a rule of thumb! To check for outliers, use $z$-scores and look for the maximum in absolute value.
+
+- $n \geq 30$ and there are no extreme outliers in your data.
+
+If either of these conditions holds and your observations are independent, then the we *assume* our sample meets the criteria in order to apply the CLT as described above. There is, however, one more small obstacle: we almost never know $\sigma$, the population standard deviation, which determines the standard error of $\overline{x}$. We do what appears to be the most logical thing, and estimate $\sigma$ with $s$, our sample standard deviation so that
+
+\[ SE = \frac{\sigma}{\sqrt{m}} \approx \frac{s}{\sqrt{n}}\]
+
+but (because of technical reasons that we'll skip) it turns our that $s$ is a *biased* estimator of $\sigma$. Moreover, it consistently underestimates $sigma$.  Thus, our estimate of $SE$ above is also an underestimate, which means that we should expect *more* variability among our sample statistics. This bias is especially pronounced when your sample size is small, and tends to zero as the sample size increases. The key to remedying this problem, at least for our purposes, is to model the sampling distribution of $\overline{x}$ using $t$-distribution. 
+
+Recall from [Chapter 4](distribtuion-calculations.html) that a $t$-distribution is a symmetric and unimodal distribution determined by a single parameter, $df$, or degrees of freedom. Each $t$-distribution has "fatter tails" than the standard normal distribution, meaning that a higher proportion of observations will fall more than 2 standard deviations from the mean. As $df$ gets larger, $t$-distributions approach the standard normal distribution, so the fat tails get skinnier. Notice that this helps solve the dilemma of using $s$ to estimate $\sigma$! 
+
+In the next sections we'll see how to use $t$-distributions to make inferences about population averages. Everything in the following two sections should feel very similar from a big picture perspective because the overall strategy for statistical inference remains the same.
 
 ### Single sample mean
 
-#### Confidence intervals
+We begin our exploration of numerical variables by learning how to make inferences about a single population average.  We will see how to calculate and interpret confidence intervals, then proceed to hypothesis testing.
 
-#### Hypothesis testing
+To illustrate the techniques, we will use two examples in what follows. One example will be based on the `faithful` data set that is loaded by default in R. It gives the duration of 272 eruptions at Old Faithful along with the wait time between eruptions.  We will also look the `women` data set which gives the height and weight of 15 American women from 1975. For both examples we will need to verify that we can apply the Central Limit Theorem, so we need to to check the normality conditions listed above. 
 
-### Two sample mean
+**faithful**: We'll invesigate the wait time between eruptions, the `waiting` variable in the `faithful` data set. Since the number of observations $n = 272$, we simply need to check that the data set has no extreme outliers. We can do this in two ways, visually and numerically. First, we'll look at a histogram of the data. 
+
+```{r}
+ggplot(faithful, aes(x = waiting)) +
+  geom_histogram(color = "black"
+                 , fill = "steelblue"
+                 , bins = 20) + 
+  labs( title = "Wait time between Yellowstone eruptions"
+        , subtitle = "n = 272")
+```
+
+The wait time between eruptions appears to be bimodal, but this is no problem for us.  From the histogram above, no observations seem particularly extreme. Let's double check this with some calculations. We can look at a summary of the wait times:
+
+```{r}
+summary(faithful$waiting)
+```
+or translate this summary into $z$-scores
+
+```{r}
+(summary(faithful$waiting) - mean(faithful$waiting))/sd(faithful$waiting)
+```
+These calculations confirm our observation: since no measurement is more than roughly 2 standard deviations away from the mean, our sample contains no outliers. 
+
+We also need to check independence of observations here. Does the wait time from one eruption to another influence the wait time until the next eruption? Quite possibly, but without more information it is hard to say. To keep things simple, we point out that independence is difficult to verify in this case, but we *assume* the observations are independent. 
+
+**women**: We'll look at the `height` variable. In this case the number of observations is small as $n = 15$. But not all is lost! If we can safely *assume* the population is normally distributed, we can apply the central limit theorem. As above, we first look at a histogram
+
+```{r}
+ggplot(women, aes(x = height)) +
+  geom_histogram(color = "black"
+                 , fill = "steelblue"
+                 , bins = 7) + 
+  labs( title = "Height of American women in 1975"
+        , subtitle = "n = 15")
+```
+
+No surprise, the distribution of heights in this sample is fairly uniform and there are no clear outliers in the data. We'll check this using a summary and $z$-scores again. 
+
+```{r}
+summary(women$height)
+```
+
+and $z$-scores:
+
+```{r}
+(summary(women$height) - mean(women$height))/sd(women$height)
+```
+Since all observations are less than 2 standard deviations from the mean, there are no outliers whatsoever in this data set. In this case it is safe to *assume* that the population is normally distributed, which means that we can apply the central limit theorem to this example as well!
+
+We will use the CLT to estimate the population averages and also make inferences about them. 
 
 #### Confidence intervals
 
 #### Hypothesis testing
 
 ### Paired data
+
+#### Confidence intervals
+
+#### Hypothesis testing
+
+### Two sample mean
 
 #### Confidence intervals
 
