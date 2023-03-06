@@ -1170,7 +1170,7 @@ We begin our exploration of numerical variables by learning how to make inferenc
 
 To illustrate the techniques, we will use two examples in what follows. One example will be based on the `faithful` data set that is loaded by default in R. It gives the duration of 272 eruptions at Old Faithful along with the wait time between eruptions.  We will also look the `women` data set which gives the height and weight of 15 American women from 1975. For both examples we will need to verify that we can apply the Central Limit Theorem, so we need to to check the normality conditions listed above. 
 
-**faithful**: We'll invesigate the wait time between eruptions, the `waiting` variable in the `faithful` data set. Since the number of observations $n = 272$, we simply need to check that the data set has no extreme outliers. We can do this in two ways, visually and numerically. First, we'll look at a histogram of the data. 
+**faithful**: We'll investigate the wait time between eruptions, the `waiting` variable in the `faithful` data set. Since the number of observations $n = 272$, we simply need to check that the data set has no extreme outliers. We can do this in two ways, visually and numerically. First, we'll look at a histogram of the data. 
 
 ```{r}
 ggplot(faithful, aes(x = waiting)) +
@@ -1186,6 +1186,7 @@ The wait time between eruptions appears to be bimodal, but this is no problem fo
 ```{r}
 summary(faithful$waiting)
 ```
+
 or translate this summary into $z$-scores
 
 ```{r}
@@ -1217,11 +1218,69 @@ and $z$-scores:
 ```{r}
 (summary(women$height) - mean(women$height))/sd(women$height)
 ```
+
 Since all observations are less than 2 standard deviations from the mean, there are no outliers whatsoever in this data set. In this case it is safe to *assume* that the population is normally distributed, which means that we can apply the central limit theorem to this example as well!
 
-We will use the CLT to estimate the population averages and also make inferences about them. 
+We will use the CLT to estimate the population averages and also make inferences about them. Before we can proceed, we need to establish one more fact. Recall from above that we will model the sampling distribution of \(\overline{x}\) with a $t$-distribution.  Unlike normal distributions that are determined by a mean $\mu$ and a standard deviation $\sigma$, a $t$-distribution is determined by a single parameter, **degrees of freedom** \(df\). 
+
+If your sample has $n$ measurements, then the sampling distribution is best modeled by a $t$-distribution with 
+\[ df = n - 1\]
 
 #### Confidence intervals
+
+Confidence intervals for single sample means are calculated using the typical pattern:
+
+\[ \text{point est.} \pm \text{critical value}\cdot SE \]
+
+where the point estimate is the sample average \(\overline{x}\) and the standard error \(SE\) is given by the CLT \(SE = \sigma / \sqrt{n} \approx s / \sqrt{n}\). If your sample meets the criteria for applying the central limit theorem, the only new datum we need to calculate is the critical value. Since the sampling distribution of $\overline{x}$ is best modeled with a $t$-distribution with $df = n-1$, we should use this distribution to find the critical value. 
+
+You can calculate these $t$-critical values using the `R` function `qt` in the exact same way you found $z$-critical values in the previous section!  In particular, if calculating an $\alpha$\% confidence interval, the critical value is \(t^\star_{df} = \) `qt( (1-alpha)/2, df = n-1, lower.tail = FALSE )` where `alpha` is the confidence level as a decimal rather than a percentage. 
+
+Let's now calculate and interpret 95\% confidence intervals for the examples discussed in the section above, `women` and `faithful`. 
+
+**faithful**: We want to calculate a 95\% confidence interval for the average wait time between eruptions at the Old Faithful geyser in Yellowstone (in minutes). To do so, we need four numbers: \(\overline{x}\) the sample average, \(n\) the sample size, \(s\) the sample standard deviation, and \(t^\star_df\) the $t$-critical value. The code chunk below calculates all of these numbers along with the standard error, then prints the $t$-critical value.
+
+```{r}
+n <- length(faithful$waiting)
+xBar <- mean(faithful$waiting)
+s <- sd(faithful$waiting)
+SE <- s / sqrt(n)
+tStar <- qt( (1 - .95)/2, df = n-1, lower.tail = FALSE)
+tStar
+```
+
+Notice that $t^\star_df$ is very close to the $z$-critical value for a 95\% confidence interval. This is because `r n` is large, so the associated $t$-distribution is very close to the standard normal curve. 
+
+Now we can combine the above into a confidence interval. 
+
+```{r}
+cI <- xBar + c(-1,1)*tStar*SE
+cI
+```
+
+Thus, with 95\% confidence, the average wait time between two eruptions at Old Faithful is between roughly 69.3 and 72.5 minutes.  
+
+**women**: We want to calculate a 95\% confidence interval for the average height of American women in 1975.  We need the same numbers as above to make this calculation and the code chunk below does exactly that. 
+
+```{r}
+n <- length(women$height)
+xBar <- mean(women$height)
+s <- sd(women$height)
+SE <- s / sqrt(n)
+tStar <- qt( (1 - .95)/2, df = n-1, lower.tail = FALSE)
+tStar
+```
+
+This time around, notice that $t^\star_df \approx 2.144$ which is larger than the $z$-critical value for a 95\% confidence interval. This is because the $t$-distribution with $14$ degrees of freedom has fatter tails than the standard normal distribution. This is exactly what we want because we are more uncertain about our use of $s$, the sample standard deviation, as an estimate of $\sigma$, the population standard deviation. 
+
+Now, calculating the confidence interval:
+
+```{r}
+cI <- xBar + c(-1,1)*tStar*SE
+cI
+```
+
+Our calculations imply that the average height of American women in 1975 was between about 62.52 and 67.48 inches, with 95\% confidence. 
 
 #### Hypothesis testing
 
