@@ -8,7 +8,7 @@
   <meta name="description" content="<p>This is a minimal example of using the bookdown package to write a book.
 The HTML output format for this example is bookdown::gitbook,
 set in the _output.yml file.</p>" />
-  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 4 Wrangling data | R and RStudio for STAT216" />
   <meta property="og:type" content="book" />
@@ -362,7 +362,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb244-7"><a href="wrangling-data.html#cb244-7" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">10</span>, <span class="at">replace =</span> T),</span>
 <span id="cb244-8"><a href="wrangling-data.html#cb244-8" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">10</span>, <span class="at">replace =</span> T) ))</span>
 <span id="cb244-9"><a href="wrangling-data.html#cb244-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dfTidy)</span></code></pre></div>
-<pre><code>## # A tibble: 6 × 2
+<pre><code>## # A tibble: 6 x 2
 ##   drink score
 ##   &lt;chr&gt; &lt;int&gt;
 ## 1 coke      3
@@ -383,7 +383,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>but run into an immediate problem. What is the <span class="math inline">\(x\)</span> variable? What is the <span class="math inline">\(y\)</span>? If we use the tidy version of the same data, the answer is clear however: <span class="math inline">\(x\)</span> is the drink, <span class="math inline">\(y\)</span> is the score, since drink is the explanatory variable and taste preference is the response. Using <code>dfTidy</code> from above instead, we’d simply use the following.</p>
 <div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="wrangling-data.html#cb247-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dfTidy, <span class="fu">aes</span>(<span class="at">x =</span> drink, <span class="at">y =</span> score)) <span class="sc">+</span> </span>
 <span id="cb247-2"><a href="wrangling-data.html#cb247-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-90-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-151-1.png" width="672" /></p>
 <p>Essentially <em>all</em> tools in the <code>tidyverse</code> package are designed around having tidy data. In the next section, we’ll learn about one of the main functions from the <code>tidyverse</code> package used in tidying and analyzing data, the pipe.</p>
 </div>
 <div id="the-pipe" class="section level2 hasAnchor" number="4.2">
@@ -408,7 +408,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb250-2"><a href="wrangling-data.html#cb250-2" aria-hidden="true" tabindex="-1"></a><span class="co">#more piping!</span></span>
 <span id="cb250-3"><a href="wrangling-data.html#cb250-3" aria-hidden="true" tabindex="-1"></a>newDf <span class="sc">%&gt;%</span> </span>
 <span id="cb250-4"><a href="wrangling-data.html#cb250-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">10</span>)</span></code></pre></div>
-<pre><code>## # A tibble: 10 × 3
+<pre><code>## # A tibble: 10 x 3
 ##    drink score newScale
 ##    &lt;chr&gt; &lt;int&gt;    &lt;dbl&gt;
 ##  1 dp        2     0.25
@@ -456,8 +456,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb256-9"><a href="wrangling-data.html#cb256-9" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(dfTidy1)</span></code></pre></div>
 <pre><code>## Rows: 30
 ## Columns: 2
-## $ drink &lt;chr&gt; &quot;coke&quot;, &quot;pepsi&quot;, &quot;rc&quot;, &quot;coke&quot;, &quot;pepsi&quot;…
-## $ score &lt;int&gt; 3, 3, 1, 4, 2, 1, 4, 3, 2, 1, 4, 3, 3,…</code></pre>
+## $ drink &lt;chr&gt; &quot;coke&quot;, &quot;pepsi&quot;, &quot;rc&quot;, &quot;coke&quot;, &quot;pepsi&quot;, &quot;rc&quot;, &quot;coke&quot;, &quot;pepsi&quot;, &quot;rc&quot;, &quot;coke&quot;, &quot;pepsi&quot;, &quot;rc&quot;~
+## $ score &lt;int&gt; 3, 3, 1, 4, 2, 1, 4, 3, 2, 1, 4, 3, 3, 4, 5, 4, 1, 2, 1, 5, 3, 2, 3, 3, 3, 5, 2, 3, 4, 5</code></pre>
 <p>At first it doesn’t seem like this data set is the same as <code>dfTidy</code>, but notice that R arranged the values as “coke”, “pepsi”, “rc”. If we rearrange the rows alphabetically by drink, we’ll see that they are in fact that same data sets.</p>
 <div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb258-1"><a href="wrangling-data.html#cb258-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>( dfTidy <span class="sc">%&gt;%</span> </span>
 <span id="cb258-2"><a href="wrangling-data.html#cb258-2" aria-hidden="true" tabindex="-1"></a>             <span class="fu">arrange</span>(drink), </span>
@@ -466,7 +466,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## [1] TRUE</code></pre>
 <p>The function <code>pivot_wider(...)</code> is used to tidy a data set when observations are split across several rows. The <code>tidyverse</code> has a data set simply called <code>table2</code> that provides an example of observations being split across several rows. This table shows “the number of TB cases documented by the World Health Organization in Afghanistan, Brazil, and China between 1999 and 2000” (from the documentation).</p>
 <div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb260-1"><a href="wrangling-data.html#cb260-1" aria-hidden="true" tabindex="-1"></a>table2</span></code></pre></div>
-<pre><code>## # A tibble: 12 × 4
+<pre><code>## # A tibble: 12 x 4
 ##    country      year type            count
 ##    &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;           &lt;int&gt;
 ##  1 Afghanistan  1999 cases             745
@@ -487,7 +487,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb262-3"><a href="wrangling-data.html#cb262-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">&quot;type&quot;</span>, </span>
 <span id="cb262-4"><a href="wrangling-data.html#cb262-4" aria-hidden="true" tabindex="-1"></a>              <span class="co">#next specify where the new column values are coming from</span></span>
 <span id="cb262-5"><a href="wrangling-data.html#cb262-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_from =</span> <span class="st">&quot;count&quot;</span>)</span></code></pre></div>
-<pre><code>## # A tibble: 6 × 4
+<pre><code>## # A tibble: 6 x 4
 ##   country      year  cases population
 ##   &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;      &lt;int&gt;
 ## 1 Afghanistan  1999    745   19987071
@@ -522,11 +522,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="wrangling-data.html#cb265-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(gss2010)</span></code></pre></div>
 <pre><code>## Rows: 2,044
 ## Columns: 5
-## $ hrsrelax &lt;int&gt; 2, 4, NA, NA, NA, NA, 3, NA, 0, 5, …
-## $ mntlhlth &lt;int&gt; 3, 6, NA, NA, NA, NA, 0, NA, 0, 10,…
-## $ hrs1     &lt;int&gt; 55, 45, NA, NA, NA, NA, 45, NA, 40,…
-## $ degree   &lt;fct&gt; BACHELOR, BACHELOR, LT HIGH SCHOOL,…
-## $ grass    &lt;fct&gt; NA, LEGAL, NA, NOT LEGAL, NOT LEGAL…</code></pre>
+## $ hrsrelax &lt;int&gt; 2, 4, NA, NA, NA, NA, 3, NA, 0, 5, 5, NA, 3, NA, NA, NA, NA, NA, NA, 2, 5, 10, NA, NA, ~
+## $ mntlhlth &lt;int&gt; 3, 6, NA, NA, NA, NA, 0, NA, 0, 10, 0, NA, 0, NA, NA, NA, NA, NA, NA, 5, 0, 0, NA, NA, ~
+## $ hrs1     &lt;int&gt; 55, 45, NA, NA, NA, NA, 45, NA, 40, 48, 26, NA, 40, NA, NA, NA, NA, NA, NA, 50, 40, 25,~
+## $ degree   &lt;fct&gt; BACHELOR, BACHELOR, LT HIGH SCHOOL, LT HIGH SCHOOL, LT HIGH SCHOOL, LT HIGH SCHOOL, JUN~
+## $ grass    &lt;fct&gt; NA, LEGAL, NA, NOT LEGAL, NOT LEGAL, LEGAL, NA, NA, NOT LEGAL, NA, NA, NA, NA, NA, LEGA~</code></pre>
 <p>First, let’s add a new column to our data set that gives the total number of hours each person in this survey spend at work or relaxing and another column that reports the proportion of their time spent working or relaxing Monday through Friday. Note that since <code>hrsrelax</code> gives the number of hours they relax in a day, we should add 5 times that amount for total time spent relaxing during the work work.</p>
 <div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="wrangling-data.html#cb267-1" aria-hidden="true" tabindex="-1"></a>new_gss <span class="ot">&lt;-</span> gss2010 <span class="sc">%&gt;%</span></span>
 <span id="cb267-2"><a href="wrangling-data.html#cb267-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">totalHours =</span> <span class="dv">5</span><span class="sc">*</span>hrsrelax <span class="sc">+</span> hrs1, <span class="co">#hours spent working and relaxing</span></span>
@@ -538,10 +538,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## $ hrsrelax        &lt;int&gt; 4, 6, 6, NA, NA, 7, NA
 ## $ mntlhlth        &lt;int&gt; 0, 0, 2, NA, NA, 0, NA
 ## $ hrs1            &lt;int&gt; 55, 35, 9, NA, NA, 20, NA
-## $ degree          &lt;fct&gt; LT HIGH SCHOOL, HIGH SCHOOL,…
-## $ grass           &lt;fct&gt; NOT LEGAL, NA, LEGAL, NA, NA…
+## $ degree          &lt;fct&gt; LT HIGH SCHOOL, HIGH SCHOOL, LT HIGH SCHOOL, HIGH SCHOOL, HIGH SCHOOL, LT HIGH S~
+## $ grass           &lt;fct&gt; NOT LEGAL, NA, LEGAL, NA, NA, NA, LEGAL
 ## $ totalHours      &lt;dbl&gt; 75, 65, 39, NA, NA, 55, NA
-## $ propTimeWorking &lt;dbl&gt; 0.6250000, 0.5416667, 0.3250…</code></pre>
+## $ propTimeWorking &lt;dbl&gt; 0.6250000, 0.5416667, 0.3250000, NA, NA, 0.4583333, NA</code></pre>
 <p>Note that whenever one of our variables was unavailable, both of our new columns gave an <code>NA</code> value as well.</p>
 <p>Suppose now that we wanted the same information, but we wanted to exclude all rows with <code>NA</code> values, and we only wanted to see our new columns and the respondent’s degree. This is a perfect situation for <code>transmute(...)</code>.</p>
 <div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="wrangling-data.html#cb269-1" aria-hidden="true" tabindex="-1"></a>new_gss <span class="ot">&lt;-</span> gss2010 <span class="sc">%&gt;%</span></span>
@@ -551,7 +551,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb269-5"><a href="wrangling-data.html#cb269-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="co">#drops all rows with an NA</span></span>
 <span id="cb269-6"><a href="wrangling-data.html#cb269-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb269-7"><a href="wrangling-data.html#cb269-7" aria-hidden="true" tabindex="-1"></a><span class="fu">slice_sample</span>(new_gss, <span class="at">n =</span> <span class="dv">7</span>)</span></code></pre></div>
-<pre><code>## # A tibble: 7 × 3
+<pre><code>## # A tibble: 7 x 3
 ##   degree         totalHours propTimeWorking
 ##   &lt;fct&gt;               &lt;dbl&gt;           &lt;dbl&gt;
 ## 1 GRADUATE               70           0.583
@@ -570,14 +570,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb271-6"><a href="wrangling-data.html#cb271-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">meanMntlHlth =</span> <span class="fu">mean</span>(mntlhlth, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb271-7"><a href="wrangling-data.html#cb271-7" aria-hidden="true" tabindex="-1"></a>             ) <span class="sc">%&gt;%</span></span>
 <span id="cb271-8"><a href="wrangling-data.html#cb271-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(meanHrsWrk)) <span class="co"># arrange results in descending order</span></span></code></pre></div>
-<pre><code>## # A tibble: 5 × 5
-##   degree   meanHrsWrk sdHrsWrk meanHrsRlx meanMntlHlth
-##   &lt;fct&gt;         &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;        &lt;dbl&gt;
-## 1 BACHELOR       42.5     13.6       3.48         2.67
-## 2 JUNIOR …       41.4     18.1       3.53         3.56
-## 3 GRADUATE       40.8     15.5       3.67         2.40
-## 4 HIGH SC…       39.6     15.0       3.79         4.58
-## 5 LT HIGH…       38.7     15.8       3.73         4.87</code></pre>
+<pre><code>## # A tibble: 5 x 5
+##   degree         meanHrsWrk sdHrsWrk meanHrsRlx meanMntlHlth
+##   &lt;fct&gt;               &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;        &lt;dbl&gt;
+## 1 BACHELOR             42.5     13.6       3.48         2.67
+## 2 JUNIOR COLLEGE       41.4     18.1       3.53         3.56
+## 3 GRADUATE             40.8     15.5       3.67         2.40
+## 4 HIGH SCHOOL          39.6     15.0       3.79         4.58
+## 5 LT HIGH SCHOOL       38.7     15.8       3.73         4.87</code></pre>
 <p>So everyone works fairly similarly and relax a similar number of hours every night, but we observe that the number of days per month with mental health struggles seems to <em>decrease</em> with an increase in educational attainment.</p>
 <p>We could also see if there’s any sort of relationship between degree and stance on marijuana legalization. First, let’s throw out all the rows with an <code>NA</code> for the <code>grass</code> variable and see how many people have type of degree.</p>
 <div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb273-1"><a href="wrangling-data.html#cb273-1" aria-hidden="true" tabindex="-1"></a>gss2010 <span class="sc">%&gt;%</span></span>
@@ -588,7 +588,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb273-6"><a href="wrangling-data.html#cb273-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">legalProp =</span> legalCount <span class="sc">/</span> degCount</span>
 <span id="cb273-7"><a href="wrangling-data.html#cb273-7" aria-hidden="true" tabindex="-1"></a>             )  <span class="sc">%&gt;%</span></span>
 <span id="cb273-8"><a href="wrangling-data.html#cb273-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(legalProp))</span></code></pre></div>
-<pre><code>## # A tibble: 5 × 4
+<pre><code>## # A tibble: 5 x 4
 ##   degree         degCount legalCount legalProp
 ##   &lt;fct&gt;             &lt;int&gt;      &lt;int&gt;     &lt;dbl&gt;
 ## 1 GRADUATE            136         73     0.537
@@ -667,7 +667,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

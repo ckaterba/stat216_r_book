@@ -1284,7 +1284,115 @@ Our calculations imply that the average height of American women in 1975 was bet
 
 #### Hypothesis testing
 
+Now that we have confidence intervals under our belt and understand the details of using $t$-distributions for making inferences about means, we can move through hypothesis testing fairly quickly.  When making inferences about an average, the null and research hypotheses are  statements about the value of the true population mean.  
+
+\[ \begin{array}{cc}
+H_0: & \mu = \mu_0 \\ 
+H_a: & \mu \neq \mu_0 \text{ or } \mu > \mu_0 \text{ or } \mu < \mu_0
+\end{array} 
+\]
+
+Remember that one assumes the null hypothesis is true when performing a hypothesis test. Note: unlike analyzing proportions, the standard error depends only on your sample and not the null mean! This is because 
+\[ SE = \frac{\sigma}{\sqrt{n}} \approx \frac{s}{\sqrt{n}} \]
+whenever we can apply the Central Limit Theorem.  
+
+To execute this hypothesis test, we perform the usual steps.  
+
+0. Set a significance level $\alpha$ 
+ 
+1. Calculate all appropriate sample statistics. In this case the sample average \(\overline{x} \) and standard deviation \(s\).
+
+2. Calculate the standard error $SE$. 
+
+3. Calculate your test statistic. In this case, it is called a $T$-statistic since the sampling distribution is best modeled with a $t$-distribution with $df = n-1$. These statistics are the same as $z$-scores.
+
+\[ T = \frac{\overline{x} - \mu_0}{SE} \]
+
+Note that this is where we're using the null hypothesis! The $T$-statistic measures how far our sample average is from the null average in terms of standard error. 
+
+4. Calculate the $p$-value of your test statistic. This depends on the type of test you're performing. In this case, $p$-value calculations are exactly like they are for single sample proportions, except you use the function `pt` in R instead of `pnorm`.  
+
+5. Compare your $p$-value to the significance level $\alpha$ and make a conclusion. 
+
+We'll use the two data sets above to go through two different hypothesis test examples. 
+
+**women**: As usual, we start with a question: "Were American women taller in 1975 than they were in 2022?" This question is actually a bit more complicated than it seems at first pass since the category "adult" spans a wide range of ages and average height varies with time. Our data set `women` looks at the average height of women aged between 30 and 39 in 1975, so really we should ask "Were American women aged 30-39 taller in 1975 than they were in 2022?". We'll use a significance level of $\alpha = .1$. 
+
+Pulling data from [Our World in Data](https://ourworldindata.org/grapher/average-height-of-women?tab=chart&country=~USA), the average height of an woman aged between 30 and 39 in 2022 was roughly 64.4 inches. If $\mu$ denotes the average height of women in 1975, then we set up our hypothesis test as 
+
+\[\begin{array}{cc}
+H_0: & \mu = 64.4 \\ 
+H_1 & \mu > 64.4
+\end{array}\]
+
+The our sample mean, standard deviation, sample size, and standard error are calculated below. 
+
+```{r}
+n <- length(women$height)
+xBar <- mean(women$height)
+s <- sd(women$height)
+SE <- s / sqrt(n)
+#printing the calculated values 
+c(n = n, xBar = xBar, s = s, SE = SE)
+```
+
+We now use these values to calculate the $T$ statistic. Note: we label this test statistic `t` because `T` is R shorthand for `TRUE`. 
+
+```{r}
+t <- (xBar - 64.4)/SE
+t
+```
+
+so our sample lies about half a standard deviation above the null average. We calculate the $p$-value for this test using the function `pt` with $df = n -1 = 15 -1 = 14$. Recall that we are performing a one-sided upper hypothesis test.
+
+```{r}
+pVal <- pt(t, df = 15 - 1, lower.tail = F)
+pVal
+```
+
+This means that if women aged between 30-39 were the same height in 1975 as they were in 2022 there would be about a 30\% chance of observing a sample with an average height of 65 inches or more. 
+
+Of course, since $p \approx .306 \geq .1$ we fail to reject the null hypothesis. 
+
+**faithful:** Now imagine you're a program director at Yellowstone National Park and in charge of the Old Faithful eruption presentations. You currently have presentations every 75 minutes, but for some reason, your scheduling seems off. You decide to to check to see if the average wait time between eruptions is different from 75 minutes using the data we have available in `faithful` and we will perform out hypothesis test using a significance level of $\alpha = .01$. Re-framing your question as a hypothesis test yields
+
+\[\begin{array}{cc}
+H_0: & \mu = 75 \\ 
+H_1 & \mu \neq  75
+\end{array}\]
+
+We derive the necessary numbers for this hypothesis test in the code chunk below.
+
+```{r}
+n <- length(faithful$waiting)
+xBar <- mean(faithful$waiting)
+s <- sd(faithful$waiting)
+SE <- s / sqrt(n)
+#printing the calculated values 
+c(n = n, xBar = xBar, s = s, SE = SE)
+```
+We use these values to calculate the $T$-test statistic.
+
+```{r}
+t <- (xBar - 75)/SE
+t
+```
+
+This shows our sample average is almost 5 standard deviations below the mean in the null sampling distribution. With this in mind, we expect to reject the null and accept the alternative hypothesis, but we'll calculate the $p$-value for our sample just to be sure. 
+
+Since we're performing a two-sided hypothesis test and $T < 0$, the $p$-value is
+
+```{r}
+pVal <- 2*pt(t, df = n-1)
+```
+
+In other words, if the average wait time between eruptions were actually 75 minutes, there's about a 0.00011\% a sample of 272 eruptions with an average wait time as different from 75 minutes as our own. Since $p < \alpha$, we reject the null and accept the research: the data lead us to conclude that the average wait time between eruptions at Old Faithful is different from 75 minutes. 
+
+Now, it's up to you as the imaginary program manager to figure out how to use this information. 
+
 ### Paired data
+
+
 
 #### Confidence intervals
 

@@ -556,8 +556,158 @@ This section will be completed later in the semester when these distributions ar
 
 #### Student's $t$-distribution
 
-This section will be completed later in the semester when these distributions are needed.
+The Student's $t$-distributions are a family of symmetric, unimodal distributions that have "fatter tails" than the standard normal distribution. We end up needing to use $t$-distributions when we're analyzing single sample and two sample numerical data because the sample standard deviation is a *biased estimator* of the population standard deviation.  We fatten up the tails of a normal distribution to account for the added uncertainty of this biased estimate. The uncertainty is larger when our sample size is small and decreases as the sample size increases. 
 
+The parameter that changes the area for the $t$-distributions is called *degrees of freedom* or $df$. In fact, this is the only parameter needed to determine a $t$-distribution. As $df$ goes to infinity, the corresponding $t$-distributions limit to the standard normal distribution. The plot below helps to see how this limiting occurs. 
+
+```{r}
+ggplot(data.frame(x = c(-3,3)), aes(x = x)) +
+        stat_function(fun = dnorm, geom = "line", 
+                       aes(color = "a: normal"),  
+                       show.legend = T) +
+        stat_function(fun = dt,args = c(df = 1), geom = "line",
+                      aes(color = "b: df = 1" ), alpha = 1,
+                      show.legend = T) +
+        stat_function(fun = dt,args = c(df = 2), geom = "line",
+                      aes(color = "c: df = 2" ), alpha = 1/2,
+                      show.legend = T) +
+        stat_function(fun = dt,args = c(df = 4), geom = "line",
+                      aes(color = "d: df = 4"), alpha = 1/4,
+                      show.legend = T) +
+        stat_function(fun = dt,args = c(df = 8), geom = "line",
+                      aes(color = "e: df = 8"), alpha = 1/8,
+                      show.legend = T) +
+        stat_function(fun = dt,args = c(df = 16), geom = "line",
+                      aes(color = "f: df = 16"), alpha = 1/16,
+                      show.legend = T) +
+        stat_function(fun = dt,args = c(df = 32), geom = "line",
+                      aes(color = "g: df = 32"), alpha = 1/32,
+                      show.legend = T) +
+        stat_function(fun = dt,args = c(df = 64), geom = "line",
+                      aes(color = "h: df = 64"), alpha = 1/64,
+                      show.legend = T) +
+        scale_color_manual(values = c("steelblue", rep("black", 7))) + 
+        labs(x = "t", y = "density", title = "t-distributions with varying degrees of freedom") 
+        
+```
+The main workhorse functions for making $t$-distribution calculations are, no surprise, `pt(q, df)` and `qt(p, df)`. We'll make a few quick calculations with these functions, but they work exactly like `pnorm` and `qnorm`, so if you're comfortable with those functions, $t$-distributions will be a breeze. 
+
+1. What proportion of values fall below -2 in a $t$ distribution with $df = 10$?
+
+    First, we'll visualize this proportion as an area.
+    
+    ```{r}
+    ggplot(tibble(t= c(-3,3))
+           , aes(x = t)) +
+      stat_function( fun = dt
+                     , args = c(df = 10)) +
+      stat_function(fun = dt
+                    , args = c(df = 10)
+                    , geom = 'area'
+                    , fill = 'steelblue'
+                    , xlim = c(-3, -2))
+    ```
+
+    Following the lead from normal distributions this proportion is given by
+
+    ```{r}
+pt(-2, df = 10)
+    ```
+
+    To emphasize that the tails of $t$-distribtuions are fatter, notice that the same proportion for the standard normal distribution is
+    
+    ```{r}
+pnorm(-2)
+    ```
+
+    While it might not seem like a huge difference, this will make an impact once we get to statistical inference!
+
+2. What proportion of values fall between -1 and 1 in a $t$-distribution with $df = 16$?
+
+    First, we'll visualize this proportion as an area in `steelblue` with the same central area of a normal distribution overlayed in red.
+    
+    ```{r}
+    ggplot(tibble(t= c(-3,3))
+           , aes(x = t)) +
+      stat_function( fun = dt
+                     , args = c(df = 16)
+                     , color = 'steelblue') +
+      stat_function(fun = dt
+                    , args = c(df = 16)
+                    , geom = 'area'
+                    , fill = 'steelblue'
+                    , xlim = c(-1, 1)) + 
+      stat_function(fun = dnorm
+                    , args = c(mean = 0, sd = 1)
+                    , color = 'red') + 
+      stat_function(fun = dnorm
+                    , args = c(mean = 0, sd = 1)
+                    , geom = 'area'
+                    , fill = 'red'
+                    , xlim = c(-1,1)
+                    , alpha = .25)
+    ```
+
+    We see that since the $t$-disribution has fatter tails, the central area is less than that of the strandard normal distribution. 
+    
+    There are many ways to make the calculation at hand, but the following code chunk gives one easy way.
+    
+    ```{r}
+    pt(1, df = 16 ) - pt(-1, df = 16)
+    ```
+    
+    Let's contrast that with the same area for a standard normal curve.
+    
+    ```{r}
+    pnorm(1) - pnorm(-1)
+    ```
+    
+    As expected, the proportion for the standard normal is greater than that of the $t$-distribution. 
+
+3. What value corresponds to the 90th percentile in a $t$-distribution with $df = 6$?
+
+    Since we're given a proprotion and want a value, this calculation requires `qt`.  It's a simple one since the 90th percentile corresponds to a lower tail area. We'll also print out the corresponding value for the standard normal distribution for comparison. 
+    
+    ```{r}
+    qt(.9, df = 6)
+    qnorm(.9)
+    ```
+    
+    As expected, the 90th percentile in a $t$-distribution is larger (ie further away from the mean) than it is for the standard normal distribution. 
+
+4. If $T$ is a $t$-distribution with $df = 11$, what value $t^\star$ corresponds to 95\% of the central area? In other words, find the value $t^star$ so that \(P(|T| \leq t^\star) = .95\).
+
+    These types of calculations will become important for us in the inferential statistics portion of the class. The image below shows the central area we're trying to find, but we hide the code because it gives away the answer.
+    
+    ```{r, echo = F}
+        ggplot(tibble(t= c(-3,3))
+           , aes(x = t)) +
+      stat_function( fun = dt
+                     , args = c(df = 11)
+                     ) +
+      stat_function(fun = dt
+                    , args = c(df = 11)
+                    , geom = 'area'
+                    , fill = 'steelblue'
+                    , xlim = c(-2.200985, 2.200985)) + 
+      labs(title = 'Central area of .95 in a t-distribution with df = 11')
+    ```
+
+    From the image above, we expect the value to be a little larger than 2. We can find this value using some quick reasoning that will become second hand to you. Since the central area is .95 the remaining tail area is .05. The tails are symmetric, so each tail has an area of .025. This means we want to find the value $t^\star$ corresponding to an upper tail area of $.025$. This value is calculated below. 
+    
+    ```{r}
+    qt(.025, df = 11, lower.tail = FALSE)
+    ```
+    
+    And as a quick double check, let's make sure the corresponding central area is .95.
+    
+    ```{r}
+    tStar <- qt(.025, df = 11, lower.tail = F)
+    pt(tStar, df = 11) - pt(-tStar, df = 11)
+    ```
+    
+    Success! Next up, we'll look at $F$-distributions which are not symmetric and unimodal. 
+    
 #### \(F\)-distributions
 
 This section will be completed later in the semester when these distributions are needed.
