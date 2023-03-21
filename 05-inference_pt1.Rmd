@@ -1392,7 +1392,33 @@ Now, it's up to you as the imaginary program manager to figure out how to use th
 
 ### Paired data
 
+Think back to making inferences about two-sample proportions. When performing our analysis, we had either verify or assume that the observations in our samples were independent from one another, both within and between groups. It turns out that some studies and experiments produce numerical data that do not satisfy this condition, but the way they fail to meet the independence condition is a feature instead of a bug from an analysis perspective. Some examples of data where we witness this type of failure show up when
 
+- Comparing textbook prices from the FVCC Bookstore and Amazon. 
+
+- Comparing the volume of bikes tire on two different rims. 
+
+- Comparing individuals' pre-course test score with their post-course test score. 
+
+Notice that in each of these cases, we're taking two measurements for the same observational unit. For example, the book *OpenIntro Statistics* costs \$20 from Amazon but the same book costs \$30 from the FVCC book store. The observational unit in this case is the textbook and their are two different price measurements for it. Because it is the same book, the Amazon and FVCC bookstore prices are *dependent*!  
+
+The examples above all generate what we call **paired data** where you have two collections of measurements, but each observation in one collection has a "special correspondence/correlation" with an observation in the other collection. Think for a second about the types of questions that one might try to answer with paired data. Mimicking the examples of paired data above, we might ask the following:
+
+- Does the FVCC Bookstore charge more than Amazon, on average?
+
+- Does rim width affect bike tire volume?
+
+- Does a course improve students' knowledge and skillet in a particular subject? 
+
+Each of these questions can be answered by looking at the *average difference* in the paired data sets. We use $\mu_{diff}$ to denote the average difference in a paired data set. If you take the difference between the paired measurements, you have a single measurement for each observational unit. This implies that one can analyze $\mu_{diff}$ just like one would analyze a single-sample numerical variable! In particular, the central limit theorem, as stated in the previous section applies in the exact same way, you just calculate and use the sample average and standard deviation *of the differences*. 
+
+In the subsections below we will go through an example of calculating and interpreting a confidence interval and a hypothesis test for some paired data. While it would be nice to acually analyze textbook price differences for FVCC as it compares to Amazon, gathering that information is somewhat tedious. Fortunately, the `openintro` package has textbook data from UCLA from Fall 2018. This is stored in the dataset `ucla_textbooks_f18`.  Below we should the course name along with the course's new textbook price from the UCLA bookstore and Amazon. 
+
+```{r}
+ucla_textbooks_f18 %>%
+  select(course, bookstore_new, amazon_new) %>%
+  head()
+```
 
 #### Confidence intervals
 
