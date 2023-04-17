@@ -1390,6 +1390,151 @@ In other words, if the average wait time between eruptions were actually 75 minu
 
 Now, it's up to you as the imaginary program manager to figure out how to use this information. 
 
+### Two sample mean
+
+Just as in the previous section concerning numerical variables, we can soup up our work with a single sample mean so that we can use essentially the same two to compare two population averages using two independent samples. You will typically find yourself in this situation when you are testing for an association between a 2-valued categorical explanatory variable and a numerical response variable. One possible example is in studying the outcome of a randomized control trial concerning a particular drug's affect on, say, reaction time.  Give one group the drug, the other group a placebo, then measure the time it takes everyone to complete a particular reaction time oriented task. In this case, you'd want to compare the average reaction time of the treatment group (sample 1) to the average reaction time of the control group (sample 2).  In this case, the explanatory variable is group membership (ie received the drug or did not) and the response variable is reaction time. An association between the variables in this case simply manifests itself as a difference between the group averages. In what follows we'll learn how to analyze data that comes about from such a study. 
+
+The population parameter of interest is the difference in population means
+
+\[ \mu_1 - \mu_2 \] 
+
+so the appropriate point estimate, no surprise, is the difference in sample averages
+
+\[ \overline{x}_1 - \overline{x}_2 \]
+
+Our hope is to use the tool we derived in the last section, but tweak the parameters a bit so that it can be applied to two samples instead of just one. As a first step, we hope to be able to apply the Central Limit Theorem, so, of course, both of our samples need to meet certain criteria. These are:
+
+- Independent observations within groups. Observations in one group should not influence the measurement of any other observation in the same group.  
+
+- Independence between groups. Observations in one group should not influence the measurement of any other observation in the other group.
+
+- The sampling distribution for each group should be approximately normal on its own. Check this using the sample size and/or normality check from the previous section.  
+
+If your samples meet these criteria, the sampling distribution of \(\overline{x}_1 - \overline{x}_2 \) is approximately normal with 
+
+-  \(E(\overline{x}_1 - \overline{x}_2 ) = \mu_1 - \mu_2  \) and
+
+- \( SE\left(\overline{x}_1 - \overline{x}_2 \right) = \sqrt{ \frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2} } \approx \sqrt{ \frac{s_1^2}{n_1} + \frac{s_2^2}{n_2} } \)
+
+where $s_i^2$ and $\sigma_i^2$ are the sample and population standard deviations of group $i$ and $n_i$ is the sample size.   
+
+As in the single sample case, whenever we do not know the population standard deviation (ie almost always!) we must approximate the sampling distribution with a $t$-distribution. This means we need to determine an appropriate number of degrees of freedom. We'll skip thinking about why the following is true, but some smart people (Welch and Satterthwaite) have determined that 
+
+\[ df \approx \frac{\left( \frac{s_1^2}{n_1} + \frac{s_2^2}{n_2} \right)^2}{\frac{s_1^4}{n_1^2(n_1 - 1)} + \frac{s_2^4}{n_2^2(n_2 - 1)}}  \]
+
+which is a terrible formula to try to use. It turns out that 
+
+\[ \min( n_1 -1, n_2 - 1 ) \leq \frac{\left( \frac{s_1^2}{n_1} + \frac{s_2^2}{n_2} \right)^2}{\frac{s_1^4}{n_1^2(n_1 - 1)} + \frac{s_2^4}{n_2^2(n_2 - 1)}} \]
+
+and using fewer degrees of freedom results in more conservative decision making. Thus, especially when making calculations "by hand," it is common to set $df$ equal to the smaller of $n_1 -1$ and $n_2 -1$, ie
+
+\[ df \approx min(n_1 - 1, n_2 - 1).\]
+
+**A note about equal variance two-sample tests:** If you look around the internet or search other resources, you may stumble across a more simple formula for the degrees of freedom and/or standard error. In particular, you may see $df = n_1 + n_2 - 2$.  This degree of freedom calculation and the associated standard error calculation *are only valid if you {**know**} the variances of both populations are equal.* This is a "dangerous" assumption to make in that it is often hard or impossible to know this fact. We recommend instead to default the one of the two degree of freedom calculations along with the standard error formula described above as these will hold all of the time, even when the population variances are equal. 
+
+With these details ironed out, we're ready to move on to some examples of inference. For our examples, we'll use the `gss2010` data set from the `openintro` package which gives some data from the 2010 General Society Survey.  We want to use this data set to explore the relationship between the respondents' hours worked per week and their opinion about whether or not marijuana should be legalized. These variables are represented in the `hrs1` and `grass` column.  The `grass` column has the values
+
+```{r}
+unique(gss2010$grass)
+```
+and the `hrs1` variable records the hours per week a respondent works. Some values are missing from both columns, so the code below subsets the data for respondents who answered both questions, then selects only the columns we're interested in.
+
+```{r}
+mj <- gss2010 %>%
+  filter(!is.na(hrs1) & !is.na(grass)) %>% #select only rows with non-null values in hrs1 and grass
+  select(grass, hrs1)
+```
+
+Before moving on to making inference, let's look at a summary of data.
+
+```{r}
+mj %>% 
+  group_by(grass) %>%
+  summarise(
+    n = n() #sample size for each stance on mj legalization
+    , xBar = mean(hrs1) #sample average for stance
+    , s = sd(hrs1) #sample standard deviation for each stance
+  )
+```
+
+#### Hypothesis testing
+
+We'll begin with a question: Is stance on marijuana legalization associated with weekly hours worked? In other words, is there a difference between the average number of hours worked by people who believe marijuana should be legalized and those who don't? Let $\mu_L$ and $\mu_N$ denote the average number of hours worked weekly by those who believe marijuana should be legalized and those who think it should be illegal. Then our question, as a hypothesis test, is
+
+- $H_0: \mu_L - \mu_N = 0$
+
+- $H_a: \mu_L - \mu_N \neq 0$
+
+Let's perform this hypothesis test with a significance level of $\alpha = .05$. First, we should think about the conditions needed to ensure an approximately normal sampling distribution:
+
+- Independence between and within groups: this seems safe to assume because the General Society Survey, the source of this data, is a high quality randomized survey. 
+
+- Normality of each individual sampling distribution: the sample sizes are both farily large ($n_i \geq 350$), so the CLT would apply to each group individually. 
+
+Now we need to calculate a bunch of sample statistics. In particular, the sample size, sample mean, and sample standard deviation for each group. The code below first breaks our data set into two smaller sets, one for each group. 
+
+```{r}
+legal <- mj %>% 
+  filter(grass == 'LEGAL')
+
+illegal <- mj %>% 
+  filter(grass == 'NOT LEGAL')
+```
+
+Now we calculate all of the sample statistics (note that these are all in the summary table above...). 
+
+```{r}
+#legal
+xBarL <- mean(legal$hrs1)
+sL <- sd(legal$hrs1)
+nL <- length(legal$hrs1)
+#illegal
+xBarN <- mean(illegal$hrs1)
+sN <- sd(illegal$hrs1)
+nN <- length(illegal$hrs1)
+#standard error
+SE <- sqrt( sL^2/nL + sN^2/nN)
+```
+
+We're angling to calculate a $p$-value, so need to determine our $t$-test statistic and the number of degrees of freedom. The test statistic is easier, so we'll do that first. As usual it is the point estimate minus the null value all divided by the standard error.
+
+```{r}
+#note that the null difference is 0
+t <- (xBarL - xBarN)/SE
+t
+```
+
+As a demonstration of the claims about degrees of freedom mentioned above, we will calculate this quantity both ways. The long way gives
+
+```{r}
+df1 <- (sL^2/nL + sN^2/nN)^2/ ( sL^4/(nL^2*(nL-1)) + sN^4/(nN^2*(nN-1)))
+df1
+```
+which isn't a whole number. This isn't a problem even though it's a pain to calculate 'by hand.'
+
+The easier approximation is 
+
+```{r}
+df2 <- min(nL-1, nN-1)
+df2
+```
+
+which is quite a bit smaller than the "official" number of degrees of freedom, yielding slightly more conservative decisions in hypothesis testing and wider confidence intervals. Now that we have our test statistic and degrees of freedom, we can calculate our $p$-value. Our test statistic $t$ is positive, so we can calculate our $p$-value as 
+
+```{r}
+#using df1, the 'official' degrees of freedom
+2*pt(t, df = df1, lower.tail = FALSE)
+#using df2, the 'approximate' degrees of freedom
+2*pt(t, df = df2, lower.tail = FALSE)
+```
+Notice that the 2 $p$-value calculations are not all that different, but that the second value is ever so slightly greater than the first. This is reflecting the more conservative degree of freedom choice.
+
+To finish up, our $p$-value is greater than the significance level $\alpha = .05$, so we fail to reject the null. In other words, our data do not provide compelling evidence of a difference in average weekly hours worked based on marijuana legalization stance. 
+
+In the next section we'll use the calculations from this section to calculate and interpret confidence intervals for a difference in two averages. 
+
+#### Confidence intervals
+
 ### Paired data
 
 Think back to making inferences about two-sample proportions. When performing our analysis, we had either verify or assume that the observations in our samples were independent from one another, both within and between groups. It turns out that some studies and experiments produce numerical data that do not satisfy this condition, but the way they fail to meet the independence condition is a feature instead of a bug from an analysis perspective. Some examples of data where we witness this type of failure show up when
@@ -1400,7 +1545,7 @@ Think back to making inferences about two-sample proportions. When performing ou
 
 - Comparing individuals' pre-course test score with their post-course test score. 
 
-Notice that in each of these cases, we're taking two measurements for the same observational unit. For example, the book *OpenIntro Statistics* costs \$20 from Amazon but the same book costs \$30 from the FVCC book store. The observational unit in this case is the textbook and their are two different price measurements for it. Because it is the same book, the Amazon and FVCC bookstore prices are *dependent*!  
+Notice that in each of these cases, we're taking two measurements for the same observational unit. For example, the book *OpenIntro Statistics* costs \$20 from Amazon but the same book costs \$30 from the FVCC book store. The observational unit in this case is the textbook and there are two different price measurements for it. Because it is the same book, the Amazon and FVCC bookstore prices are *dependent*!  
 
 The examples above all generate what we call **paired data** where you have two collections of measurements, but each observation in one collection has a "special correspondence/correlation" with an observation in the other collection. Think for a second about the types of questions that one might try to answer with paired data. Mimicking the examples of paired data above, we might ask the following:
 
@@ -1412,22 +1557,122 @@ The examples above all generate what we call **paired data** where you have two 
 
 Each of these questions can be answered by looking at the *average difference* in the paired data sets. We use $\mu_{diff}$ to denote the average difference in a paired data set. If you take the difference between the paired measurements, you have a single measurement for each observational unit. This implies that one can analyze $\mu_{diff}$ just like one would analyze a single-sample numerical variable! In particular, the central limit theorem, as stated in the previous section applies in the exact same way, you just calculate and use the sample average and standard deviation *of the differences*. 
 
-In the subsections below we will go through an example of calculating and interpreting a confidence interval and a hypothesis test for some paired data. While it would be nice to acually analyze textbook price differences for FVCC as it compares to Amazon, gathering that information is somewhat tedious. Fortunately, the `openintro` package has textbook data from UCLA from Fall 2018. This is stored in the dataset `ucla_textbooks_f18`.  Below we should the course name along with the course's new textbook price from the UCLA bookstore and Amazon. 
+In the subsections below we will go through an example of calculating and interpreting a confidence interval and a hypothesis test for some paired data. While it would be nice to actually analyze textbook price differences for FVCC as it compares to Amazon, gathering that information is somewhat tedious. Fortunately, the `openintro` package has textbook data from UCLA from Fall 2018. This is stored in the data set `ucla_textbooks_f18`.  Below we select the course name along with the course's new textbook price from the UCLA bookstore and Amazon. 
 
 ```{r}
-ucla_textbooks_f18 %>%
+books <- ucla_textbooks_f18 %>%
   select(course, bookstore_new, amazon_new) %>%
-  head()
+  drop_na() #this omits all rows with an NA or unknown price
+  
+head(books)
 ```
 
+We want to investigate the average difference in cost between Amazon and UCLA's bookstore. Let's add a difference column to the `books` data set. Note that we will look at the bookstore's cost minus Amazon's cost for each book.
+
+```{r}
+books <- books %>%
+  mutate(diff = bookstore_new - amazon_new)
+
+head(books)
+```
+
+Let's compare the average difference in price to the difference between average prices (recall this is what we looked at in the previous section).
+
+```{r}
+mean(books$diff)
+mean(books$bookstore_new) - mean(books$amazon_new)
+```
+
+They are the same! So what's different here from the last section? Well, in the previous section we had two *independent* samples, but now, while we are looking at two columns of data, we essentially only have a *single* sample of independent measurements. This changes two things, one small and one large:
+
+- The relatively small change is the number of degrees of freedom. If we were performing a two-sample $t$-test with the data in `books` we'd use $ df = 133.59$, but with a single sample of differences we use $df = n-1 = 67$. 
+
+- The larger change is the standard error used in inference. Recall that two-sample $t$-test uses 
+\[ SE = \sqrt{ \frac{ \sigma_1^2}{n_1}  + \frac{ \sigma_2^2}{n_2} } \approx \sqrt{ \frac{ \sigma_1^2}{n_1}  + \frac{ \sigma_2^2}{n_2} } \]
+precisely because we have two independent samples. When we only have a single independent sample of differences, we use 
+\[ SE = \sigma_{diff}/\sqrt{n} \]
+just as you would for a single sample mean analysis. Let's compare these values for our working example.
+
+```{r}
+# If the book samples were independent, the SE would be
+sqrt( var(books$bookstore_new)/length(books$bookstore_new) 
+      + var(books$amazon_new)/length(books$amazon_new))
+
+# But in reality the standard error should be
+sd(books$diff)/sqrt(length(books$diff))
+```
+When you have two independent samples you expect *more* variability between samples! This should be somewhat intuitive: since the two samples have no sway on one another, they can be a lot more different. 
+
+Next up we'll see how to use these details to perform inference, starting with confidence intervals, then performing a hypothesis test.
+
 #### Confidence intervals
+
+As always, the formula for a $c$\% confidence interval starts with 
+\[ \text{point est.} \pm \text{crit val.}\cdot SE\]
+Filling in the details, we have
+
+- Point estimate: the average difference, $\overline{x}_{diff}$.
+
+- $ SE = \sigma_{diff} / \sqrt{n} \approx s_{diff} / \sqrt{n}$
+
+- critical value: the $t$-critical value with $df = n -1$.
+
+Let's use this to calculate a 95\% confidence interval for the average difference between bookstore and Amazon textbook prices for UCLA in 2018. 
+
+```{r}
+#first we calculate all the necessary pieces
+xBar <- mean(books$diff)
+s <- sd(books$diff)
+n <- length(books$diff)
+SE <- s /sqrt(n)
+crit.val <- qt( (1-.95)/2, df = n -1, lower.tail = FALSE)
+#then calculate the confidence interval
+xBar + c(-1,1)*crit.val*SE
+```
+What does this mean? Remember, we're estimating the average difference in book cost between the UCLA bookstore and Amazon. Thus, with 95% confidence, new textbooks from the UCLA book store cost, on average between \$0.33 and $6.83 *more* than the same new textbook on Amazon. 
 
 #### Hypothesis testing
 
-### Two sample mean
+Just as with calculating and interpreting confidence intervals, the key to performing hypothesis tests on paired data is to remember that pairing yields a single sample of differences, so the details of inference are essentially the same as they are for a single sample mean.  
 
-#### Confidence intervals
+Returning to our `books` example, let's try to answer the following question: "Do new textbooks from the UCLA bookstore cost more, on average, than new textbooks from Amazon?" Turning this question into a hypothesis test. 
 
-#### Hypothesis testing
+- $H_0: \mu_{diff} = 0$
+
+- $H_a: \mu_{diff} > 0$
+
+Here note that $\mu_{diff}$ corresponds to bookstore price minus Amazon price. Let's perform this hypothesis test with a significance level of $\alpha = .1$.  The sample statistics we need are calculated below. 
+
+```{r}
+xBar <- mean(books$diff)
+s <- sd(books$diff)
+n <- length(books$diff)
+SE <- s /sqrt(n)
+c(xBar, s, n, SE)
+```
+
+The test statistic is a $t$-statistic and is 
+
+\[ t =  \frac{\overline{x}_{diff} - \mu_{diff, null}}{SE} \]
+
+where $\mu_{diff,null}$ is the null value of the mean difference; this value is typically zero. Thus our test statistic is 
+
+```{r}
+t <- xBar/SE
+t
+```
+which means that if there were no difference in price, our sample falls about 2.2 standard deviations above the null value *in the sampling distribution*. 
+
+We use our $t$-statistic to calculate the $p$-value for this test.  Since we are performing a one sided, upper hypothesis test the $p$-value is
+
+```{r}
+pt(t, df = n -1, lower.tail = FALSE)
+```
+Thus, if there were no difference in textbook costs, there would be about a 1.6\% chance of observing a sample with differences at least as extreme as those observed in our sample. 
+
+The $p$-value $.0156 < \alpha = .05$, so we reject the null and accept the research. In a sentence: the data provide compelling evidence to believe that, on average, new textbooks cost more from the UCLA bookstore than from Amazon. 
+
 
 ### Analysis of variance (ANOVA)
+
+Coming soon!
