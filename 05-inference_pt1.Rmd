@@ -1535,6 +1535,43 @@ In the next section we'll use the calculations from this section to calculate an
 
 #### Confidence intervals
 
+When you calculate a confidence interval for a difference between two means it is important to remember that that is exactly what your interval is estimating. In others words, you're estimating \( \mu_1 - \mu-2 \).  The procedure and basic ingredients needed for calculating these confidence intervals is essentially the same as always:
+
+\[ \text{point est.} \pm \text{crit. val.}\cdot SE \]
+
+where in this case
+
+- \(\text{point est.} = \overline{x}_1 - \overline{x}_2 \);
+
+- \(\text{crit. val.} = t^\star_df\), the $t$-critical value that corresponds to your confidence level and the appropriate number of degrees of freedom, approximately \(df = \min \left( n_1 -1, n_2 - 2) \right) \); and
+
+- \(SE \approx \sqrt{ \frac{s_1^2}{n_1} + \frac{s_2^2}{n_2} } \)
+
+Continuing the example from the previous section, let's estimate the difference in average weekly hours worked by people who believe marijuana should be legalized and those who don't at the 90\% confidence level. In the previous section we calculated our point estimate, the standard error, and the number of degrees of freedom needed for this calculation. They are
+
+```{r}
+c(point.est = xBarL - xBarN, SE = SE, df = df2)
+```
+
+so the only ingredient we need to calculate is the $t$-critical value $t_{df = 353}^\star$. We're using a 90\% confidence interval, so this value is 
+
+```{r}
+t.crit <- qt( (1-.9)/2, df = df2, lower.tail = FALSE)
+t.crit
+```
+
+Our 90% confidence interval is
+
+```{r}
+(xBarL - xBarN) + c(-1,1)*t.crit*SE
+```
+
+Interpreting this confidence interval is maybe the newest thing in this section. Since we're estimating $\mu_{legal} - \mu_{not\,legal}$, the negative end point gives an estimate where $\mu_{not\, legal} > \mu_{legal}$ and while the positive endpoint gives an estimate where  $\mu_{legal} > \mu_{not\, legal}$. 
+
+Thus, with 90% confidence, we estimate that people who believe that marijuana should be legal work, on average, between .33 hours *less* and 3.38 hours *more* than people who think the drug should be illegal. 
+
+Note that this confidence interval calculation jives with our hypothesis test in the previous section since 0 is in the interval. This means the null value from the hypothesis test is a plausible value for the true difference in means, so we better have failed to reject the null (which we did!).
+
 ### Paired data
 
 Think back to making inferences about two-sample proportions. When performing our analysis, we had either verify or assume that the observations in our samples were independent from one another, both within and between groups. It turns out that some studies and experiments produce numerical data that do not satisfy this condition, but the way they fail to meet the independence condition is a feature instead of a bug from an analysis perspective. Some examples of data where we witness this type of failure show up when
@@ -1675,4 +1712,96 @@ The $p$-value $.0156 < \alpha = .05$, so we reject the null and accept the resea
 
 ### Analysis of variance (ANOVA)
 
-Coming soon!
+From a calculation standpoint, the **analysis of variance tests**, or **ANOVA tests** may feel like the most technical type of hypothesis test we learn about this semester. With that in mind, I encourage you to rely on technology (ie R) maybe even more for this type of test than all of the rest. In this section, we will go through the nitty gritty details of ANOVA, ***but I suggest you  use the `aov` function described in a future section for all of your own calculations**.  This function does all the work for you, which helps minimize error on your part. 
+
+With that disclaimer out of the way, what is the purpose of ANOVA? In the most direct sense, it is an extension of a two sample mean comparison. Recall that you can think of a two-sample mean comparison as a check for an association between a categorical *explanatory variable* with two values and a numerical *response variable*. For instance, think back to our example where we checked to see if belief about marijuana legalization had any association with average weekly hours worked (it appears not to). In this case, stance on legalization was the categorical explanatory variable and weekly hours worked was the numerical response variable.  
+
+Well, what would you do if your categorical explanatory variable had more than two possible values? Let's set up a simulated example that we'll use to demonstrate the ideas at play here. Suppose we run an experiment testing the efficacy of some new drug and we suspect the effect of the drug might be dose dependent. We randomly sample 45 people to participate in the trial and assign them to one of three groups:
+
+- A: control group receiving only a placebo;
+
+- B: treatment group receiving 1mg of the drug;
+
+- C: treatment group receiving 2mg of the drug. 
+
+Measure some health index \(H\) for each participant after 2 weeks.The code below simulates data for two different trials of the same experiment. Group A0 is the group A from the first trial while group A1 is the A group from the second trial. 
+
+```{r, fig.align='center', echo = F}
+# generate group labels
+# A0 15 times, then B0 fiteen times, ... , A1 fiteen times, ... C1 fifteen times
+Group <- rep(paste(LETTERS[1:3], rep(0:1, each=3), sep = '')
+             , each = 15)
+# simulated H values, setting a seed to ensure consistent outcome
+set.seed(1123)
+x1 <- rnorm(15, mean = 1, sd = 5)
+x2 <- rnorm(15, mean = .5, sd = 4)
+x3 <- rnorm(15, mean = 1.5, sd = 4.25)
+x4 <- rnorm(15, mean = 1, sd = 1)
+x5 <- rnorm(15, mean = .5, sd = .9)
+x6 <- rnorm(15, mean = 1.5, sd = 1.1)
+# make simulated date set
+df <- tibble(Group = Group
+             , Outcome = c(x1,x2,x3,x4,x5,x6)
+             , Trial = rep(0:1, each = 45)  #trial number for plot coloring
+             ) %>% # reorder factors for appropriate visualization 
+  mutate(Group = fct_reorder(Group, Trial)
+         , Trial = factor(Trial))
+ggplot(df, aes(x = Group, y = Outcome, color = Trial))  +
+  geom_point(alpha = .5) +
+  labs(title = "Experiment outcomes for two different trials")
+```
+
+There is a very clear difference between the two trials; you can see that there's much more "spread" in trial 0 than in trial 1 which seems to make the differences between the group averages more apparent in the second trial. More on this soon.
+
+Let's return to the original question: how could we analyze the results of only one of these trials? One thought is to try to make an inference about difference between the group averages two at a time. The idea behind this is that if there is no association between the group and outcome, then the group averages would all be the same. Thus, an association would rear its head as a difference between group averages. 
+
+To test two groups at a time for trial 0 you'd have to test A0 vs B0, A0 vs C0, and B0 vs C0.  This might not seem like too much of an issue, but a major problem rears its head when you perform many test: the probability of making at least one Type I error (ie a false positive) grows exponentially.  Suppose you have $k$ groups or $k$ values of a categorical variable. To test for a difference in a numerical variable for two values at a time, you would have to perform  
+\[  m =  {k \choose 2}   \] 
+distinct hypotheses tests. Remember that the significance level $\alpha$ of a hypothesis test is the probability of a false positive if the null is true. Thus, if all group averages are the same, the probability of making at least one Type I error out of all $m$ 2-sample $t$-tests is 
+
+\[ 1 - (1 - \alpha)^m\]
+
+The table below gives this probability for a few different group numbers $k$ and $\alpha = .05$
+
+```{r}
+tibble(
+  k = 1:5*5
+  , probOneTypeOne = round(1 - .95^choose(k, 2), 4)
+)
+```
+
+If you have 15 groups or 15 values for your categorical variable, at least one Type I error is virtually certain. This might seem outlandish at first glance - what categorical variables have more than 15 meaningful groups? It turns out that this becomes a major problem in genetics, as one example, where one can ["measure expression levels of tens of thousands of genes"](https://en.wikipedia.org/wiki/Multiple_comparisons_problem). 
+
+For our purposes we can get around this dilemma by understanding a single hypothesis test, **the  Analysis of Variance or ANOVA test** that checks for an association between the categorical explanatory variable and the numerical response variable. Suppose we have $k$ different groups that we'd like to compare the average of for some numerical variable. Let $\mu_i$ denote the population mean of group $i$. The null and alternative hypotheses for ANOVA are:
+
+- $H_0: \mu_1 = \mu_2 = \cdots = \mu_k$. (the variables are independent)
+
+- $H_a: \text{at least one mean differs from the others}$ (there is an association between the variables)
+
+Before digging in to the details of this test, we should understand the conditions required for making a valid inference.   We need 
+
+- observations that are independent between and within groups; 
+
+- the observations within each group to come from a normally distributed population; and 
+
+- the variances of the groups are all approximately equal 
+
+If you look back up to the code generating our simulated example, you'll notice that these conditions are satisfied by our data:
+
+- we randomly generated independent observations with `rnorm` to ensure independence and that we were sampling from normally distributed populations.
+
+- we chose the standard deviations of the normal distrubtions to be about the same in each trial to make sure we met the last condition.
+
+With these conditions satisfied, we're ready to proceed in understanding ANOVA. We use the plot above as motivation. Again, notice that in trial zero, there is not very much of a difference between the centers of each group *relative* to the amount of variability within each group. On the other hand, in trial one, the difference between the group's centers are large *relative* to the amount of variability within each group. The boxplots below help to emphasize this point. 
+
+```{r}
+ggplot(df, aes(x = Group, y = Outcome, color = Trial)) +
+  geom_point() +
+  geom_boxplot(alpha = .5)
+```
+
+This plot indicates that we should try to develop a single sample statistic that looks at the variability of the group averages relative to the variability within all groups.  This will be the $F$-statistics: 
+
+\[ F = \frac{\text{variability between groups}}{\text{variability within groups}}\]
+
+We just need to figure out how to best measure the numerator and the denominator. 
