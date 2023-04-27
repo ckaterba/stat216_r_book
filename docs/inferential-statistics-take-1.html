@@ -334,7 +334,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb356-3"><a href="inferential-statistics-take-1.html#cb356-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Distribution of sample proportions, n = 2044&quot;</span>, </span>
 <span id="cb356-4"><a href="inferential-statistics-take-1.html#cb356-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Estimating SE for 2010 proportion of Americans without a HS diploma&quot;</span>,</span>
 <span id="cb356-5"><a href="inferential-statistics-take-1.html#cb356-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Sample proportion, p-hat&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-159-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-196-1.png" width="672" /></p>
 <p>Voila! Our sampling distribution does seem to be symmetric and unimodal. Where precisely is the center?</p>
 <div class="sourceCode" id="cb357"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb357-1"><a href="inferential-statistics-take-1.html#cb357-1" aria-hidden="true" tabindex="-1"></a><span class="co">#average sample proportion</span></span>
 <span id="cb357-2"><a href="inferential-statistics-take-1.html#cb357-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(simulated_sampling_distr<span class="sc">$</span>p_hat)</span></code></pre></div>
@@ -368,7 +368,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb363-3"><a href="inferential-statistics-take-1.html#cb363-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Distribution of sample proportions, n = 100&quot;</span>, </span>
 <span id="cb363-4"><a href="inferential-statistics-take-1.html#cb363-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Estimating SE for 2010 proportion of Americans without a HS diploma&quot;</span>,</span>
 <span id="cb363-5"><a href="inferential-statistics-take-1.html#cb363-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Sample proportion, p-hat&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-163-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-200-1.png" width="672" /></p>
 <p>Notice that the center is about the same as our first sampling distribution, but our second is more spread out as we claimed above! To check these claims, let’s look at the average sample proportion and the estimated standard error.</p>
 <div class="sourceCode" id="cb364"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb364-1"><a href="inferential-statistics-take-1.html#cb364-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(sampling_dist2<span class="sc">$</span>p_hat)</span></code></pre></div>
 <pre><code>## [1] 0.14884</code></pre>
@@ -429,19 +429,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span class="math display">\[ H_a: p \neq .5  \]</span></li>
 </ol>
 <p>Samples that are at least as favorable for <span class="math inline">\(H_a\)</span> as our own come in two flavors: samples with a proportion of at least .55 and those with a proportion of <em>at most</em> .45. Notice that the samples with proportions of at most .45 really are just as favorable as those with proportions of at least .55 when we’re checking for a difference because they are equally as far away from the null proportion of .5. Thus, the <span class="math inline">\(p\)</span>-value of a two-sided hypothesis tests will be a two-tailed probability. The plot below helps visualize this <span class="math inline">\(p\)</span>-value as an area in the sampling distribution. We have hidden the plotting code here to prioritize the concepts.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-167-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-204-1.png" width="672" /></p>
 <ol start="2" style="list-style-type: decimal">
 <li><strong>One-sided upper hypothesis test</strong>: In this case, we’re simply checking to see if the population parameter is greater than the null value. For our example:</li>
 </ol>
 <p><span class="math display">\[ H_a: p &gt; .5  \]</span></p>
 <p>Samples that are at least as favorable for <span class="math inline">\(H_a\)</span> as our own only one flavor this time: samples with a proportion of at least .55. Thus the <span class="math inline">\(p\)</span>-value for this hypothesis test is an upper-tail area. The plot below helps us visualize this.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-168-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-205-1.png" width="672" /></p>
 <ol start="3" style="list-style-type: decimal">
 <li><strong>One-sided lower hypothesis test</strong>: In this case, we’re simply checking to see if the population parameter is less than the null value. For our example:</li>
 </ol>
 <p><span class="math display">\[ H_a: p &gt; .5  \]</span></p>
 <p>Samples that are at least as favorable for <span class="math inline">\(H_a\)</span> as our own only one flavor: samples with a proportion of at most .55. Thus the <span class="math inline">\(p\)</span>-value for this hypothesis test is a lower-tail area in the sampling distribution. The plot below helps us visualize this.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-169-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-206-1.png" width="672" /></p>
 <p>Our <span class="math inline">\(p\)</span>-value is large because our sample proportion is above the null value when we thought it was going to be below. We should revise our alternative hypothesis in this case.</p>
 <p>Let’s finish this section using the high school diploma question we started this chapter with. In particular, in 2010 did more than 10% of Americans fail to graduate high school? As a hypothesis test:</p>
 <ul>
@@ -466,7 +466,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb378-3"><a href="inferential-statistics-take-1.html#cb378-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> pHat, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
 <span id="cb378-4"><a href="inferential-statistics-take-1.html#cb378-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Null distribution with p = .1 and n = 2044, pHat = .149&quot;</span>, </span>
 <span id="cb378-5"><a href="inferential-statistics-take-1.html#cb378-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Sample proportion, p-hat&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-171-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-208-1.png" width="672" /></p>
 <p>As we’d expect the null sampling distribution is approximately normal. The plot above indicates that our sample proportion <span class="math inline">\(\hat{p}\)</span> would be quite unlikely if the null hypothesis were true. To estimate exactly how unlikely, let’s <em>estimate</em> the <span class="math inline">\(p\)</span>-value of our sample.</p>
 <div class="sourceCode" id="cb379"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb379-1"><a href="inferential-statistics-take-1.html#cb379-1" aria-hidden="true" tabindex="-1"></a><span class="co"># count the number of simulated samples with proportions at least as large as </span></span>
 <span id="cb379-2"><a href="inferential-statistics-take-1.html#cb379-2" aria-hidden="true" tabindex="-1"></a><span class="co"># our actual sample proportion, divide by number of samples in simulated dist.</span></span>
@@ -508,7 +508,7 @@ In other words, you can approximate the standard error using the sample proporti
 <p><span class="math display">\[ \text{point estimate} \pm CV \cdot SE\]</span></p>
 <p>where <span class="math inline">\(CV\)</span> is the critical value determined by the confidence level. The <strong>CLT</strong> provides the standard error and our sample gives the point estimate, so we only need to worry about the critical value. Recall that if your confidence level is <span class="math inline">\(CL\)</span>, then <span class="math inline">\(CL\)</span>% of all sample proportions will fall within <span class="math inline">\(CV\)</span> standard deviations of the true population parameter within the sampling distribution. The sampling distribution is normal by the Central Limit theorem, so we can use the <code>qnorm(...)</code> function to find precise critical values.</p>
 <p>As an example, let’s find the critical value for a 95% confidence interval. We want to find the value <span class="math inline">\(z^\ast\)</span> so that 95% of all sample proportions fall within <span class="math inline">\(z^\ast\)</span> standard deviations of the population proportion. In other words, we need to find <span class="math inline">\(z^\ast\)</span> so that <span class="math inline">\(P ( |Z| \leq z^\ast ) = .95\)</span>. The graph below helps visualize the setup.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-173-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-210-1.png" width="672" /></p>
 <p>We can see that the bounds are almost <span class="math inline">\(\pm2\)</span>, but not quite. If the central area is .95, then the tail area is .05. The upper and lower tails are symmetric, so the upper tail area is .025. Thus, to find our critical value, we simply evaluate</p>
 <div class="sourceCode" id="cb381"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb381-1"><a href="inferential-statistics-take-1.html#cb381-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(.<span class="dv">025</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <pre><code>## [1] 1.959964</code></pre>
@@ -560,7 +560,7 @@ H_a: p \neq .5
 \end{array}
 \]</span></p>
 <p>and the image below helps us visualize the <span class="math inline">\(p\)</span>-value of our sample with <span class="math inline">\(\hat{p} = .55\)</span></p>
-<p><img src="_main_files/figure-html/unnamed-chunk-177-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-214-1.png" width="672" /></p>
 <p>The upper and lower tails of the <span class="math inline">\(p\)</span>-value are symmetric about the mean, so we can calculate one of them and double it.</p>
 <div class="sourceCode" id="cb387"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb387-1"><a href="inferential-statistics-take-1.html#cb387-1" aria-hidden="true" tabindex="-1"></a>pNull <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
 <span id="cb387-2"><a href="inferential-statistics-take-1.html#cb387-2" aria-hidden="true" tabindex="-1"></a>SE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(pNull<span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> pNull)<span class="sc">/</span><span class="dv">200</span>)</span>
@@ -576,7 +576,7 @@ H_a: p &gt; .5
 \end{array}
 \]</span></p>
 <p>and the image below helps us visualize the <span class="math inline">\(p\)</span>-value of our sample with <span class="math inline">\(\hat{p} = .55\)</span></p>
-<p><img src="_main_files/figure-html/unnamed-chunk-179-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-216-1.png" width="672" /></p>
 <p>The <span class="math inline">\(p\)</span>-value is the shaded upper tail area and can be calculated as follows.</p>
 <div class="sourceCode" id="cb389"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb389-1"><a href="inferential-statistics-take-1.html#cb389-1" aria-hidden="true" tabindex="-1"></a>pNull <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
 <span id="cb389-2"><a href="inferential-statistics-take-1.html#cb389-2" aria-hidden="true" tabindex="-1"></a>SE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(pNull<span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> pNull)<span class="sc">/</span><span class="dv">200</span>)</span>
@@ -592,7 +592,7 @@ H_a: p &lt; .5
 \end{array}
 \]</span></p>
 <p>and the image below helps us visualize the <span class="math inline">\(p\)</span>-value of our sample with <span class="math inline">\(\hat{p} = .55\)</span></p>
-<p><img src="_main_files/figure-html/unnamed-chunk-181-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-218-1.png" width="672" /></p>
 <p>The <span class="math inline">\(p\)</span>-value is the shaded llower tail area and can be calculated as follows.</p>
 <div class="sourceCode" id="cb391"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb391-1"><a href="inferential-statistics-take-1.html#cb391-1" aria-hidden="true" tabindex="-1"></a>pNull <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
 <span id="cb391-2"><a href="inferential-statistics-take-1.html#cb391-2" aria-hidden="true" tabindex="-1"></a>SE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(pNull<span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> pNull)<span class="sc">/</span><span class="dv">200</span>)</span>
@@ -854,7 +854,7 @@ df &amp; = &amp; 5 \text{ and } \\
 <span id="cb434-9"><a href="inferential-statistics-take-1.html#cb434-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>( <span class="at">x =</span> <span class="st">&quot;chi-squared&quot;</span>, <span class="at">y =</span> <span class="st">&quot;&quot;</span>,</span>
 <span id="cb434-10"><a href="inferential-statistics-take-1.html#cb434-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">&quot;Chi-squared distribution with df = 5&quot;</span>,</span>
 <span id="cb434-11"><a href="inferential-statistics-take-1.html#cb434-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="st">&quot;p-value for chi-squared = 6.2 shaded&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-202-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-239-1.png" width="672" /></p>
 <p>From this we see that we can calculate <span class="math inline">\(p\)</span>-values for chi-squared tests using the function <code>pchisq(test_stat, df = df, lower.tail = FALSE)</code>. For example, the <span class="math inline">\(p\)</span>-value for our imaginary hypothesis test would be</p>
 <div class="sourceCode" id="cb435"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb435-1"><a href="inferential-statistics-take-1.html#cb435-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pchisq</span>(<span class="fl">6.2</span>, <span class="at">df =</span> <span class="dv">5</span>, <span class="at">lower.tail=</span><span class="cn">FALSE</span>)</span></code></pre></div>
 <pre><code>## [1] 0.2872417</code></pre>
@@ -1063,7 +1063,7 @@ P(A) = \frac{\text{row i total }}{n} \quad \text{and} \quad  P(B) = \frac{\text{
 <p>We’ve finished our discussion of analyzing categorical variables and now turn our attention to analyzing numerical variables. There are many different numerical variables one can analyze but we will focus on making inferences about population averages. We use the Greek letter mu <span class="math inline">\(\mu\)</span> to denote a population average and <span class="math inline">\(\overline{x}\)</span> to denote a sample average. Similarly, we use the Greek letter <span class="math inline">\(\sigma\)</span> to denote the population standard deviation and <span class="math inline">\(s\)</span> to denote sample standard deviations. We will use sample averages to make inferences about population averages, but in the process we will have to estimate <span class="math inline">\(\sigma\)</span> using <span class="math inline">\(s\)</span>. This creates a small dilemma that we’ll define and address below.</p>
 <p>One distinction that becomes more important and sometimes difficult to make when analyzing numerical variables is the difference between <strong>population distributions</strong> and <strong>sampling distributions</strong>. This was an easy distinction to make when we were dealing with categorical variables, because the population distributions were discrete things (proportion of success and proportion of failure), but sampling distributions were continuous. When dealing with numerical variables, however, the population and sampling distributions are often both continuous.</p>
 <p>As an example, suppose you are trying to investigate the average income of residents in Flathead County. You take a sample of 100 adult county residents. You sample <em>from</em> a population and then <em>use</em> the sampling distribution of <span class="math inline">\(\overline{x}\)</span> to make an inference about the county average population. The plot below helps us visualize the difference between these two distributions. The distributions below are made up and serve merely to illustrate the differences between the two distributions.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-219-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-256-1.png" width="672" /></p>
 <p>The plots above demonstrate that population distributions can be skewed (or in practice have a totally unknown shape), but under fairly mild hypotheses, the <strong>sampling distribution of <span class="math inline">\(\overline{x}\)</span> </strong> will be symmetric and unimodal. This is the central limit theorem in action again. As with categorical variables, this will be the main driver of inference about numerical variables for us.</p>
 <p><strong>Central Limit Theorem (for a single sample average)</strong>: Suppose we have <span class="math inline">\(n\)</span> independent observations of a numerical variable. If either</p>
 <ul>
@@ -1094,7 +1094,7 @@ P(A) = \frac{\text{row i total }}{n} \quad \text{and} \quad  P(B) = \frac{\text{
 <span id="cb470-4"><a href="inferential-statistics-take-1.html#cb470-4" aria-hidden="true" tabindex="-1"></a>                 , <span class="at">bins =</span> <span class="dv">20</span>) <span class="sc">+</span> </span>
 <span id="cb470-5"><a href="inferential-statistics-take-1.html#cb470-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>( <span class="at">title =</span> <span class="st">&quot;Wait time between Yellowstone eruptions&quot;</span></span>
 <span id="cb470-6"><a href="inferential-statistics-take-1.html#cb470-6" aria-hidden="true" tabindex="-1"></a>        , <span class="at">subtitle =</span> <span class="st">&quot;n = 272&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-220-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-257-1.png" width="672" /></p>
 <p>The wait time between eruptions appears to be bimodal, but this is no problem for us. From the histogram above, no observations seem particularly extreme. Let’s double check this with some calculations. We can look at a summary of the wait times:</p>
 <div class="sourceCode" id="cb471"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb471-1"><a href="inferential-statistics-take-1.html#cb471-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(faithful<span class="sc">$</span>waiting)</span></code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
@@ -1112,7 +1112,7 @@ P(A) = \frac{\text{row i total }}{n} \quad \text{and} \quad  P(B) = \frac{\text{
 <span id="cb475-4"><a href="inferential-statistics-take-1.html#cb475-4" aria-hidden="true" tabindex="-1"></a>                 , <span class="at">bins =</span> <span class="dv">7</span>) <span class="sc">+</span> </span>
 <span id="cb475-5"><a href="inferential-statistics-take-1.html#cb475-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>( <span class="at">title =</span> <span class="st">&quot;Height of American women in 1975&quot;</span></span>
 <span id="cb475-6"><a href="inferential-statistics-take-1.html#cb475-6" aria-hidden="true" tabindex="-1"></a>        , <span class="at">subtitle =</span> <span class="st">&quot;n = 15&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-223-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-260-1.png" width="672" /></p>
 <p>No surprise, the distribution of heights in this sample is fairly uniform and there are no clear outliers in the data. We’ll check this using a summary and <span class="math inline">\(z\)</span>-scores again.</p>
 <div class="sourceCode" id="cb476"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb476-1"><a href="inferential-statistics-take-1.html#cb476-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(women<span class="sc">$</span>height)</span></code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
@@ -1400,14 +1400,14 @@ H_1 &amp; \mu \neq  75
 <span id="cb524-3"><a href="inferential-statistics-take-1.html#cb524-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb524-4"><a href="inferential-statistics-take-1.html#cb524-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(books)</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 4
-##   course                                                   bookstore_new amazon_new   diff
-##   &lt;fct&gt;                                                            &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;
-## 1 Introduction to American Indian Studies                           48.0       47.4  0.520
-## 2 Archaeology: Introduction                                         14.3       13.6  0.710
-## 3 Arts Encounters: Exploring Arts Literacy in 21st Century          13.5       12.5  0.97 
-## 4 Introduction to Buddhism                                          49.3       55.0 -5.69 
-## 5 Black Holes and Cosmic Catastrophes                              120.       125.  -4.83 
-## 6 Introduction to Communication Studies                             17.0       11.8  5.18</code></pre>
+##   course                                                bookstore_new amazon_new   diff
+##   &lt;fct&gt;                                                         &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;
+## 1 Introduction to American Indian Studies                        48.0       47.4  0.520
+## 2 Archaeology: Introduction                                      14.3       13.6  0.710
+## 3 Arts Encounters: Exploring Arts Literacy in 21st Cen…          13.5       12.5  0.97 
+## 4 Introduction to Buddhism                                       49.3       55.0 -5.69 
+## 5 Black Holes and Cosmic Catastrophes                           120.       125.  -4.83 
+## 6 Introduction to Communication Studies                          17.0       11.8  5.18</code></pre>
 <p>Let’s compare the average difference in price to the difference between average prices (recall this is what we looked at in the previous section).</p>
 <div class="sourceCode" id="cb526"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb526-1"><a href="inferential-statistics-take-1.html#cb526-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(books<span class="sc">$</span>diff)</span></code></pre></div>
 <pre><code>## [1] 3.583235</code></pre>
@@ -1493,7 +1493,7 @@ Filling in the details, we have</p>
 <li><p>C: treatment group receiving 2mg of the drug.</p></li>
 </ul>
 <p>Measure some health index <span class="math inline">\(H\)</span> for each participant after 2 weeks.The code below simulates data for two different trials of the same experiment. Group A0 is the group A from the first trial while group A1 is the A group from the second trial.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-256-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-293-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>There is a very clear difference between the two trials; you can see that there’s much more “spread” in trial 0 than in trial 1 which seems to make the differences between the group averages more apparent in the second trial. More on this soon.</p>
 <p>Let’s return to the original question: how could we analyze the results of only one of these trials? One thought is to try to make an inference about difference between the group averages two at a time. The idea behind this is that if there is no association between the group and outcome, then the group averages would all be the same. Thus, an association would rear its head as a difference between group averages.</p>
 <p>To test two groups at a time for trial 0 you’d have to test A0 vs B0, A0 vs C0, and B0 vs C0. This might not seem like too much of an issue, but a major problem rears its head when you perform many test: the probability of making at least one Type I error (ie a false positive) grows exponentially. Suppose you have <span class="math inline">\(k\)</span> groups or <span class="math inline">\(k\)</span> values of a categorical variable. To test for a difference in a numerical variable for two values at a time, you would have to perform<br />
@@ -1534,10 +1534,114 @@ distinct hypotheses tests. Remember that the significance level <span class="mat
 <div class="sourceCode" id="cb544"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb544-1"><a href="inferential-statistics-take-1.html#cb544-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> Group, <span class="at">y =</span> Outcome, <span class="at">color =</span> Trial)) <span class="sc">+</span></span>
 <span id="cb544-2"><a href="inferential-statistics-take-1.html#cb544-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb544-3"><a href="inferential-statistics-take-1.html#cb544-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> .<span class="dv">5</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-258-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-295-1.png" width="672" /></p>
 <p>This plot indicates that we should try to develop a single sample statistic that looks at the variability of the group averages relative to the variability within all groups. This will be the <span class="math inline">\(F\)</span>-statistics:</p>
-<p><span class="math display">\[ F = \frac{\text{variability between groups}}{\text{variability within groups}}\]</span></p>
-<p>We just need to figure out how to best measure the numerator and the denominator.</p>
+<p><span class="math display">\[ F = \frac{\text{mean variability between groups}}{\text{mean variability within groups}}\]</span></p>
+<p>We just need to figure out how to best measure the numerator and the denominator. We will make calculations for both trial 0 and trial 1 simultaneously, so subset <code>df</code> for each trial first.</p>
+<div class="sourceCode" id="cb545"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb545-1"><a href="inferential-statistics-take-1.html#cb545-1" aria-hidden="true" tabindex="-1"></a>df0 <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb545-2"><a href="inferential-statistics-take-1.html#cb545-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Trial <span class="sc">==</span> <span class="dv">0</span> )</span>
+<span id="cb545-3"><a href="inferential-statistics-take-1.html#cb545-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb545-4"><a href="inferential-statistics-take-1.html#cb545-4" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb545-5"><a href="inferential-statistics-take-1.html#cb545-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Trial <span class="sc">==</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><strong>Numerator of F-statistic:</strong> When measuring any type of variance, you need to establish some point to measure that variability from. When looking at sample data, that point is the sample average. In our case, we’re trying to first measure the <em>variability between groups</em> and the way we decide to do this is by comparing the <strong>group averages</strong> <span class="math inline">\(\overline{x}_i\)</span> to the average of all measurements in our sample, called the <strong>grand average</strong> <span class="math inline">\(\overline{x}\)</span>. The grand average estimates the value all the group averages would be equal to if there were no differences between them. This brings us to our first component of ANOVA, the sum of squares between groups or SSG.</p>
+<p><span class="math display">\[ \text{total variability between groups} = SSG = \sum_{i = 1}^k n_i \left( \overline{x}_i - \overline{x} \right)^2\]</span></p>
+<p>Note that we weight the squared deviation by the group’s sample size <span class="math inline">\(n_i\)</span> since a large deviation from a small group should be weighted similarly to a small deviation from a large group. We have <span class="math inline">\(k\)</span> groups, so the average variability between groups (sometimes called <strong>mean square between groups</strong> or MSG) is</p>
+<p><span class="math display">\[ \text{mean variability between groups} =  MSG =\frac{SSG}{k-1}\]</span></p>
+<p>The code below makes these calculations for trial 0 and trial 1 from our motivating example.</p>
+<div class="sourceCode" id="cb546"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb546-1"><a href="inferential-statistics-take-1.html#cb546-1" aria-hidden="true" tabindex="-1"></a><span class="co">#find grand means, n, and k</span></span>
+<span id="cb546-2"><a href="inferential-statistics-take-1.html#cb546-2" aria-hidden="true" tabindex="-1"></a>gm0 <span class="ot">&lt;-</span> <span class="fu">mean</span>(df0<span class="sc">$</span>Outcome)</span>
+<span id="cb546-3"><a href="inferential-statistics-take-1.html#cb546-3" aria-hidden="true" tabindex="-1"></a>gm1 <span class="ot">&lt;-</span> <span class="fu">mean</span>(df1<span class="sc">$</span>Outcome)</span>
+<span id="cb546-4"><a href="inferential-statistics-take-1.html#cb546-4" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">dim</span>(df0)[<span class="dv">1</span>] <span class="co">#number of rows in df0 - the same for trial 1</span></span>
+<span id="cb546-5"><a href="inferential-statistics-take-1.html#cb546-5" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(df0<span class="sc">$</span>Group)) <span class="co"># of groups in df0 - the same for trial 1</span></span>
+<span id="cb546-6"><a href="inferential-statistics-take-1.html#cb546-6" aria-hidden="true" tabindex="-1"></a><span class="co">#create summary tables that find all of our needed summary statistics</span></span>
+<span id="cb546-7"><a href="inferential-statistics-take-1.html#cb546-7" aria-hidden="true" tabindex="-1"></a>summary0 <span class="ot">&lt;-</span> df0 <span class="sc">%&gt;%</span></span>
+<span id="cb546-8"><a href="inferential-statistics-take-1.html#cb546-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Group) <span class="sc">%&gt;%</span></span>
+<span id="cb546-9"><a href="inferential-statistics-take-1.html#cb546-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb546-10"><a href="inferential-statistics-take-1.html#cb546-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n</span>() </span>
+<span id="cb546-11"><a href="inferential-statistics-take-1.html#cb546-11" aria-hidden="true" tabindex="-1"></a>    , <span class="at">xBar =</span> <span class="fu">mean</span>(Outcome)</span>
+<span id="cb546-12"><a href="inferential-statistics-take-1.html#cb546-12" aria-hidden="true" tabindex="-1"></a>    , <span class="at">s =</span> <span class="fu">sd</span>(Outcome)</span>
+<span id="cb546-13"><a href="inferential-statistics-take-1.html#cb546-13" aria-hidden="true" tabindex="-1"></a>    , <span class="at">s2 =</span> <span class="fu">var</span>(Outcome)</span>
+<span id="cb546-14"><a href="inferential-statistics-take-1.html#cb546-14" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb546-15"><a href="inferential-statistics-take-1.html#cb546-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb546-16"><a href="inferential-statistics-take-1.html#cb546-16" aria-hidden="true" tabindex="-1"></a>summary0</span></code></pre></div>
+<pre><code>## # A tibble: 3 × 5
+##   Group     n  xBar     s    s2
+##   &lt;fct&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 A0       15  2.28  3.78  14.3
+## 2 B0       15  1.02  3.67  13.5
+## 3 C0       15  2.62  4.48  20.1</code></pre>
+<div class="sourceCode" id="cb548"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb548-1"><a href="inferential-statistics-take-1.html#cb548-1" aria-hidden="true" tabindex="-1"></a>summary1 <span class="ot">&lt;-</span> df1 <span class="sc">%&gt;%</span></span>
+<span id="cb548-2"><a href="inferential-statistics-take-1.html#cb548-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Group) <span class="sc">%&gt;%</span></span>
+<span id="cb548-3"><a href="inferential-statistics-take-1.html#cb548-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb548-4"><a href="inferential-statistics-take-1.html#cb548-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n</span>() </span>
+<span id="cb548-5"><a href="inferential-statistics-take-1.html#cb548-5" aria-hidden="true" tabindex="-1"></a>    , <span class="at">xBar =</span> <span class="fu">mean</span>(Outcome)</span>
+<span id="cb548-6"><a href="inferential-statistics-take-1.html#cb548-6" aria-hidden="true" tabindex="-1"></a>    , <span class="at">s =</span> <span class="fu">sd</span>(Outcome)</span>
+<span id="cb548-7"><a href="inferential-statistics-take-1.html#cb548-7" aria-hidden="true" tabindex="-1"></a>    , <span class="at">s2 =</span> <span class="fu">var</span>(Outcome)</span>
+<span id="cb548-8"><a href="inferential-statistics-take-1.html#cb548-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb548-9"><a href="inferential-statistics-take-1.html#cb548-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb548-10"><a href="inferential-statistics-take-1.html#cb548-10" aria-hidden="true" tabindex="-1"></a>summary1</span></code></pre></div>
+<pre><code>## # A tibble: 3 × 5
+##   Group     n  xBar     s    s2
+##   &lt;fct&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 A1       15 0.894 1.06  1.13 
+## 2 B1       15 0.644 0.740 0.548
+## 3 C1       15 1.83  1.03  1.07</code></pre>
+<p>With these summary statistics in hand, finding the SSG and MSG is easy! We store the values for future use.</p>
+<div class="sourceCode" id="cb550"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb550-1"><a href="inferential-statistics-take-1.html#cb550-1" aria-hidden="true" tabindex="-1"></a><span class="co">#first find SSG</span></span>
+<span id="cb550-2"><a href="inferential-statistics-take-1.html#cb550-2" aria-hidden="true" tabindex="-1"></a>SSG0 <span class="ot">&lt;-</span> <span class="fu">sum</span>( summary0<span class="sc">$</span>n<span class="sc">*</span>(summary0<span class="sc">$</span>xBar <span class="sc">-</span> gm0)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb550-3"><a href="inferential-statistics-take-1.html#cb550-3" aria-hidden="true" tabindex="-1"></a>SSG1 <span class="ot">&lt;-</span> <span class="fu">sum</span>( summary1<span class="sc">$</span>n<span class="sc">*</span>(summary1<span class="sc">$</span>xBar <span class="sc">-</span> gm1)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb550-4"><a href="inferential-statistics-take-1.html#cb550-4" aria-hidden="true" tabindex="-1"></a><span class="co">#print values</span></span>
+<span id="cb550-5"><a href="inferential-statistics-take-1.html#cb550-5" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(SSG0, SSG1)</span></code></pre></div>
+<pre><code>## [1] 21.35958 11.62261</code></pre>
+<div class="sourceCode" id="cb552"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb552-1"><a href="inferential-statistics-take-1.html#cb552-1" aria-hidden="true" tabindex="-1"></a><span class="co">#find MSG then print </span></span>
+<span id="cb552-2"><a href="inferential-statistics-take-1.html#cb552-2" aria-hidden="true" tabindex="-1"></a>MSG0 <span class="ot">&lt;-</span> SSG0<span class="sc">/</span>(k<span class="dv">-1</span>)</span>
+<span id="cb552-3"><a href="inferential-statistics-take-1.html#cb552-3" aria-hidden="true" tabindex="-1"></a>MSG1 <span class="ot">&lt;-</span> SSG1<span class="sc">/</span>(k<span class="dv">-1</span>)</span>
+<span id="cb552-4"><a href="inferential-statistics-take-1.html#cb552-4" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(MSG0, MSG1)</span></code></pre></div>
+<pre><code>## [1] 10.679792  5.811306</code></pre>
+<p>So very roughly there is more variability between groups in trial 0 than trial 1. But this isn’t the whole story! We need to compare these quantities to the average variability within the groups.</p>
+<p><strong>Denominator of F-statistic:</strong> This calculation is a bit easier to figure out since we already have a good way of measuring the variability within a group: simply that group’s sample variance! Thus,to calculate the total variability within groups we simply need to sum numerates of all the group’s variance. This is called the <strong>sum of squared error</strong>.</p>
+<p><span class="math display">\[\text{total variability within groups} = SSE = \sum_{i = 1}^k (n_i - 1)s_i^2 \]</span></p>
+<p>The **mean square error* or average variability within groups is then</p>
+<p><span class="math display">\[ \text{mean variability within groups} = MSE = \frac{SSE}{n - k} \]</span></p>
+<p>The denominator <span class="math inline">\(n-k\)</span> might be a surprise. Notice that the numerator, if you squint at it enough and think about the definition of sample variance, is really a sum of <span class="math inline">\(n\)</span> squared deviations from a mean. The calculation also involves <span class="math inline">\(k\)</span> distinct averages, so we have ‘used’ <span class="math inline">\(k\)</span> of our <span class="math inline">\(n\)</span> total degrees of freedom available, leaving <span class="math inline">\(n-k\)</span> degrees.</p>
+<p>Once you’ve calculated the <span class="math inline">\(MSG\)</span> and the <span class="math inline">\(MSE\)</span> you have everything you for the <span class="math inline">\(F\)</span>-statistic:
+<span class="math display">\[ F = \frac{MSG}{MSE}.\]</span></p>
+<p>The code below uses our previous summary tables to calculate the SSE, MSE, and <span class="math inline">\(F\)</span> statistics for trials 0 and 1 from our motivating example. Notice that we calculated the variance and standard deviation in each group above.</p>
+<div class="sourceCode" id="cb554"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb554-1"><a href="inferential-statistics-take-1.html#cb554-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calc and store SSE first then print</span></span>
+<span id="cb554-2"><a href="inferential-statistics-take-1.html#cb554-2" aria-hidden="true" tabindex="-1"></a>SSE0 <span class="ot">&lt;-</span> <span class="fu">sum</span>( (summary0<span class="sc">$</span>n<span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span>summary0<span class="sc">$</span>s2 )</span>
+<span id="cb554-3"><a href="inferential-statistics-take-1.html#cb554-3" aria-hidden="true" tabindex="-1"></a>SSE1 <span class="ot">&lt;-</span> <span class="fu">sum</span>( (summary1<span class="sc">$</span>n<span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span>summary1<span class="sc">$</span>s2 )</span>
+<span id="cb554-4"><a href="inferential-statistics-take-1.html#cb554-4" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(SSE0, SSE1)</span></code></pre></div>
+<pre><code>## [1] 670.0917  38.4532</code></pre>
+<div class="sourceCode" id="cb556"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb556-1"><a href="inferential-statistics-take-1.html#cb556-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calc and store MSE</span></span>
+<span id="cb556-2"><a href="inferential-statistics-take-1.html#cb556-2" aria-hidden="true" tabindex="-1"></a>MSE0 <span class="ot">&lt;-</span> SSE0<span class="sc">/</span>(n  <span class="sc">-</span> k)</span>
+<span id="cb556-3"><a href="inferential-statistics-take-1.html#cb556-3" aria-hidden="true" tabindex="-1"></a>MSE1 <span class="ot">&lt;-</span> SSE1<span class="sc">/</span> (n<span class="sc">-</span>k)</span>
+<span id="cb556-4"><a href="inferential-statistics-take-1.html#cb556-4" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(MSE0, MSE1)</span></code></pre></div>
+<pre><code>## [1] 15.9545638  0.9155523</code></pre>
+<div class="sourceCode" id="cb558"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb558-1"><a href="inferential-statistics-take-1.html#cb558-1" aria-hidden="true" tabindex="-1"></a><span class="co"># F stats</span></span>
+<span id="cb558-2"><a href="inferential-statistics-take-1.html#cb558-2" aria-hidden="true" tabindex="-1"></a>F0 <span class="ot">&lt;-</span> MSG0<span class="sc">/</span>MSE0</span>
+<span id="cb558-3"><a href="inferential-statistics-take-1.html#cb558-3" aria-hidden="true" tabindex="-1"></a>F1 <span class="ot">&lt;-</span> MSG1<span class="sc">/</span>MSE1</span>
+<span id="cb558-4"><a href="inferential-statistics-take-1.html#cb558-4" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(F0, F1)</span></code></pre></div>
+<pre><code>## [1] 0.6693879 6.3473231</code></pre>
+<p>We see from the last calculation what we expect: there is a lot more variation within the groups of trial 1 than of trial 0. The <span class="math inline">\(F\)</span>-statistic furthers this comparison: the variability between groups relative to the variability within groups is much more stark in trial 1 than trial 0.</p>
+<p>Calculating a <span class="math inline">\(p\)</span>-value is final step in executing an ANOVA test. Recall that a <span class="math inline">\(p\)</span>-value is the probability of a sample at least as favorable for <span class="math inline">\(H_a\)</span> as our own, assuming <span class="math inline">\(H_0\)</span> is true. A sample that is more favorable for <span class="math inline">\(H_a\)</span> than our own would have more variability between groups relative to the variability within groups. Thus, the <span class="math inline">\(p\)</span>-value for an ANOVA test is <em>always</em> a one-sided upper tail area in the appropriate <span class="math inline">\(F\)</span>-distribution.</p>
+<p>Recall from a previous section that an <span class="math inline">\(F\)</span>-distribution is the ratio of two <span class="math inline">\(\chi^2\)</span>-distributions. This implies we need to specify two degrees of freedom</p>
+<ul>
+<li><p><span class="math inline">\(df_1 = k-1\)</span> is the numerator degrees of freedom.</p></li>
+<li><p><span class="math inline">\(df_2 = n - k\)</span> is the denominator degrees of freedom.</p></li>
+</ul>
+<p>to calculate a <span class="math inline">\(p\)</span>-value. Just as we use the <code>pnorm</code>, <code>pt</code>, and <code>pchisq</code> functions to find areas under the corresponding probability density function curves and thus calculate <span class="math inline">\(p\)</span>-values, we use the function <code>pf</code> when dealing with <span class="math inline">\(F\)</span>-distributions. Combining our comments above, the syntax for a <span class="math inline">\(p\)</span>-value for us is <code>pf(F, df1 = k -1 , df2 = n-k , lower.tail = FALSE)</code>. The <span class="math inline">\(p\)</span>-values for our two examples are calculated below.</p>
+<div class="sourceCode" id="cb560"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb560-1"><a href="inferential-statistics-take-1.html#cb560-1" aria-hidden="true" tabindex="-1"></a><span class="co">#calculate and store p-values</span></span>
+<span id="cb560-2"><a href="inferential-statistics-take-1.html#cb560-2" aria-hidden="true" tabindex="-1"></a>p0 <span class="ot">&lt;-</span> <span class="fu">pf</span>(F0, <span class="at">df1 =</span> k <span class="sc">-</span><span class="dv">1</span>, <span class="at">df2 =</span> n <span class="sc">-</span>k, <span class="at">lower.tail =</span>  <span class="cn">FALSE</span>)</span>
+<span id="cb560-3"><a href="inferential-statistics-take-1.html#cb560-3" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">pf</span>(F1, <span class="at">df1 =</span> k <span class="sc">-</span><span class="dv">1</span>, <span class="at">df2 =</span> n <span class="sc">-</span>k, <span class="at">lower.tail =</span>  <span class="cn">FALSE</span>)</span>
+<span id="cb560-4"><a href="inferential-statistics-take-1.html#cb560-4" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(p0, p1)</span></code></pre></div>
+<pre><code>## [1] 0.517399088 0.003902959</code></pre>
+<p>We can finally conclude our hypothesis test for trial 0 and trial 1! We’ll use a significance level for trial 0 and trial 1.</p>
+<ul>
+<li><p><strong>Trial 0 Conclusion:</strong> We fail to reject the null since <span class="math inline">\(p \approx .52 &gt; .05\)</span>. The data do not provide evidence of any difference between the group averages. Alternatively, the data do not provide evidence of an association between Group and Outcome.</p></li>
+<li><p><strong>Trial 1 Conclusion:</strong> We reject the null and accept the research since $ p .003 &lt; .05$. The data provide strong evidence that at least one group mean differs from the others. Alternatively, the data provide strong evidence of an association between group membership and outcome.</p></li>
+</ul>
+<p>Notice that these conclusions match what we expected from our original plot! This was by design, of course, to help us build our intuition behind ANOVA.</p>
+<p>In practice, you will almost never go through an ANOVA calculation in the way that we have here. You’ll use software (hopefully R) to automate all of these calculations for you and the ANOVA section of the next chapter describes exactly how to do that.</p>
 
 </div>
 </div>
