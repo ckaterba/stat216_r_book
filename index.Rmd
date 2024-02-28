@@ -8,9 +8,8 @@ bibliography: [book.bib, packages.bib]
 # url: your book url like https://bookdown.org/yihui/bookdown
 # cover-image: path to the social sharing image like images/cover.jpg
 description: |
-  This is a minimal example of using the bookdown package to write a book.
-  The HTML output format for this example is bookdown::gitbook,
-  set in the _output.yml file.
+  These notes introduce the reader to R and RStudio following the rough structure
+  of STAT216 at FVCC.
 link-citations: yes
 github-repo: rstudio/bookdown-demo
 ---
@@ -23,7 +22,7 @@ library(tidyverse)
 
 This 'book' is intended to be a quick and dirty introduction to R (a statistical programming language) and RStudio (an *integrated development environment*, or IDE, for R) for students in the introductory statistics class at Flathead Valley Community College. This book aims to introduce you to all of the features you'll need to use in R to be successful in the course.  Moreover, we hope that it will help you develop the tools you need to use R in your future endeavors.  This book is by no means a complete guide to everything one can do in R, but the aim is to cut down on content and theory in the name of practicality.   
 
-This class will provide many students with their first interaction with computer programming. The coding required  is not extensive and the coding-based activities are heavily scaffolded. The point of including R in this course is not to introduce another layer of difficulty; the opposite is true in fact!  The goal is to give you a glimpse at how programming can make your life easier, at least when it comes to statistics and data science. In the process, you will hopefully add another useful and practical tool to your tool belt. Computers are not exiting our lives any time soon and being somewhat familiar with a little programming will only be an advantage. Some might say such familiarity will become essential. 
+This class will provide many students with their first interaction with computer programming. The coding required  is not extensive and the coding-based activities are heavily scaffold. The point of including R in this course is not to introduce another layer of difficulty; the opposite is true in fact!  The goal is to give you a glimpse at how programming can make your life easier, at least when it comes to statistics and data science. In the process, you will hopefully add another useful and practical tool to your tool belt. Computers are not exiting our lives any time soon and being somewhat familiar with a little programming will only be an advantage. Some might say such familiarity will become essential. 
 
 ## Organization
 

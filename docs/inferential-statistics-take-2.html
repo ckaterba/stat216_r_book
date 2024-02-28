@@ -5,25 +5,22 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 7 Inferential statistics, take 2 | R and RStudio for STAT216</title>
-  <meta name="description" content="<p>This is a minimal example of using the bookdown package to write a book.
-The HTML output format for this example is bookdown::gitbook,
-set in the _output.yml file.</p>" />
+  <meta name="description" content="<p>These notes introduce the reader to R and RStudio following the rough structure
+of STAT216 at FVCC.</p>" />
   <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 7 Inferential statistics, take 2 | R and RStudio for STAT216" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="<p>This is a minimal example of using the bookdown package to write a book.
-The HTML output format for this example is bookdown::gitbook,
-set in the _output.yml file.</p>" />
+  <meta property="og:description" content="<p>These notes introduce the reader to R and RStudio following the rough structure
+of STAT216 at FVCC.</p>" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Chapter 7 Inferential statistics, take 2 | R and RStudio for STAT216" />
   
-  <meta name="twitter:description" content="<p>This is a minimal example of using the bookdown package to write a book.
-The HTML output format for this example is bookdown::gitbook,
-set in the _output.yml file.</p>" />
+  <meta name="twitter:description" content="<p>These notes introduce the reader to R and RStudio following the rough structure
+of STAT216 at FVCC.</p>" />
   
 
 <meta name="author" content="Charles Katerba" />
@@ -276,13 +273,165 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>This chapter will show you how to calculate confidence intervals and perform hypothesis tests using R’s in-built hypothesis testing functions. We will quickly go over the same examples from the previous sections using R’s functions to recover the values we calculated earlier.</p>
 <div id="analyzing-categorical-variables-1" class="section level2 hasAnchor" number="7.1">
 <h2><span class="header-section-number">7.1</span> Analyzing categorical variables<a href="inferential-statistics-take-2.html#analyzing-categorical-variables-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We will learn how to use two workhorse functions in this section: <code>prop.test(...)</code> and <code>chisq.test(...)</code>. The former will be used for making inferences for single and two sample proportions, while the latter will be used for chi squared goodness of fit tests and tests of independence.</p>
+<p><strong>Remember</strong> You can always run <code>?prop.test</code> or <code>?chisq.test</code> in the console to view <code>R</code>’s help documentation for these functions.</p>
 <div id="single-sample-proportions" class="section level3 hasAnchor" number="7.1.1">
 <h3><span class="header-section-number">7.1.1</span> Single sample proportions<a href="inferential-statistics-take-2.html#single-sample-proportions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The main function we will use in this section is <code>prop.test(...)</code>; it both calculates confidence intervals <em>and</em> performs hypothesis tests all in one fell swoop! The important thing for us, then, is being able to read and interpret the outputs.</p>
+<p>The main function we will use in this section is <code>prop.test(...)</code>; it both calculates confidence intervals <em>and</em> performs hypothesis tests all in one fell swoop! The important things for us, then, are understanding what inputs we need and understanding the outputs. For single-sample proportion inferences, the function <code>prop.test</code> requires the following inputs:</p>
+<div class="sourceCode" id="cb562"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb562-1"><a href="inferential-statistics-take-2.html#cb562-1" tabindex="-1"></a><span class="fu">prop.test</span>(</span>
+<span id="cb562-2"><a href="inferential-statistics-take-2.html#cb562-2" tabindex="-1"></a>  <span class="at">x =</span> <span class="co"># The number of successes</span></span>
+<span id="cb562-3"><a href="inferential-statistics-take-2.html#cb562-3" tabindex="-1"></a>  , <span class="at">n =</span> <span class="co"># the sample size</span></span>
+<span id="cb562-4"><a href="inferential-statistics-take-2.html#cb562-4" tabindex="-1"></a>  , <span class="at">p =</span> <span class="co"># the null proportion of your hypothesis test, the devault value is NULL</span></span>
+<span id="cb562-5"><a href="inferential-statistics-take-2.html#cb562-5" tabindex="-1"></a>  , <span class="at">alternative =</span> <span class="co"># the type of hypothesis test to run corresponding to your alternative hypothesis; one of &quot;two.sided&quot;, &quot;less&quot;, or &quot;greater&quot;</span></span>
+<span id="cb562-6"><a href="inferential-statistics-take-2.html#cb562-6" tabindex="-1"></a>  , <span class="at">conf.level =</span> <span class="co"># your confidence level as a decimal</span></span>
+<span id="cb562-7"><a href="inferential-statistics-take-2.html#cb562-7" tabindex="-1"></a>  , <span class="at">correct =</span> <span class="cn">FALSE</span> <span class="co"># This turns OFF the Yates&#39; continuity correction so that calculations are made like we&#39;ve learned in class.</span></span>
+<span id="cb562-8"><a href="inferential-statistics-take-2.html#cb562-8" tabindex="-1"></a>)</span></code></pre></div>
+<p>The function will output the results of our desired hypothesis test and a corresponding confidence interval.</p>
+<p><strong>Note:</strong> The confidence interval intervals that <code>R</code> calculates are ever-so-slightly different from those that we calculate by hand in two important ways:</p>
+<ul>
+<li><p>Setting the option <code>correct = FALSE</code> gets us closer to our by-hand techniques, but <code>R</code> still uses a slightly different method under the hood. See <a href="https://stats.stackexchange.com/questions/183225/confidence-interval-from-rs-prop-test-differs-from-hand-calculation-and-resul">this CrossValidated Stack Exchange post</a> for more information.</p></li>
+<li><p>If your alternative hypothesis is one-sided and you select the option <code>alternative = "less"</code> or <code>alternative = "greater"</code>, then <code>R</code> will report a one-sided confidence interval that we do not discuss in this class.</p></li>
+</ul>
+<p>To understand the output of <code>prop.test(...)</code> and witness the discrepancies mentioned above, let’s return to the 3 basic examples we started with in the previous chapter. Recall that we have a hypothetical example with</p>
+<ul>
+<li><p><span class="math inline">\(n = 200\)</span></p></li>
+<li><p>Our sample has 110 successes, ie <span class="math inline">\(\hat{p} = .55\)</span></p></li>
+<li><p>we are comparing our sample data to the null hypothesis <span class="math inline">\(H_0: p = .5\)</span></p></li>
+</ul>
+<ol style="list-style-type: decimal">
+<li><strong>Two-sided hypothesis test:</strong> In this case our hypothesis test is</li>
+</ol>
+<p><span class="math display">\[\begin{array}{cc}
+H_0: p = .5 \\
+H_a: p \neq .5
+\end{array}
+    \]</span></p>
+<p>It is quite easy to perform this hypothesis test with the function <code>prop.test(...)</code>, we simply run the following code.</p>
+<div class="sourceCode" id="cb563"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb563-1"><a href="inferential-statistics-take-2.html#cb563-1" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">prop.test</span>(</span>
+<span id="cb563-2"><a href="inferential-statistics-take-2.html#cb563-2" tabindex="-1"></a>  <span class="at">x =</span> <span class="dv">110</span> <span class="co"># the NUMBER of successes</span></span>
+<span id="cb563-3"><a href="inferential-statistics-take-2.html#cb563-3" tabindex="-1"></a>  , <span class="at">n =</span> <span class="dv">200</span> <span class="co"># sample size</span></span>
+<span id="cb563-4"><a href="inferential-statistics-take-2.html#cb563-4" tabindex="-1"></a>  , <span class="at">p =</span> .<span class="dv">5</span> <span class="co"># the null proportion</span></span>
+<span id="cb563-5"><a href="inferential-statistics-take-2.html#cb563-5" tabindex="-1"></a>  , <span class="at">alternative =</span> <span class="st">&quot;two.sided&quot;</span> <span class="co"># since we&#39;re doing a two-sided hypothesis test</span></span>
+<span id="cb563-6"><a href="inferential-statistics-take-2.html#cb563-6" tabindex="-1"></a>  , <span class="at">conf.level =</span> .<span class="dv">95</span></span>
+<span id="cb563-7"><a href="inferential-statistics-take-2.html#cb563-7" tabindex="-1"></a>  , <span class="at">correct =</span> <span class="cn">FALSE</span></span>
+<span id="cb563-8"><a href="inferential-statistics-take-2.html#cb563-8" tabindex="-1"></a>)</span>
+<span id="cb563-9"><a href="inferential-statistics-take-2.html#cb563-9" tabindex="-1"></a>result</span></code></pre></div>
+<pre><code>## 
+##  1-sample proportions test without continuity correction
+## 
+## data:  110 out of 200, null probability 0.5
+## X-squared = 2, df = 1, p-value = 0.1573
+## alternative hypothesis: true p is not equal to 0.5
+## 95 percent confidence interval:
+##  0.4807562 0.6173593
+## sample estimates:
+##    p 
+## 0.55</code></pre>
+<p>Notice that the code stores the output of the hypothesis test as the variable <code>result</code>, then prints a summary of the test. Take a few moments to read through the results and notice that it gives us all of the information we want! In particular,</p>
+<ul>
+<li><p>the “sample estimate” <code>p</code> is the sample proportion <span class="math inline">\(\hat{p}\)</span>;</p></li>
+<li><p>the <span class="math inline">\(p\)</span>-value is about 0.1573;</p></li>
+<li><p>the associated 95% confidence interval is <span class="math inline">\((0.4807, 0.6173)\)</span>;</p></li>
+</ul>
+<p>Let’s compare this with the results we’d obtain making the same calculations “by hand. First we’ll calculate a <span class="math inline">\(p\)</span>-value and compare it to that calculated by <code>prop.test</code> above.</p>
+<div class="sourceCode" id="cb565"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb565-1"><a href="inferential-statistics-take-2.html#cb565-1" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">200</span></span>
+<span id="cb565-2"><a href="inferential-statistics-take-2.html#cb565-2" tabindex="-1"></a>pHat <span class="ot">&lt;-</span> <span class="dv">110</span><span class="sc">/</span><span class="dv">200</span></span>
+<span id="cb565-3"><a href="inferential-statistics-take-2.html#cb565-3" tabindex="-1"></a>null.SE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(.<span class="dv">5</span><span class="sc">*</span>.<span class="dv">5</span><span class="sc">/</span><span class="dv">200</span>)</span>
+<span id="cb565-4"><a href="inferential-statistics-take-2.html#cb565-4" tabindex="-1"></a>p.value.hand <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(pHat, <span class="at">mean =</span> .<span class="dv">5</span>, <span class="at">sd =</span> null.SE, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb565-5"><a href="inferential-statistics-take-2.html#cb565-5" tabindex="-1"></a></span>
+<span id="cb565-6"><a href="inferential-statistics-take-2.html#cb565-6" tabindex="-1"></a><span class="fu">c</span>(p.value.hand, result<span class="sc">$</span>p.value)</span></code></pre></div>
+<pre><code>## [1] 0.1572992 0.1572992</code></pre>
+<p>They’re the same, just as we would hope. Now let’s calculate a 95% confidence interval “by hand” and compare the results to that calculated by <code>prop.test</code> above.</p>
+<div class="sourceCode" id="cb567"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb567-1"><a href="inferential-statistics-take-2.html#cb567-1" tabindex="-1"></a>conf.int.hand <span class="ot">&lt;-</span> pHat <span class="sc">+</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="sc">*</span><span class="fl">1.96</span><span class="sc">*</span>null.SE</span>
+<span id="cb567-2"><a href="inferential-statistics-take-2.html#cb567-2" tabindex="-1"></a><span class="co"># our result</span></span>
+<span id="cb567-3"><a href="inferential-statistics-take-2.html#cb567-3" tabindex="-1"></a>conf.int.hand</span></code></pre></div>
+<pre><code>## [1] 0.4807035 0.6192965</code></pre>
+<div class="sourceCode" id="cb569"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb569-1"><a href="inferential-statistics-take-2.html#cb569-1" tabindex="-1"></a><span class="co">#from prop.test</span></span>
+<span id="cb569-2"><a href="inferential-statistics-take-2.html#cb569-2" tabindex="-1"></a>result<span class="sc">$</span>conf.in</span></code></pre></div>
+<pre><code>## [1] 0.4807562 0.6173593
+## attr(,&quot;conf.level&quot;)
+## [1] 0.95</code></pre>
+<p>Notice that the bounds of our “by hand” calculation are ever so slightly different from the bounds calculated by <code>prop.test</code> - this is because R calculates these confidence intervals with slightly different and more sophisticated techniques than we cover in this class. Fret not, however, as the outputs in most cases are similar enough. One interesting thing to observer is that the confidence interval from <code>prop.test</code> is <em>not</em> symmetric about the sample proportion <span class="math inline">\(\hat{p}\)</span>!</p>
+<p>In our remaining examples, we will move a little more quickly.</p>
+<ol start="2" style="list-style-type: decimal">
+<li><strong>One-sided lower hypothesis test:</strong> In this case our hypothesis test is</li>
+</ol>
+<p><span class="math display">\[\begin{array}{cc}
+H_0: p = .5 \\
+H_a: p &lt; .5
+\end{array}
+    \]</span></p>
+<p>This hypothesis test is quite easy to evaluate as well will <code>prop.test</code>. See the code below:</p>
+<div class="sourceCode" id="cb571"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb571-1"><a href="inferential-statistics-take-2.html#cb571-1" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">prop.test</span>(</span>
+<span id="cb571-2"><a href="inferential-statistics-take-2.html#cb571-2" tabindex="-1"></a>  <span class="at">x =</span> <span class="dv">110</span> <span class="co"># the NUMBER of successes</span></span>
+<span id="cb571-3"><a href="inferential-statistics-take-2.html#cb571-3" tabindex="-1"></a>  , <span class="at">n =</span> <span class="dv">200</span> <span class="co"># sample size</span></span>
+<span id="cb571-4"><a href="inferential-statistics-take-2.html#cb571-4" tabindex="-1"></a>  , <span class="at">p =</span> .<span class="dv">5</span> <span class="co"># the null proportion</span></span>
+<span id="cb571-5"><a href="inferential-statistics-take-2.html#cb571-5" tabindex="-1"></a>  , <span class="at">alternative =</span> <span class="st">&quot;less&quot;</span> <span class="co"># ONLY CHANGE FROM Above</span></span>
+<span id="cb571-6"><a href="inferential-statistics-take-2.html#cb571-6" tabindex="-1"></a>  , <span class="at">conf.level =</span> .<span class="dv">95</span></span>
+<span id="cb571-7"><a href="inferential-statistics-take-2.html#cb571-7" tabindex="-1"></a>  , <span class="at">correct =</span> <span class="cn">FALSE</span></span>
+<span id="cb571-8"><a href="inferential-statistics-take-2.html#cb571-8" tabindex="-1"></a>)</span>
+<span id="cb571-9"><a href="inferential-statistics-take-2.html#cb571-9" tabindex="-1"></a>result</span></code></pre></div>
+<pre><code>## 
+##  1-sample proportions test without continuity correction
+## 
+## data:  110 out of 200, null probability 0.5
+## X-squared = 2, df = 1, p-value = 0.9214
+## alternative hypothesis: true p is less than 0.5
+## 95 percent confidence interval:
+##  0.0000000 0.6068119
+## sample estimates:
+##    p 
+## 0.55</code></pre>
+<p>Most of the output is exactly as we’d expect it to be. The <span class="math inline">\(p\)</span>-value of this test is the complement of half of the <span class="math inline">\(p\)</span>-value from the two-sided test (think about the corresponding tail areas shaded under a normal distribution) and the point estimate is the same.</p>
+<p><strong>Caution:</strong> The main change is the output of the confidence interval. Because this is a one-sided tests, R reports a one-sided confidence interval that we do not cover in this class. Suppose <span class="math inline">\(\alpha\)</span> is the significance level as decimal with corresponding <span class="math inline">\(z\)</span>-critical value <span class="math inline">\(z_\alpha\)</span>. Then a one-sided lower confidence interval is approximately</p>
+<p><span class="math display">\[ \left( 0, \hat{p} + z_\alpha * SE\right) \]</span></p>
+<p>For our example, we can calculate this by hand for a 95% confidence interval, the corresponding significance level is .05, so <span class="math inline">\(\alpha = .05\)</span>.</p>
+<div class="sourceCode" id="cb573"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb573-1"><a href="inferential-statistics-take-2.html#cb573-1" tabindex="-1"></a>z.crit <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(.<span class="dv">05</span>, <span class="at">lower.tail =</span> F)</span>
+<span id="cb573-2"><a href="inferential-statistics-take-2.html#cb573-2" tabindex="-1"></a>pHat <span class="sc">+</span> z.crit<span class="sc">*</span>null.SE</span></code></pre></div>
+<pre><code>## [1] 0.6081544</code></pre>
+<p>This is very close to, but not exactly, the upper bound of the confidence interval given by R’s <code>prop.test</code> function. For our purposes they are close enough. That said, if you are looking for a confidence interval as we calculate them in class, set the <code>alternative</code> option to <code>"two.sided"</code>.</p>
+<ol start="2" style="list-style-type: decimal">
+<li><strong>One-sided upper hypothesis test:</strong> In this case our hypothesis test is</li>
+</ol>
+<p><span class="math display">\[\begin{array}{cc}
+H_0: p = .5 \\
+H_a: p &gt; .5
+\end{array}
+    \]</span></p>
+<p>This hypothesis test is quite easy to evaluate as well will <code>prop.test</code>. See the code below:</p>
+<div class="sourceCode" id="cb575"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb575-1"><a href="inferential-statistics-take-2.html#cb575-1" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">prop.test</span>(</span>
+<span id="cb575-2"><a href="inferential-statistics-take-2.html#cb575-2" tabindex="-1"></a>  <span class="at">x =</span> <span class="dv">110</span> <span class="co"># the NUMBER of successes</span></span>
+<span id="cb575-3"><a href="inferential-statistics-take-2.html#cb575-3" tabindex="-1"></a>  , <span class="at">n =</span> <span class="dv">200</span> <span class="co"># sample size</span></span>
+<span id="cb575-4"><a href="inferential-statistics-take-2.html#cb575-4" tabindex="-1"></a>  , <span class="at">p =</span> .<span class="dv">5</span> <span class="co"># the null proportion</span></span>
+<span id="cb575-5"><a href="inferential-statistics-take-2.html#cb575-5" tabindex="-1"></a>  , <span class="at">alternative =</span> <span class="st">&quot;greater&quot;</span> <span class="co"># ONLY CHANGE FROM Above</span></span>
+<span id="cb575-6"><a href="inferential-statistics-take-2.html#cb575-6" tabindex="-1"></a>  , <span class="at">conf.level =</span> .<span class="dv">95</span></span>
+<span id="cb575-7"><a href="inferential-statistics-take-2.html#cb575-7" tabindex="-1"></a>  , <span class="at">correct =</span> <span class="cn">FALSE</span></span>
+<span id="cb575-8"><a href="inferential-statistics-take-2.html#cb575-8" tabindex="-1"></a>)</span>
+<span id="cb575-9"><a href="inferential-statistics-take-2.html#cb575-9" tabindex="-1"></a>result</span></code></pre></div>
+<pre><code>## 
+##  1-sample proportions test without continuity correction
+## 
+## data:  110 out of 200, null probability 0.5
+## X-squared = 2, df = 1, p-value = 0.07865
+## alternative hypothesis: true p is greater than 0.5
+## 95 percent confidence interval:
+##  0.4918534 1.0000000
+## sample estimates:
+##    p 
+## 0.55</code></pre>
+<p>The result of this test is very similar to the output from the one-sided lower example and all of the same comments apply. Again, the main change is the reported confidence interval.</p>
+<p><strong>Caution:</strong> As in the case of a one-sided lower test, R reports a one-sided confidence interval, which deviates from what we learn in this class! Suppose <span class="math inline">\(\alpha\)</span> is the significance level as decimal with corresponding <span class="math inline">\(z\)</span>-critical value <span class="math inline">\(z_\alpha\)</span>. Then a one-sided lower confidence interval is approximately</p>
+<p><span class="math display">\[ \left( \hat{p} - z_\alpha * SE, 1 \right)  \]</span></p>
+<p>For our example, we can calculate this by hand for a 95% confidence interval, the corresponding significance level is .05, so <span class="math inline">\(\alpha = .05\)</span>. The lower-bound for the one-sided confidence interval is</p>
+<div class="sourceCode" id="cb577"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb577-1"><a href="inferential-statistics-take-2.html#cb577-1" tabindex="-1"></a>z.crit <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(.<span class="dv">05</span>, <span class="at">lower.tail =</span> F)</span>
+<span id="cb577-2"><a href="inferential-statistics-take-2.html#cb577-2" tabindex="-1"></a>pHat <span class="sc">-</span> z.crit<span class="sc">*</span>null.SE</span></code></pre></div>
+<pre><code>## [1] 0.4918456</code></pre>
+<p>This is very close to, but not exactly, the lower bound of the confidence interval given by R’s <code>prop.test</code> function.</p>
+<p>As a reminder, if you are looking for a confidence interval as we calculate them in class, set the <code>alternative</code> option to <code>"two.sided"</code>.</p>
 </div>
 <div id="two-sample-proportions" class="section level3 hasAnchor" number="7.1.2">
 <h3><span class="header-section-number">7.1.2</span> Two sample proportions<a href="inferential-statistics-take-2.html#two-sample-proportions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The main function we will use in this section is again <code>prop.test(...)</code>; it’s a workhorse!</p>
+<p>The main function we will use in this section is again <code>prop.test(...)</code>.</p>
 </div>
 <div id="chi-squared-goodness-of-fit-test" class="section level3 hasAnchor" number="7.1.3">
 <h3><span class="header-section-number">7.1.3</span> Chi-squared goodness of fit test<a href="inferential-statistics-take-2.html#chi-squared-goodness-of-fit-test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -345,7 +494,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/06-share.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/06-inference_pt2.Rmd",
 "text": "Edit"
 },
 "history": {

@@ -5,25 +5,22 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>R and RStudio for STAT216</title>
-  <meta name="description" content="<p>This is a minimal example of using the bookdown package to write a book.
-The HTML output format for this example is bookdown::gitbook,
-set in the _output.yml file.</p>" />
+  <meta name="description" content="<p>These notes introduce the reader to R and RStudio following the rough structure
+of STAT216 at FVCC.</p>" />
   <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
 
   <meta property="og:title" content="R and RStudio for STAT216" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="<p>This is a minimal example of using the bookdown package to write a book.
-The HTML output format for this example is bookdown::gitbook,
-set in the _output.yml file.</p>" />
+  <meta property="og:description" content="<p>These notes introduce the reader to R and RStudio following the rough structure
+of STAT216 at FVCC.</p>" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="R and RStudio for STAT216" />
   
-  <meta name="twitter:description" content="<p>This is a minimal example of using the bookdown package to write a book.
-The HTML output format for this example is bookdown::gitbook,
-set in the _output.yml file.</p>" />
+  <meta name="twitter:description" content="<p>These notes introduce the reader to R and RStudio following the rough structure
+of STAT216 at FVCC.</p>" />
   
 
 <meta name="author" content="Charles Katerba" />
@@ -274,12 +271,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">R and RStudio for STAT216</h1>
 <p class="author"><em>Charles Katerba</em></p>
-<p class="date"><em>Last update: 2023-04-27</em></p>
+<p class="date"><em>Last update: 2024-02-27</em></p>
 </div>
 <div id="about" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">Chapter 1</span> About<a href="index.html#about" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>This ‘book’ is intended to be a quick and dirty introduction to R (a statistical programming language) and RStudio (an <em>integrated development environment</em>, or IDE, for R) for students in the introductory statistics class at Flathead Valley Community College. This book aims to introduce you to all of the features you’ll need to use in R to be successful in the course. Moreover, we hope that it will help you develop the tools you need to use R in your future endeavors. This book is by no means a complete guide to everything one can do in R, but the aim is to cut down on content and theory in the name of practicality.</p>
-<p>This class will provide many students with their first interaction with computer programming. The coding required is not extensive and the coding-based activities are heavily scaffolded. The point of including R in this course is not to introduce another layer of difficulty; the opposite is true in fact! The goal is to give you a glimpse at how programming can make your life easier, at least when it comes to statistics and data science. In the process, you will hopefully add another useful and practical tool to your tool belt. Computers are not exiting our lives any time soon and being somewhat familiar with a little programming will only be an advantage. Some might say such familiarity will become essential.</p>
+<p>This class will provide many students with their first interaction with computer programming. The coding required is not extensive and the coding-based activities are heavily scaffold. The point of including R in this course is not to introduce another layer of difficulty; the opposite is true in fact! The goal is to give you a glimpse at how programming can make your life easier, at least when it comes to statistics and data science. In the process, you will hopefully add another useful and practical tool to your tool belt. Computers are not exiting our lives any time soon and being somewhat familiar with a little programming will only be an advantage. Some might say such familiarity will become essential.</p>
 <div id="organization" class="section level2 hasAnchor" number="1.1">
 <h2><span class="header-section-number">1.1</span> Organization<a href="index.html#organization" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The chapters of this book will be organized to follow the flow of STAT216 so that reading the book sequentially teaches you the tools as you need them in class. This book will almost certainly be a work in progress, so if there’s something that you’d like to see or if you think something is missing, don’t hesitate to reach out to the author (or your instructor if they are different people).</p>
@@ -305,17 +302,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ol>
 <p>No matter what version of RStudio you are using, you should now see a window that looks something like this on your computer.</p>
-<div class="figure">
-<img src="images/rstudio_screenshot.png" alt="" />
-<p class="caption">An RStudio terminal.</p>
+<div class="float">
+<img src="images/rstudio_screenshot.png" alt="An RStudio terminal." />
+<div class="figcaption">An RStudio terminal.</div>
 </div>
 <p>Before proceeding, notice that your RStudio session has 3 windows open.</p>
 <ol style="list-style-type: decimal">
 <li><p><strong>The console:</strong> this is the most interactive window in your session. You can run quick calculations here. For example, type <code>2 + 2</code> then hit enter.</p></li>
 <li><p><strong>Files/plots window:</strong> The files tab shows all of the files present in your current working directory. We don’t need to talk much about file management here and will cover it as needed in the future. When you make quick plots, they will appear under the plot tab. For example, evaluating</p></li>
 </ol>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">rnorm</span>(<span class="dv">10</span>), <span class="fu">rnorm</span>(<span class="dv">10</span>))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-47-1.png" width="672" />
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">rnorm</span>(<span class="dv">10</span>), <span class="fu">rnorm</span>(<span class="dv">10</span>))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-11-1.png" width="672" />
 in the console will produce a plot similar to the one above in the Plots panel. This little bit of code generates 2 collections of 10 random numbers and makes a scatter plot of the results.</p>
 <ol start="3" style="list-style-type: decimal">
 <li><strong>Environment window:</strong> This window displays the names of the objects you have stored in your computer’s memory. As an example, if you evaluate <code>x &lt;- rnorm(10)</code>, you will see the value <code>x</code> appear in the Environment tab. It is good to check the values you have stored when you’re running into problems with your code.</li>
@@ -330,10 +327,10 @@ in the console will produce a plot similar to the one above in the Plots panel. 
 <h2><span class="header-section-number">1.4</span> Help<a href="index.html#help" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>There are many avenues for finding help using R. Your instructor, the STEM tutoring center, and the internet are great places to start. For the latter, you have to carefully phrase what you’re asking, but if you do so, you can usually find great results with some clear examples.</p>
 <p>R also has a lot of built in help documentation. You can access this documentation using a <code>?</code> before the name of the function/object that you’re intereted in. For example, R has a function called <code>prop.test(...)</code> that we’ll learn how to use in this class. To see R’s documententation for <code>prop.test(...)</code>, simply run</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="index.html#cb2-1" aria-hidden="true" tabindex="-1"></a>?prop.test</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="index.html#cb2-1" tabindex="-1"></a>?prop.test</span></code></pre></div>
 <p>in the console. The examples are usually helpful, but sometimes can create more confusion. In any case, this is a great place to start when you feel confused about a particular function or object.</p>
 <p>If you bring up the documentation for an in-built data set, it will describe what the variables of that data set are. For instance, try running</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="index.html#cb3-1" aria-hidden="true" tabindex="-1"></a>?mtcars</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="index.html#cb3-1" tabindex="-1"></a>?mtcars</span></code></pre></div>
 <p>in the console</p>
 </div>
 <div id="debugging" class="section level2 hasAnchor" number="1.5">

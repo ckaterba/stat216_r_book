@@ -1,0 +1,192 @@
+# Inferential statistics, take 2
+
+This chapter will show you how to calculate confidence intervals and perform hypothesis tests using R's in-built hypothesis testing functions. We will quickly go over the same examples from the previous sections using R's functions to recover the values we calculated earlier. 
+
+
+## Analyzing categorical variables
+
+We will learn how to use two workhorse functions in this section: `prop.test(...)` and `chisq.test(...)`. The former will be used for making inferences for single and two sample proportions, while the latter will be used for chi squared goodness of fit tests and tests of independence. 
+
+**Remember** You can always run `?prop.test` or `?chisq.test` in the console to view `R`'s help documentation for these functions. 
+
+### Single sample proportions
+
+The main function we will use in this section is `prop.test(...)`; it both calculates confidence intervals *and* performs hypothesis tests all in one fell swoop! The important things for us, then, are understanding what inputs we need and understanding the outputs. For single-sample proportion inferences, the function `prop.test` requires the following inputs:
+
+```{r, eval=FALSE}
+prop.test(
+  x = # The number of successes
+  , n = # the sample size
+  , p = # the null proportion of your hypothesis test, the devault value is NULL
+  , alternative = # the type of hypothesis test to run corresponding to your alternative hypothesis; one of "two.sided", "less", or "greater"
+  , conf.level = # your confidence level as a decimal
+  , correct = FALSE # This turns OFF the Yates' continuity correction so that calculations are made like we've learned in class.
+)
+```
+
+The function will output the results of our desired hypothesis test and a corresponding confidence interval. 
+
+**Note:** The confidence interval intervals that `R` calculates are ever-so-slightly different from those that we calculate by hand in two important ways:
+
+- Setting the option `correct = FALSE` gets us closer to our by-hand techniques, but `R` still uses a slightly different method under the hood. See [this CrossValidated Stack Exchange post](https://stats.stackexchange.com/questions/183225/confidence-interval-from-rs-prop-test-differs-from-hand-calculation-and-resul) for more information. 
+
+- If your alternative hypothesis is one-sided and you select the option `alternative = "less"` or `alternative = "greater"`, then `R` will report a one-sided confidence interval that we do not discuss in this class. 
+
+To understand the output of `prop.test(...)` and witness the discrepancies mentioned above, let's return to the 3 basic examples we started with in the previous chapter. Recall that we have a hypothetical example with 
+
+-  \(n = 200 \)
+
+
+- Our sample has 110 successes, ie \(\hat{p} = .55\) 
+
+- we are comparing our sample data to the null hypothesis \(H_0: p = .5\)
+
+1. **Two-sided hypothesis test:** In this case our hypothesis test is
+
+\[\begin{array}{cc}
+H_0: p = .5 \\
+H_a: p \neq .5
+\end{array}
+    \]
+    
+It is quite easy to perform this hypothesis test with the function `prop.test(...)`, we simply run the following code.
+
+```{r}
+result <- prop.test(
+  x = 110 # the NUMBER of successes
+  , n = 200 # sample size
+  , p = .5 # the null proportion
+  , alternative = "two.sided" # since we're doing a two-sided hypothesis test
+  , conf.level = .95
+  , correct = FALSE
+)
+result
+```
+
+Notice that the code stores the output of the hypothesis test as the variable `result`, then prints a summary of the test. Take a few moments to read through the results and notice that it gives us all of the information we want! In particular, 
+
+- the "sample estimate" `p` is the sample proportion $\hat{p}$;
+
+- the $p$-value is about 0.1573;
+
+- the associated 95\% confidence interval is \( (0.4807, 0.6173) \);
+
+Let's compare this with the results we'd obtain making the same calculations "by hand. First we'll calculate a $p$-value and compare it to that calculated by `prop.test` above. 
+
+```{r}
+n <- 200
+pHat <- 110/200
+null.SE <- sqrt(.5*.5/200)
+p.value.hand <- 2*pnorm(pHat, mean = .5, sd = null.SE, lower.tail = FALSE)
+
+c(p.value.hand, result$p.value)
+```
+
+They're the same, just as we would hope. Now let's calculate a 95\% confidence interval "by hand" and compare the results to that calculated by `prop.test` above.
+
+```{r}
+conf.int.hand <- pHat + c(-1,1)*1.96*null.SE
+# our result
+conf.int.hand
+#from prop.test
+result$conf.in
+```
+Notice that the bounds of our "by hand" calculation are ever so slightly different from the bounds calculated by `prop.test` - this is because R calculates these confidence intervals with slightly different and more sophisticated techniques than we cover in this class. Fret not, however, as the outputs in most cases are similar enough. One interesting thing to observer is that the confidence interval from `prop.test` is *not* symmetric about the sample proportion $\hat{p}$! 
+
+In our remaining examples, we will move a little more quickly. 
+
+2. **One-sided lower hypothesis test:** In this case our hypothesis test is
+
+\[\begin{array}{cc}
+H_0: p = .5 \\
+H_a: p < .5
+\end{array}
+    \]
+
+This hypothesis test is quite easy to evaluate as well will `prop.test`. See the code below:
+
+```{r}
+result <- prop.test(
+  x = 110 # the NUMBER of successes
+  , n = 200 # sample size
+  , p = .5 # the null proportion
+  , alternative = "less" # ONLY CHANGE FROM Above
+  , conf.level = .95
+  , correct = FALSE
+)
+result
+```
+
+Most of the output is exactly as we'd expect it to be. The $p$-value of this test is the complement of half of the $p$-value from the two-sided test (think about the corresponding tail areas shaded under a normal distribution) and the point estimate is the same. 
+
+**Caution:** The main change is the output of the confidence interval. Because this is a one-sided tests, R reports a one-sided confidence interval that we do not cover in this class. Suppose $\alpha$ is the significance level as decimal with corresponding $z$-critical value $z_\alpha$. Then a one-sided lower confidence interval is approximately
+
+\[ \left( 0, \hat{p} + z_\alpha * SE\right) \]
+
+For our example, we can calculate this by hand for a 95\% confidence interval, the corresponding significance level is .05, so $\alpha = .05$. 
+
+```{r}
+z.crit <- qnorm(.05, lower.tail = F)
+pHat + z.crit*null.SE
+```
+
+This is very close to, but not exactly, the upper bound of the confidence interval given by R's `prop.test` function. For our purposes they are close enough. That said, if you are looking for a confidence interval as we calculate them in class, set the `alternative` option to `"two.sided"`. 
+
+2. **One-sided upper hypothesis test:** In this case our hypothesis test is
+
+\[\begin{array}{cc}
+H_0: p = .5 \\
+H_a: p > .5
+\end{array}
+    \]
+
+This hypothesis test is quite easy to evaluate as well will `prop.test`. See the code below:
+
+```{r}
+result <- prop.test(
+  x = 110 # the NUMBER of successes
+  , n = 200 # sample size
+  , p = .5 # the null proportion
+  , alternative = "greater" # ONLY CHANGE FROM Above
+  , conf.level = .95
+  , correct = FALSE
+)
+result
+```
+
+The result of this test is very similar to the output from the one-sided lower example and all of the same comments apply. Again, the main change is the reported confidence interval. 
+
+**Caution:** As in the case of a one-sided lower test, R reports a one-sided confidence interval, which deviates from what we learn in this class! Suppose $\alpha$ is the significance level as decimal with corresponding $z$-critical value $z_\alpha$. Then a one-sided lower confidence interval is approximately
+
+\[ \left( \hat{p} - z_\alpha * SE, 1 \right)  \]
+
+For our example, we can calculate this by hand for a 95\% confidence interval, the corresponding significance level is .05, so $\alpha = .05$.  The lower-bound for the one-sided confidence interval is
+
+```{r}
+z.crit <- qnorm(.05, lower.tail = F)
+pHat - z.crit*null.SE
+```
+
+This is very close to, but not exactly, the lower bound of the confidence interval given by R's `prop.test` function. 
+
+As a reminder, if you are looking for a confidence interval as we calculate them in class, set the `alternative` option to `"two.sided"`.
+
+
+
+### Two sample proportions
+
+The main function we will use in this section is again `prop.test(...)`.
+
+### Chi-squared goodness of fit test
+
+### Chi-squared test of independence
+
+## Analyzing numerical variables 
+
+### Single sample mean
+
+### Two sample mean
+
+### Paired data
+
+### Analysis of variance (ANOVA)
