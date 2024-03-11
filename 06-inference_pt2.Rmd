@@ -171,11 +171,166 @@ This is very close to, but not exactly, the lower bound of the confidence interv
 
 As a reminder, if you are looking for a confidence interval as we calculate them in class, set the `alternative` option to `"two.sided"`.
 
+#### "Real Life" Single sample proportion test. 
+
+We close this section with an example of a single sample proportion test where we start with real-world data. As in the previous chapter we'll use the `gss2010` data set from the `openintro` package. Here are the first six rows of this data set. 
+
+```{r}
+head(gss2010)
+```
+
+As of writing, we note that marijuana is legal in many states, so we will assume that a majority of American's in 2024 believe that the drug should be legalized. We want to use the `gss2010` data to try to see if the national opinion has changed over the past 14 years. In other words, did a minority of Americans think marijuana should be legalized in 2010? 
+
+If $p$ denotes the proportion of Americans who think marijuana should be legalized, the hypothesis test we should use to answer this question is 
+
+\[\begin{array}{cc}
+H_0: p = .5 \quad (\text{or} \quad p \geq .5) \\
+H_a: p < .5
+\end{array}
+    \]
+
+We should look at the `grass` column of the data set which records respondents' answers to the question "Do you think the use of marijuana should be made legal, or not?" Some of the entries in this column are `NA`, so we should drop these values from our data set. **Note:** before dropping these values, it might be good to check to see if there's a correlation between the respondents who did not reply and their educational level because degree is the only complete column in this data set and we need to be careful about maintaining independence among observations. One could check this with a chi-squared test of independence, but we will eyeball it for now. 
+
+```{r}
+gss2010 %>%
+  # add a binary column for replying to the grass question
+  mutate(grassReply = if_else(is.na(grass),  'No', 'Yes')) %>%
+  # create a two-way table for degree and grassReply
+  xtabs(~degree + grassReply, data = .) %>%
+  # create a proportion table where we divide by the column totals
+  prop.table(., margin = 2)
+```
+
+The proportion table above shows that the distribution of educational attainment is just about the same between those that did and did not reply to the question about marijuana legalization. Thus, we can safely drop the `NA` values from the grass column and proceed with our hypothesis test. To use `prop.test` we need the sample size and the number of people who responded `LEGAL` to the grass question.
+
+```{r}
+gss2010 %>% 
+  #select all rows where grass is not NA
+  filter(!is.na(grass)) %>%
+  # get sample size and number of respondents answering legal and not legal
+  summarize(
+    n = n()
+    , notLegal = sum(grass == 'NOT LEGAL')
+    , legal = sum(grass == 'LEGAL')
+  )
+```
+
+We can finally proceed with our hypothesis test. Let's use a significance level of \( \alpha = .05\)
+
+```{r}
+testResults <- prop.test(
+  x = 603
+  , n = 1259
+  , p = .5
+  , alternative = 'less'
+  , conf.level = .95
+  , correct = F
+)
+testResults
+```
+
+About 48\% of the respondents in our sample believed that marijuana should be legalized. However, our p-value of `r round(testResults$p.value, 3)`  is greater than our significance level, so we fail to reject the null. In other words, we have no evidence that a minority of Americans supported marijuana legalization in 2010. 
 
 
 ### Two sample proportions
 
-The main function we will use in this section is again `prop.test(...)`.
+The main function we will use in this section is again `prop.test(...)`. In this section we will do one 'toy' example and one example using real-world data. The input and use is almost identical to that of performing single sample proportion inferences. The arguments/inputs are as follows.
+
+```{r, eval=FALSE}
+prop.test(
+  # x1 and x2 are the number of successes in sample 1 and 2
+  x = c(x1, x2)  
+  # n1 and n2 are the sizes of sample 1 and 2
+  , n = c(n1,n2)
+  # leave p null when testing for a difference in proportion, our most common use
+  , p = NULL
+  , alternative = # the type of hypothesis test to run corresponding to your alternative hypothesis; one of "two.sided", "less", or "greater"
+  , conf.level = # your confidence level as a decimal
+  , correct = FALSE # This turns OFF the Yates' continuity correction so that calculations are made like we've learned in class.
+)
+```
+
+The output of `prop.test` will look almost identical to when you perform a single sample inference and all of our cautions and commentary from the previous section apply in this section as well. First we'll do a basic, made up example to see what the output looks like, then do an example with real data to practice interpreting the results. 
+
+**Basic, made up example**: Suppose you have two samples, one with size \(n_1 = 344 \) and another with size \(n_2 = 432 \). The first sample has 177 successes and the second has 124. You want check for a difference between the proportion of successes in populations 1 and 2. In other words, your hypothesis test is 
+
+\[\begin{array}{cc}
+H_0: p_1 - p_2 = 0 \\
+H_a: p_1 - p_2 \neq 0
+\end{array}
+    \]
+    
+The following code uses `prop.test` to perform this hypothesis test with a significance level of \(\alpha = .05\)
+
+```{r}
+results <- prop.test(
+  x = c(177, 124)
+  , n = c(344, 432)
+  , alternative = 'two.sided'
+  , conf.level = .95
+  , correct = FALSE
+)
+results
+```
+
+The printed `results` above give us all of the information we need. The $p$-value of our test is \( `r results$p.value` < \alpha = .05 \), so the data provide compelling evidence of a difference between the population proportions.
+
+How different are the two proportions you ask? Remember, that's exactly what the confidence interval for a difference in proportions reports. In this case, it means that \(p_1 - p_2 \) lies between about 16\% and 30\% with 95\% confidence. In other words, with 95\% confidence, the proportion of successes in population 1 is between 16\% and 30\% higher than the proportion of successes in population 2. 
+
+#### "Real world" Example
+
+In this example we turn again to the `gss2010` data set from the `openintro` package and investigate another question about marijuana legalization opinion. After many years around colleges and universities, I hypothesize that, in general, people with college degrees have a different opinion on marijuana legalization than people without college degrees. 
+
+Let $p_C$ denote the proportion of Americans with college degrees who think marijuana should be legalized and let $p_H$ be the same proportion for Americans without college degrees. Our hypothesis test is then 
+
+\[\begin{array}{cc}
+H_0: p_C - p_H = 0 \\
+H_a: p_C - p_H \neq 0
+\end{array}
+    \]
+
+We need to classify group the individuals in our sample into college degree recipients and non college degree recipients. The different levels of the `degree` factor are
+
+```{r}
+sort(unique(gss2010$degree))
+```
+so any individual whose degree level contains the string 'HIGH SCHOOL' does *not* have a college degree. Let's add a column to our data set, then get the counts we need to perform our test. As in the example in the last section, we will drop the individuals who did not respond to the legalization question. To make the hypothesis test slightly easier to run, we will store the following summary table in memory. 
+
+```{r}
+LegalizeIt <- gss2010 %>%
+  #drop rows with NA in grass column
+  filter(!is.na(grass)) %>%
+  # TRUE/FALSE binary for college degree
+  mutate(collegeDegree = !str_detect(degree, 'HIGH SCHOOL')) %>%
+  group_by(collegeDegree) %>%
+  summarize(
+    n = n()
+    , legal = sum(grass == 'LEGAL')
+    , notLegal = sum(grass == 'NOT LEGAL')
+  ) %>%
+  #arrange the results so that collegeDegree = TRUE comes first. 
+  arrange(desc(collegeDegree))
+LegalizeIt
+```
+
+Now we are ready to perform our hypothesis test with `prop.test` and a significance level of $\alpha = .05$. 
+
+```{r}
+results <- prop.test(
+  x = LegalizeIt$legal
+  , n = LegalizeIt$n
+  , p = NULL
+  , alternative = 'two.sided'
+  , conf.level = .95
+  , correct = FALSE
+)
+results 
+```
+The p-value of our test is `r round(results$p.value , 3)` which just squeezes in under \(\alpha = .05 \), so we have statistically significant evidence that there is a difference in opinion on marijuana legalization between those with and without college degrees. 
+
+We can use the confidence interval from our results to be  a bit more specific. At the 95% confidence level, the proportion of people with college degrees who think marijuana should be legalized is between 0.1\% and 11.6\% higher than the proportion of people without college degrees. 
+
+Remember, this was all calculated using 2010 data, so you may want to redo this investigation with more up-to-date information. 
 
 ### Chi-squared goodness of fit test
 

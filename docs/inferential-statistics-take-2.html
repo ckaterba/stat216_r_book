@@ -428,10 +428,180 @@ H_a: p &gt; .5
 <pre><code>## [1] 0.4918456</code></pre>
 <p>This is very close to, but not exactly, the lower bound of the confidence interval given by R’s <code>prop.test</code> function.</p>
 <p>As a reminder, if you are looking for a confidence interval as we calculate them in class, set the <code>alternative</code> option to <code>"two.sided"</code>.</p>
+<div id="real-life-single-sample-proportion-test." class="section level4 hasAnchor" number="7.1.1.1">
+<h4><span class="header-section-number">7.1.1.1</span> “Real Life” Single sample proportion test.<a href="inferential-statistics-take-2.html#real-life-single-sample-proportion-test." class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>We close this section with an example of a single sample proportion test where we start with real-world data. As in the previous chapter we’ll use the <code>gss2010</code> data set from the <code>openintro</code> package. Here are the first six rows of this data set.</p>
+<div class="sourceCode" id="cb579"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb579-1"><a href="inferential-statistics-take-2.html#cb579-1" tabindex="-1"></a><span class="fu">head</span>(gss2010)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 5
+##   hrsrelax mntlhlth  hrs1 degree         grass    
+##      &lt;int&gt;    &lt;int&gt; &lt;int&gt; &lt;fct&gt;          &lt;fct&gt;    
+## 1        2        3    55 BACHELOR       &lt;NA&gt;     
+## 2        4        6    45 BACHELOR       LEGAL    
+## 3       NA       NA    NA LT HIGH SCHOOL &lt;NA&gt;     
+## 4       NA       NA    NA LT HIGH SCHOOL NOT LEGAL
+## 5       NA       NA    NA LT HIGH SCHOOL NOT LEGAL
+## 6       NA       NA    NA LT HIGH SCHOOL LEGAL</code></pre>
+<p>As of writing, we note that marijuana is legal in many states, so we will assume that a majority of American’s in 2024 believe that the drug should be legalized. We want to use the <code>gss2010</code> data to try to see if the national opinion has changed over the past 14 years. In other words, did a minority of Americans think marijuana should be legalized in 2010?</p>
+<p>If <span class="math inline">\(p\)</span> denotes the proportion of Americans who think marijuana should be legalized, the hypothesis test we should use to answer this question is</p>
+<p><span class="math display">\[\begin{array}{cc}
+H_0: p = .5 \quad (\text{or} \quad p \geq .5) \\
+H_a: p &lt; .5
+\end{array}
+    \]</span></p>
+<p>We should look at the <code>grass</code> column of the data set which records respondents’ answers to the question “Do you think the use of marijuana should be made legal, or not?” Some of the entries in this column are <code>NA</code>, so we should drop these values from our data set. <strong>Note:</strong> before dropping these values, it might be good to check to see if there’s a correlation between the respondents who did not reply and their educational level because degree is the only complete column in this data set and we need to be careful about maintaining independence among observations. One could check this with a chi-squared test of independence, but we will eyeball it for now.</p>
+<div class="sourceCode" id="cb581"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb581-1"><a href="inferential-statistics-take-2.html#cb581-1" tabindex="-1"></a>gss2010 <span class="sc">%&gt;%</span></span>
+<span id="cb581-2"><a href="inferential-statistics-take-2.html#cb581-2" tabindex="-1"></a>  <span class="co"># add a binary column for replying to the grass question</span></span>
+<span id="cb581-3"><a href="inferential-statistics-take-2.html#cb581-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">grassReply =</span> <span class="fu">if_else</span>(<span class="fu">is.na</span>(grass),  <span class="st">&#39;No&#39;</span>, <span class="st">&#39;Yes&#39;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb581-4"><a href="inferential-statistics-take-2.html#cb581-4" tabindex="-1"></a>  <span class="co"># create a two-way table for degree and grassReply</span></span>
+<span id="cb581-5"><a href="inferential-statistics-take-2.html#cb581-5" tabindex="-1"></a>  <span class="fu">xtabs</span>(<span class="sc">~</span>degree <span class="sc">+</span> grassReply, <span class="at">data =</span> .) <span class="sc">%&gt;%</span></span>
+<span id="cb581-6"><a href="inferential-statistics-take-2.html#cb581-6" tabindex="-1"></a>  <span class="co"># create a proportion table where we divide by the column totals</span></span>
+<span id="cb581-7"><a href="inferential-statistics-take-2.html#cb581-7" tabindex="-1"></a>  <span class="fu">prop.table</span>(., <span class="at">margin =</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>##                 grassReply
+## degree                   No        Yes
+##   BACHELOR       0.18343949 0.18347895
+##   GRADUATE       0.10445860 0.10802224
+##   HIGH SCHOOL    0.49681529 0.48530580
+##   JUNIOR COLLEGE 0.07515924 0.06830818
+##   LT HIGH SCHOOL 0.14012739 0.15488483</code></pre>
+<p>The proportion table above shows that the distribution of educational attainment is just about the same between those that did and did not reply to the question about marijuana legalization. Thus, we can safely drop the <code>NA</code> values from the grass column and proceed with our hypothesis test. To use <code>prop.test</code> we need the sample size and the number of people who responded <code>LEGAL</code> to the grass question.</p>
+<div class="sourceCode" id="cb583"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb583-1"><a href="inferential-statistics-take-2.html#cb583-1" tabindex="-1"></a>gss2010 <span class="sc">%&gt;%</span> </span>
+<span id="cb583-2"><a href="inferential-statistics-take-2.html#cb583-2" tabindex="-1"></a>  <span class="co">#select all rows where grass is not NA</span></span>
+<span id="cb583-3"><a href="inferential-statistics-take-2.html#cb583-3" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(grass)) <span class="sc">%&gt;%</span></span>
+<span id="cb583-4"><a href="inferential-statistics-take-2.html#cb583-4" tabindex="-1"></a>  <span class="co"># get sample size and number of respondents answering legal and not legal</span></span>
+<span id="cb583-5"><a href="inferential-statistics-take-2.html#cb583-5" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb583-6"><a href="inferential-statistics-take-2.html#cb583-6" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n</span>()</span>
+<span id="cb583-7"><a href="inferential-statistics-take-2.html#cb583-7" tabindex="-1"></a>    , <span class="at">notLegal =</span> <span class="fu">sum</span>(grass <span class="sc">==</span> <span class="st">&#39;NOT LEGAL&#39;</span>)</span>
+<span id="cb583-8"><a href="inferential-statistics-take-2.html#cb583-8" tabindex="-1"></a>    , <span class="at">legal =</span> <span class="fu">sum</span>(grass <span class="sc">==</span> <span class="st">&#39;LEGAL&#39;</span>)</span>
+<span id="cb583-9"><a href="inferential-statistics-take-2.html#cb583-9" tabindex="-1"></a>  )</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 3
+##       n notLegal legal
+##   &lt;int&gt;    &lt;int&gt; &lt;int&gt;
+## 1  1259      656   603</code></pre>
+<p>We can finally proceed with our hypothesis test. Let’s use a significance level of <span class="math inline">\(\alpha = .05\)</span></p>
+<div class="sourceCode" id="cb585"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb585-1"><a href="inferential-statistics-take-2.html#cb585-1" tabindex="-1"></a>testResults <span class="ot">&lt;-</span> <span class="fu">prop.test</span>(</span>
+<span id="cb585-2"><a href="inferential-statistics-take-2.html#cb585-2" tabindex="-1"></a>  <span class="at">x =</span> <span class="dv">603</span></span>
+<span id="cb585-3"><a href="inferential-statistics-take-2.html#cb585-3" tabindex="-1"></a>  , <span class="at">n =</span> <span class="dv">1259</span></span>
+<span id="cb585-4"><a href="inferential-statistics-take-2.html#cb585-4" tabindex="-1"></a>  , <span class="at">p =</span> .<span class="dv">5</span></span>
+<span id="cb585-5"><a href="inferential-statistics-take-2.html#cb585-5" tabindex="-1"></a>  , <span class="at">alternative =</span> <span class="st">&#39;less&#39;</span></span>
+<span id="cb585-6"><a href="inferential-statistics-take-2.html#cb585-6" tabindex="-1"></a>  , <span class="at">conf.level =</span> .<span class="dv">95</span></span>
+<span id="cb585-7"><a href="inferential-statistics-take-2.html#cb585-7" tabindex="-1"></a>  , <span class="at">correct =</span> F</span>
+<span id="cb585-8"><a href="inferential-statistics-take-2.html#cb585-8" tabindex="-1"></a>)</span>
+<span id="cb585-9"><a href="inferential-statistics-take-2.html#cb585-9" tabindex="-1"></a>testResults</span></code></pre></div>
+<pre><code>## 
+##  1-sample proportions test without continuity correction
+## 
+## data:  603 out of 1259, null probability 0.5
+## X-squared = 2.2311, df = 1, p-value = 0.06763
+## alternative hypothesis: true p is less than 0.5
+## 95 percent confidence interval:
+##  0.0000000 0.5021298
+## sample estimates:
+##         p 
+## 0.4789515</code></pre>
+<p>About 48% of the respondents in our sample believed that marijuana should be legalized. However, our p-value of 0.068 is greater than our significance level, so we fail to reject the null. In other words, we have no evidence that a minority of Americans supported marijuana legalization in 2010.</p>
+</div>
 </div>
 <div id="two-sample-proportions" class="section level3 hasAnchor" number="7.1.2">
 <h3><span class="header-section-number">7.1.2</span> Two sample proportions<a href="inferential-statistics-take-2.html#two-sample-proportions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The main function we will use in this section is again <code>prop.test(...)</code>.</p>
+<p>The main function we will use in this section is again <code>prop.test(...)</code>. In this section we will do one ‘toy’ example and one example using real-world data. The input and use is almost identical to that of performing single sample proportion inferences. The arguments/inputs are as follows.</p>
+<div class="sourceCode" id="cb587"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb587-1"><a href="inferential-statistics-take-2.html#cb587-1" tabindex="-1"></a><span class="fu">prop.test</span>(</span>
+<span id="cb587-2"><a href="inferential-statistics-take-2.html#cb587-2" tabindex="-1"></a>  <span class="co"># x1 and x2 are the number of successes in sample 1 and 2</span></span>
+<span id="cb587-3"><a href="inferential-statistics-take-2.html#cb587-3" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">c</span>(x1, x2)  </span>
+<span id="cb587-4"><a href="inferential-statistics-take-2.html#cb587-4" tabindex="-1"></a>  <span class="co"># n1 and n2 are the sizes of sample 1 and 2</span></span>
+<span id="cb587-5"><a href="inferential-statistics-take-2.html#cb587-5" tabindex="-1"></a>  , <span class="at">n =</span> <span class="fu">c</span>(n1,n2)</span>
+<span id="cb587-6"><a href="inferential-statistics-take-2.html#cb587-6" tabindex="-1"></a>  <span class="co"># leave p null when testing for a difference in proportion, our most common use</span></span>
+<span id="cb587-7"><a href="inferential-statistics-take-2.html#cb587-7" tabindex="-1"></a>  , <span class="at">p =</span> <span class="cn">NULL</span></span>
+<span id="cb587-8"><a href="inferential-statistics-take-2.html#cb587-8" tabindex="-1"></a>  , <span class="at">alternative =</span> <span class="co"># the type of hypothesis test to run corresponding to your alternative hypothesis; one of &quot;two.sided&quot;, &quot;less&quot;, or &quot;greater&quot;</span></span>
+<span id="cb587-9"><a href="inferential-statistics-take-2.html#cb587-9" tabindex="-1"></a>  , <span class="at">conf.level =</span> <span class="co"># your confidence level as a decimal</span></span>
+<span id="cb587-10"><a href="inferential-statistics-take-2.html#cb587-10" tabindex="-1"></a>  , <span class="at">correct =</span> <span class="cn">FALSE</span> <span class="co"># This turns OFF the Yates&#39; continuity correction so that calculations are made like we&#39;ve learned in class.</span></span>
+<span id="cb587-11"><a href="inferential-statistics-take-2.html#cb587-11" tabindex="-1"></a>)</span></code></pre></div>
+<p>The output of <code>prop.test</code> will look almost identical to when you perform a single sample inference and all of our cautions and commentary from the previous section apply in this section as well. First we’ll do a basic, made up example to see what the output looks like, then do an example with real data to practice interpreting the results.</p>
+<p><strong>Basic, made up example</strong>: Suppose you have two samples, one with size <span class="math inline">\(n_1 = 344\)</span> and another with size <span class="math inline">\(n_2 = 432\)</span>. The first sample has 177 successes and the second has 124. You want check for a difference between the proportion of successes in populations 1 and 2. In other words, your hypothesis test is</p>
+<p><span class="math display">\[\begin{array}{cc}
+H_0: p_1 - p_2 = 0 \\
+H_a: p_1 - p_2 \neq 0
+\end{array}
+    \]</span></p>
+<p>The following code uses <code>prop.test</code> to perform this hypothesis test with a significance level of <span class="math inline">\(\alpha = .05\)</span></p>
+<div class="sourceCode" id="cb588"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb588-1"><a href="inferential-statistics-take-2.html#cb588-1" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">prop.test</span>(</span>
+<span id="cb588-2"><a href="inferential-statistics-take-2.html#cb588-2" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">c</span>(<span class="dv">177</span>, <span class="dv">124</span>)</span>
+<span id="cb588-3"><a href="inferential-statistics-take-2.html#cb588-3" tabindex="-1"></a>  , <span class="at">n =</span> <span class="fu">c</span>(<span class="dv">344</span>, <span class="dv">432</span>)</span>
+<span id="cb588-4"><a href="inferential-statistics-take-2.html#cb588-4" tabindex="-1"></a>  , <span class="at">alternative =</span> <span class="st">&#39;two.sided&#39;</span></span>
+<span id="cb588-5"><a href="inferential-statistics-take-2.html#cb588-5" tabindex="-1"></a>  , <span class="at">conf.level =</span> .<span class="dv">95</span></span>
+<span id="cb588-6"><a href="inferential-statistics-take-2.html#cb588-6" tabindex="-1"></a>  , <span class="at">correct =</span> <span class="cn">FALSE</span></span>
+<span id="cb588-7"><a href="inferential-statistics-take-2.html#cb588-7" tabindex="-1"></a>)</span>
+<span id="cb588-8"><a href="inferential-statistics-take-2.html#cb588-8" tabindex="-1"></a>results</span></code></pre></div>
+<pre><code>## 
+##  2-sample test for equality of proportions without continuity correction
+## 
+## data:  c(177, 124) out of c(344, 432)
+## X-squared = 41.744, df = 1, p-value = 1.04e-10
+## alternative hypothesis: two.sided
+## 95 percent confidence interval:
+##  0.1596070 0.2953887
+## sample estimates:
+##    prop 1    prop 2 
+## 0.5145349 0.2870370</code></pre>
+<p>The printed <code>results</code> above give us all of the information we need. The <span class="math inline">\(p\)</span>-value of our test is <span class="math inline">\(1.0401892\times 10^{-10} &lt; \alpha = .05\)</span>, so the data provide compelling evidence of a difference between the population proportions.</p>
+<p>How different are the two proportions you ask? Remember, that’s exactly what the confidence interval for a difference in proportions reports. In this case, it means that <span class="math inline">\(p_1 - p_2\)</span> lies between about 16% and 30% with 95% confidence. In other words, with 95% confidence, the proportion of successes in population 1 is between 16% and 30% higher than the proportion of successes in population 2.</p>
+<div id="real-world-example" class="section level4 hasAnchor" number="7.1.2.1">
+<h4><span class="header-section-number">7.1.2.1</span> “Real world” Example<a href="inferential-statistics-take-2.html#real-world-example" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>In this example we turn again to the <code>gss2010</code> data set from the <code>openintro</code> package and investigate another question about marijuana legalization opinion. After many years around colleges and universities, I hypothesize that, in general, people with college degrees have a different opinion on marijuana legalization than people without college degrees.</p>
+<p>Let <span class="math inline">\(p_C\)</span> denote the proportion of Americans with college degrees who think marijuana should be legalized and let <span class="math inline">\(p_H\)</span> be the same proportion for Americans without college degrees. Our hypothesis test is then</p>
+<p><span class="math display">\[\begin{array}{cc}
+H_0: p_C - p_H = 0 \\
+H_a: p_C - p_H \neq 0
+\end{array}
+    \]</span></p>
+<p>We need to classify group the individuals in our sample into college degree recipients and non college degree recipients. The different levels of the <code>degree</code> factor are</p>
+<div class="sourceCode" id="cb590"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb590-1"><a href="inferential-statistics-take-2.html#cb590-1" tabindex="-1"></a><span class="fu">sort</span>(<span class="fu">unique</span>(gss2010<span class="sc">$</span>degree))</span></code></pre></div>
+<pre><code>## [1] BACHELOR       GRADUATE       HIGH SCHOOL    JUNIOR COLLEGE LT HIGH SCHOOL
+## Levels: BACHELOR GRADUATE HIGH SCHOOL JUNIOR COLLEGE LT HIGH SCHOOL</code></pre>
+<p>so any individual whose degree level contains the string ‘HIGH SCHOOL’ does <em>not</em> have a college degree. Let’s add a column to our data set, then get the counts we need to perform our test. As in the example in the last section, we will drop the individuals who did not respond to the legalization question. To make the hypothesis test slightly easier to run, we will store the following summary table in memory.</p>
+<div class="sourceCode" id="cb592"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb592-1"><a href="inferential-statistics-take-2.html#cb592-1" tabindex="-1"></a>LegalizeIt <span class="ot">&lt;-</span> gss2010 <span class="sc">%&gt;%</span></span>
+<span id="cb592-2"><a href="inferential-statistics-take-2.html#cb592-2" tabindex="-1"></a>  <span class="co">#drop rows with NA in grass column</span></span>
+<span id="cb592-3"><a href="inferential-statistics-take-2.html#cb592-3" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(grass)) <span class="sc">%&gt;%</span></span>
+<span id="cb592-4"><a href="inferential-statistics-take-2.html#cb592-4" tabindex="-1"></a>  <span class="co"># TRUE/FALSE binary for college degree</span></span>
+<span id="cb592-5"><a href="inferential-statistics-take-2.html#cb592-5" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">collegeDegree =</span> <span class="sc">!</span><span class="fu">str_detect</span>(degree, <span class="st">&#39;HIGH SCHOOL&#39;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb592-6"><a href="inferential-statistics-take-2.html#cb592-6" tabindex="-1"></a>  <span class="fu">group_by</span>(collegeDegree) <span class="sc">%&gt;%</span></span>
+<span id="cb592-7"><a href="inferential-statistics-take-2.html#cb592-7" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb592-8"><a href="inferential-statistics-take-2.html#cb592-8" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n</span>()</span>
+<span id="cb592-9"><a href="inferential-statistics-take-2.html#cb592-9" tabindex="-1"></a>    , <span class="at">legal =</span> <span class="fu">sum</span>(grass <span class="sc">==</span> <span class="st">&#39;LEGAL&#39;</span>)</span>
+<span id="cb592-10"><a href="inferential-statistics-take-2.html#cb592-10" tabindex="-1"></a>    , <span class="at">notLegal =</span> <span class="fu">sum</span>(grass <span class="sc">==</span> <span class="st">&#39;NOT LEGAL&#39;</span>)</span>
+<span id="cb592-11"><a href="inferential-statistics-take-2.html#cb592-11" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb592-12"><a href="inferential-statistics-take-2.html#cb592-12" tabindex="-1"></a>  <span class="co">#arrange the results so that collegeDegree = TRUE comes first. </span></span>
+<span id="cb592-13"><a href="inferential-statistics-take-2.html#cb592-13" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(collegeDegree))</span>
+<span id="cb592-14"><a href="inferential-statistics-take-2.html#cb592-14" tabindex="-1"></a>LegalizeIt</span></code></pre></div>
+<pre><code>## # A tibble: 2 × 4
+##   collegeDegree     n legal notLegal
+##   &lt;lgl&gt;         &lt;int&gt; &lt;int&gt;    &lt;int&gt;
+## 1 TRUE            453   234      219
+## 2 FALSE           806   369      437</code></pre>
+<p>Now we are ready to perform our hypothesis test with <code>prop.test</code> and a significance level of <span class="math inline">\(\alpha = .05\)</span>.</p>
+<div class="sourceCode" id="cb594"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb594-1"><a href="inferential-statistics-take-2.html#cb594-1" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">prop.test</span>(</span>
+<span id="cb594-2"><a href="inferential-statistics-take-2.html#cb594-2" tabindex="-1"></a>  <span class="at">x =</span> LegalizeIt<span class="sc">$</span>legal</span>
+<span id="cb594-3"><a href="inferential-statistics-take-2.html#cb594-3" tabindex="-1"></a>  , <span class="at">n =</span> LegalizeIt<span class="sc">$</span>n</span>
+<span id="cb594-4"><a href="inferential-statistics-take-2.html#cb594-4" tabindex="-1"></a>  , <span class="at">p =</span> <span class="cn">NULL</span></span>
+<span id="cb594-5"><a href="inferential-statistics-take-2.html#cb594-5" tabindex="-1"></a>  , <span class="at">alternative =</span> <span class="st">&#39;two.sided&#39;</span></span>
+<span id="cb594-6"><a href="inferential-statistics-take-2.html#cb594-6" tabindex="-1"></a>  , <span class="at">conf.level =</span> .<span class="dv">95</span></span>
+<span id="cb594-7"><a href="inferential-statistics-take-2.html#cb594-7" tabindex="-1"></a>  , <span class="at">correct =</span> <span class="cn">FALSE</span></span>
+<span id="cb594-8"><a href="inferential-statistics-take-2.html#cb594-8" tabindex="-1"></a>)</span>
+<span id="cb594-9"><a href="inferential-statistics-take-2.html#cb594-9" tabindex="-1"></a>results </span></code></pre></div>
+<pre><code>## 
+##  2-sample test for equality of proportions without continuity correction
+## 
+## data:  LegalizeIt$legal out of LegalizeIt$n
+## X-squared = 4.0096, df = 1, p-value = 0.04524
+## alternative hypothesis: two.sided
+## 95 percent confidence interval:
+##  0.001287983 0.116191845
+## sample estimates:
+##    prop 1    prop 2 
+## 0.5165563 0.4578164</code></pre>
+<p>The p-value of our test is 0.045 which just squeezes in under <span class="math inline">\(\alpha = .05\)</span>, so we have statistically significant evidence that there is a difference in opinion on marijuana legalization between those with and without college degrees.</p>
+<p>We can use the confidence interval from our results to be a bit more specific. At the 95% confidence level, the proportion of people with college degrees who think marijuana should be legalized is between 0.1% and 11.6% higher than the proportion of people without college degrees.</p>
+<p>Remember, this was all calculated using 2010 data, so you may want to redo this investigation with more up-to-date information.</p>
+</div>
 </div>
 <div id="chi-squared-goodness-of-fit-test" class="section level3 hasAnchor" number="7.1.3">
 <h3><span class="header-section-number">7.1.3</span> Chi-squared goodness of fit test<a href="inferential-statistics-take-2.html#chi-squared-goodness-of-fit-test" class="anchor-section" aria-label="Anchor link to header"></a></h3>

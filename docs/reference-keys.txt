@@ -78,7 +78,9 @@ analysis-of-variance-anova
 inferential-statistics-take-2
 analyzing-categorical-variables-1
 single-sample-proportions
+real-life-single-sample-proportion-test.
 two-sample-proportions
+real-world-example
 chi-squared-goodness-of-fit-test
 chi-squared-test-of-independence-1
 analyzing-numerical-variables-1
