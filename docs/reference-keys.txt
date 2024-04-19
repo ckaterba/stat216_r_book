@@ -85,7 +85,7 @@ chi-squared-goodness-of-fit-test
 chi-squared-test-of-independence-1
 analyzing-numerical-variables-1
 single-sample-mean-1
-two-sample-mean-1
+two-sample-mean-comparison
 paired-data-1
 analysis-of-variance-anova-1
 modeling-relationships

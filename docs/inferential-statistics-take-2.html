@@ -236,7 +236,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.2" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#analyzing-numerical-variables-1"><i class="fa fa-check"></i><b>7.2</b> Analyzing numerical variables</a>
 <ul>
 <li class="chapter" data-level="7.2.1" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#single-sample-mean-1"><i class="fa fa-check"></i><b>7.2.1</b> Single sample mean</a></li>
-<li class="chapter" data-level="7.2.2" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#two-sample-mean-1"><i class="fa fa-check"></i><b>7.2.2</b> Two sample mean</a></li>
+<li class="chapter" data-level="7.2.2" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#two-sample-mean-comparison"><i class="fa fa-check"></i><b>7.2.2</b> Two sample mean comparison</a></li>
 <li class="chapter" data-level="7.2.3" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#paired-data-1"><i class="fa fa-check"></i><b>7.2.3</b> Paired data</a></li>
 <li class="chapter" data-level="7.2.4" data-path="inferential-statistics-take-2.html"><a href="inferential-statistics-take-2.html#analysis-of-variance-anova-1"><i class="fa fa-check"></i><b>7.2.4</b> Analysis of variance (ANOVA)</a></li>
 </ul></li>
@@ -281,7 +281,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb562"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb562-1"><a href="inferential-statistics-take-2.html#cb562-1" tabindex="-1"></a><span class="fu">prop.test</span>(</span>
 <span id="cb562-2"><a href="inferential-statistics-take-2.html#cb562-2" tabindex="-1"></a>  <span class="at">x =</span> <span class="co"># The number of successes</span></span>
 <span id="cb562-3"><a href="inferential-statistics-take-2.html#cb562-3" tabindex="-1"></a>  , <span class="at">n =</span> <span class="co"># the sample size</span></span>
-<span id="cb562-4"><a href="inferential-statistics-take-2.html#cb562-4" tabindex="-1"></a>  , <span class="at">p =</span> <span class="co"># the null proportion of your hypothesis test, the devault value is NULL</span></span>
+<span id="cb562-4"><a href="inferential-statistics-take-2.html#cb562-4" tabindex="-1"></a>  , <span class="at">p =</span> <span class="co"># the null proportion of your hypothesis test, the default value is NULL</span></span>
 <span id="cb562-5"><a href="inferential-statistics-take-2.html#cb562-5" tabindex="-1"></a>  , <span class="at">alternative =</span> <span class="co"># the type of hypothesis test to run corresponding to your alternative hypothesis; one of &quot;two.sided&quot;, &quot;less&quot;, or &quot;greater&quot;</span></span>
 <span id="cb562-6"><a href="inferential-statistics-take-2.html#cb562-6" tabindex="-1"></a>  , <span class="at">conf.level =</span> <span class="co"># your confidence level as a decimal</span></span>
 <span id="cb562-7"><a href="inferential-statistics-take-2.html#cb562-7" tabindex="-1"></a>  , <span class="at">correct =</span> <span class="cn">FALSE</span> <span class="co"># This turns OFF the Yates&#39; continuity correction so that calculations are made like we&#39;ve learned in class.</span></span>
@@ -605,18 +605,287 @@ H_a: p_C - p_H \neq 0
 </div>
 <div id="chi-squared-goodness-of-fit-test" class="section level3 hasAnchor" number="7.1.3">
 <h3><span class="header-section-number">7.1.3</span> Chi-squared goodness of fit test<a href="inferential-statistics-take-2.html#chi-squared-goodness-of-fit-test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A goodness of fit test checks to see if your sample data deviates from some expected distribution. For example, you can use this type of test to investigate whether political affiliation in a county deviates from the state that that county is in or test to see if your dice are actually fair.</p>
+<p>To perform a chi-squared goodness of fit test easily in <code>R</code> we will use the function <code>chisq.test(...)</code>. The inputs to this function are as follows:</p>
+<div class="sourceCode" id="cb596"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb596-1"><a href="inferential-statistics-take-2.html#cb596-1" tabindex="-1"></a><span class="fu">chisq.test</span>( <span class="at">x =</span> <span class="fu">c</span>(...) <span class="co"># a list of your observed counts</span></span>
+<span id="cb596-2"><a href="inferential-statistics-take-2.html#cb596-2" tabindex="-1"></a>            , <span class="at">p =</span> <span class="fu">c</span>(...) <span class="co"># a vector of your expected proportions/probabilities</span></span>
+<span id="cb596-3"><a href="inferential-statistics-take-2.html#cb596-3" tabindex="-1"></a>            , <span class="at">correct =</span> F <span class="co"># turn off the continuity correction, like usual</span></span>
+<span id="cb596-4"><a href="inferential-statistics-take-2.html#cb596-4" tabindex="-1"></a>            )</span></code></pre></div>
+<p>We will look at pet ownership in Seattle as an example of a goodness of fit test. From <a href="www.zipatlas.com">www.zipatlas.com</a>, the 10 most populous zip codes in the Seattle metro area are those in the table below. The column <code>pop</code> gives the zip codes population in 2024. Note: we change zipcode the a character vector to treat them deservedly as categorical variables.</p>
+<div class="sourceCode" id="cb597"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb597-1"><a href="inferential-statistics-take-2.html#cb597-1" tabindex="-1"></a>zipDF <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb597-2"><a href="inferential-statistics-take-2.html#cb597-2" tabindex="-1"></a>  <span class="at">zip =</span> <span class="fu">c</span>(<span class="dv">98115</span>,<span class="dv">98103</span>,<span class="dv">98133</span>, <span class="dv">98105</span>,<span class="dv">98118</span>,<span class="dv">98125</span>,<span class="dv">98122</span>, <span class="dv">98198</span>, <span class="dv">98117</span>, <span class="dv">98155</span>),</span>
+<span id="cb597-3"><a href="inferential-statistics-take-2.html#cb597-3" tabindex="-1"></a>  <span class="at">pop =</span> <span class="fu">c</span>(<span class="dv">54457</span>,<span class="dv">51878</span>,<span class="dv">50921</span>,<span class="dv">50302</span>,<span class="dv">48874</span>,<span class="dv">43993</span>,<span class="dv">41268</span>,<span class="dv">38942</span>,<span class="dv">36115</span>,<span class="dv">35550</span>)</span>
+<span id="cb597-4"><a href="inferential-statistics-take-2.html#cb597-4" tabindex="-1"></a>) <span class="sc">%&gt;%</span> </span>
+<span id="cb597-5"><a href="inferential-statistics-take-2.html#cb597-5" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">zip =</span> <span class="fu">as.character</span>(zip)</span>
+<span id="cb597-6"><a href="inferential-statistics-take-2.html#cb597-6" tabindex="-1"></a>         , <span class="at">pop =</span> pop</span>
+<span id="cb597-7"><a href="inferential-statistics-take-2.html#cb597-7" tabindex="-1"></a>         , <span class="at">popProp =</span> pop<span class="sc">/</span><span class="fu">sum</span>(pop)   ) <span class="sc">%&gt;%</span></span>
+<span id="cb597-8"><a href="inferential-statistics-take-2.html#cb597-8" tabindex="-1"></a>  <span class="fu">arrange</span>(zip)</span>
+<span id="cb597-9"><a href="inferential-statistics-take-2.html#cb597-9" tabindex="-1"></a>zipDF</span></code></pre></div>
+<pre><code>## # A tibble: 10 × 3
+##    zip     pop popProp
+##    &lt;chr&gt; &lt;dbl&gt;   &lt;dbl&gt;
+##  1 98103 51878  0.115 
+##  2 98105 50302  0.111 
+##  3 98115 54457  0.120 
+##  4 98117 36115  0.0798
+##  5 98118 48874  0.108 
+##  6 98122 41268  0.0912
+##  7 98125 43993  0.0973
+##  8 98133 50921  0.113 
+##  9 98155 35550  0.0786
+## 10 98198 38942  0.0861</code></pre>
+<p>We want to see if pet ownership is evenly distributed among these zip codes. To do this, we will use the <code>seattlepets</code> data set from the <code>openintro</code> package. As usual, be sure the check the documentation to make sure you understand what the data represents. In this case, it’s a data set detailing pet registrations in Seattle. The first 6 observations in the data set are shown below.</p>
+<div class="sourceCode" id="cb599"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb599-1"><a href="inferential-statistics-take-2.html#cb599-1" tabindex="-1"></a>seattlepets <span class="sc">%&gt;%</span> </span>
+<span id="cb599-2"><a href="inferential-statistics-take-2.html#cb599-2" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 7
+##   license_issue_date license_number animal_name species primary_breed                                  secondary_breed   zip_code
+##   &lt;date&gt;             &lt;chr&gt;          &lt;chr&gt;       &lt;chr&gt;   &lt;chr&gt;                                          &lt;chr&gt;             &lt;chr&gt;   
+## 1 2018-11-16         8002756        Wall-E      Dog     Mixed Breed, Medium (up to 44 lbs fully grown) Mix               98108   
+## 2 2018-11-11         S124529        Andre       Dog     Terrier, Jack Russell                          Dachshund, Stand… 98117   
+## 3 2018-11-21         903793         Mac         Dog     Retriever, Labrador                            &lt;NA&gt;              98136   
+## 4 2018-11-23         824666         Melb        Cat     Domestic Shorthair                             &lt;NA&gt;              98117   
+## 5 2018-12-30         S119138        Gingersnap  Cat     Domestic Shorthair                             Mix               98144   
+## 6 2018-12-16         S138529        Cody        Dog     Retriever, Labrador                            &lt;NA&gt;              98103</code></pre>
+<p>There are many zip_codes in the data set:</p>
+<div class="sourceCode" id="cb601"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb601-1"><a href="inferential-statistics-take-2.html#cb601-1" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">unique</span>(seattlepets<span class="sc">$</span>zip_code))</span></code></pre></div>
+<pre><code>## [1] 168</code></pre>
+<p>so we need to do some manipulation to get to a place where we can make the comparison in question. First, we reformat any zip code that is of the form <code>#####-#####</code> so that it just contains the first five digits, then we will filter for only the 10 most populous zip codes, then finally count the number of licenses in each zip.</p>
+<div class="sourceCode" id="cb603"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb603-1"><a href="inferential-statistics-take-2.html#cb603-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> seattlepets <span class="sc">%&gt;%</span></span>
+<span id="cb603-2"><a href="inferential-statistics-take-2.html#cb603-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">zip_code =</span> <span class="fu">str_replace</span>(zip_code, <span class="st">&#39;-[0-9]{1,}&#39;</span>, <span class="st">&#39;&#39;</span>)</span>
+<span id="cb603-3"><a href="inferential-statistics-take-2.html#cb603-3" tabindex="-1"></a>         ) <span class="sc">%&gt;%</span></span>
+<span id="cb603-4"><a href="inferential-statistics-take-2.html#cb603-4" tabindex="-1"></a>  <span class="fu">filter</span>(zip_code <span class="sc">%in%</span> zipDF<span class="sc">$</span>zip) <span class="sc">%&gt;%</span></span>
+<span id="cb603-5"><a href="inferential-statistics-take-2.html#cb603-5" tabindex="-1"></a>  <span class="fu">group_by</span>(zip_code) <span class="sc">%&gt;%</span></span>
+<span id="cb603-6"><a href="inferential-statistics-take-2.html#cb603-6" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb603-7"><a href="inferential-statistics-take-2.html#cb603-7" tabindex="-1"></a>  <span class="fu">arrange</span>(zip_code)</span>
+<span id="cb603-8"><a href="inferential-statistics-take-2.html#cb603-8" tabindex="-1"></a></span>
+<span id="cb603-9"><a href="inferential-statistics-take-2.html#cb603-9" tabindex="-1"></a>df</span></code></pre></div>
+<pre><code>## # A tibble: 10 × 2
+##    zip_code     n
+##    &lt;chr&gt;    &lt;int&gt;
+##  1 98103     4506
+##  2 98105     2070
+##  3 98115     4748
+##  4 98117     3879
+##  5 98118     2375
+##  6 98122     2521
+##  7 98125     2882
+##  8 98133     1775
+##  9 98155       28
+## 10 98198        6</code></pre>
+<p>Next we make sure that the zip codes are in the same order in both data sets</p>
+<div class="sourceCode" id="cb605"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb605-1"><a href="inferential-statistics-take-2.html#cb605-1" tabindex="-1"></a><span class="fu">all.equal</span>(df<span class="sc">$</span>zip_code, zipDF<span class="sc">$</span>zip)</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>Now we’re ready to perform our test. If pet-ownership in different zip codes were evenly distributed, we’d expect the proportion of licenses distributed to be roughly the same as the population distribution. Thus, we want to compare the license count, the column <code>n</code> from <code>df</code> above to the population proportion <code>popProp</code> from <code>zipDF</code>. The hypothesis test we’re performing is</p>
+<p><span class="math display">\[\begin{array}{cc}
+H_0:\text{Pet ownership is distributed like population in Seattle} \\
+H_a: \text{Pet ownership is not distributed like population in Seattle}
+\end{array}
+    \]</span></p>
+<p>Let’s perform this test with a significance level of <span class="math inline">\(\alpha = .05\)</span>. Executing the test is now easy with <code>chisq.test</code>!</p>
+<div class="sourceCode" id="cb607"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb607-1"><a href="inferential-statistics-take-2.html#cb607-1" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">chisq.test</span>(<span class="at">x =</span> df<span class="sc">$</span>n</span>
+<span id="cb607-2"><a href="inferential-statistics-take-2.html#cb607-2" tabindex="-1"></a>           , <span class="at">p =</span> zipDF<span class="sc">$</span>popProp</span>
+<span id="cb607-3"><a href="inferential-statistics-take-2.html#cb607-3" tabindex="-1"></a>           , <span class="at">correct =</span> F)</span>
+<span id="cb607-4"><a href="inferential-statistics-take-2.html#cb607-4" tabindex="-1"></a>results </span></code></pre></div>
+<pre><code>## 
+##  Chi-squared test for given probabilities
+## 
+## data:  df$n
+## X-squared = 8549.1, df = 9, p-value &lt; 2.2e-16</code></pre>
+<p>Our p-value is way less than the significance level, so we reject the null and accept the research hypothesis. In other words, we have strong evidence suggesting that pet ownership/license distribution does not match the population distribution among the 10 most populous zip codes in the Seattle metro area.</p>
+<p>You might wonder where the distribution deviates the most from the expectation? You can use the <code>residuals</code> element of the <code>results</code> object above to try to answer that question.</p>
+<p>If obs and exp are the observed and expected counts respectively, then each residual is:</p>
+<p><span class="math display">\[ \frac{\text{obs} - \text{exp}}{\sqrt{\text{exp}}} \]</span></p>
+<div class="sourceCode" id="cb609"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb609-1"><a href="inferential-statistics-take-2.html#cb609-1" tabindex="-1"></a>res <span class="ot">&lt;-</span> results<span class="sc">$</span>residuals</span>
+<span id="cb609-2"><a href="inferential-statistics-take-2.html#cb609-2" tabindex="-1"></a><span class="fu">names</span>(res) <span class="ot">&lt;-</span> zipDF<span class="sc">$</span>zip</span>
+<span id="cb609-3"><a href="inferential-statistics-take-2.html#cb609-3" tabindex="-1"></a><span class="fu">sort</span>(res)</span></code></pre></div>
+<pre><code>##      98198      98155      98133      98105      98118      98122      98125      98103      98115      98117 
+## -46.069289 -43.506938 -19.230237 -13.083768  -5.868322   5.449082   9.587784  31.180236  32.275231  42.696200</code></pre>
+<p>The output above shows us that the zip code 98198 sees way fewer licenses than we’d expect if pet ownership matched the population distribution and the zip code 98117 sees way more licensing than we would expect based on population alone.</p>
 </div>
 <div id="chi-squared-test-of-independence-1" class="section level3 hasAnchor" number="7.1.4">
 <h3><span class="header-section-number">7.1.4</span> Chi-squared test of independence<a href="inferential-statistics-take-2.html#chi-squared-test-of-independence-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Recall from the previous chapter that a chi-squared test of independence tests for an <em>association</em> between two categorical variables. No surprise, there is a built in function in <code>R</code> to perform these tests and it is again <code>chisq.test(...)</code>. The only difference from the last section is how you input data. For a goodness of fit test you</p>
+<div class="sourceCode" id="cb611"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb611-1"><a href="inferential-statistics-take-2.html#cb611-1" tabindex="-1"></a>table <span class="ot">&lt;-</span> gss2010 <span class="sc">%&gt;%</span></span>
+<span id="cb611-2"><a href="inferential-statistics-take-2.html#cb611-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">grass =</span> <span class="fu">if_else</span>(<span class="fu">is.na</span>(grass), <span class="st">&#39;NO REPLY&#39;</span>, grass)) <span class="sc">%&gt;%</span></span>
+<span id="cb611-3"><a href="inferential-statistics-take-2.html#cb611-3" tabindex="-1"></a>  <span class="fu">xtabs</span>(<span class="sc">~</span>degree <span class="sc">+</span> grass, <span class="at">data =</span> .)</span>
+<span id="cb611-4"><a href="inferential-statistics-take-2.html#cb611-4" tabindex="-1"></a></span>
+<span id="cb611-5"><a href="inferential-statistics-take-2.html#cb611-5" tabindex="-1"></a>table</span></code></pre></div>
+<pre><code>##                 grass
+## degree           LEGAL NO REPLY NOT LEGAL
+##   BACHELOR         119      144       112
+##   GRADUATE          73       82        63
+##   HIGH SCHOOL      304      390       307
+##   JUNIOR COLLEGE    42       59        44
+##   LT HIGH SCHOOL    65      110       130</code></pre>
+<div class="sourceCode" id="cb613"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb613-1"><a href="inferential-statistics-take-2.html#cb613-1" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">chisq.test</span>(table)</span>
+<span id="cb613-2"><a href="inferential-statistics-take-2.html#cb613-2" tabindex="-1"></a>results</span></code></pre></div>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  table
+## X-squared = 22.338, df = 8, p-value = 0.004326</code></pre>
+<p>Since our p-value is less than the significance level of <span class="math inline">\(\alpha = .05\)</span>, we conclude that the data imply an association between highest educational attainment and opinion on marijuana legalization. You might then wonder if you can infer what this association actually looks like to some degree. The key to this is looking at the <em>residuals</em> of this hypothesis test.</p>
+<p>Recall that the chi-squared test statistic is</p>
+<p><span class="math display">\[ \sum \frac{(\text{obs} - \text{exp})^2}{\text{exp}}. \]</span></p>
+<p>where obs and exp represent the observed and expected counts and the sum ranges over all cells in the contingency table. The residual of a cell in a contingency table is simply</p>
+<p><span class="math display">\[\text{residual} = \frac{(\text{obs} - \text{exp})}{\sqrt{\text{exp}}} \]</span></p>
+<p>so a residual simply measures how far above or below the observed count is from the expected count where the difference is normalized by the expected count. Large residuals imply a large deviation from expectation, so you can think of any cell with a large residual as representing a place where the detected association between variables is more evident. We can access the residuals from our test a follows:</p>
+<div class="sourceCode" id="cb615"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb615-1"><a href="inferential-statistics-take-2.html#cb615-1" tabindex="-1"></a>results<span class="sc">$</span>residuals</span></code></pre></div>
+<pre><code>##                 grass
+## degree                  LEGAL     NO REPLY    NOT LEGAL
+##   BACHELOR        0.795903942 -0.001589914 -0.761336064
+##   GRADUATE        1.083344800 -0.188315397 -0.832659358
+##   HIGH SCHOOL     0.505993107  0.283830520 -0.795608394
+##   JUNIOR COLLEGE -0.118711782  0.443908579 -0.371782229
+##   LT HIGH SCHOOL -2.633232818 -0.659297213  3.245833866</code></pre>
+<p>Most of our residuals are either around 1 or less than 1 in absolute value, except for those corresponding to people with who did not finish high school. Here we see that fewer people than expected believe that marijuana should be legalized and more think it should be illegal if the variables were actually independent.</p>
+<p>Does this mean that more education <em>causes</em> one to think marijuana should be legal? Of course not! We’re simply observing an association in an observational data set and it would be a huge mistake to try to infer a causal relationship between the two variables. There are likely many confounding variables at play here.</p>
 </div>
 </div>
 <div id="analyzing-numerical-variables-1" class="section level2 hasAnchor" number="7.2">
 <h2><span class="header-section-number">7.2</span> Analyzing numerical variables<a href="inferential-statistics-take-2.html#analyzing-numerical-variables-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In this section we will learn how to use R’s in-built functions to perform statistical inference for numerical variables. After the last chapter, it should come as no surprise that the bulk of our inference will be performed by a single function. For categorical variables we frequently used <code>prop.test(...)</code>; the analogous function for numerical variables is <code>t.test(...)</code>. The following subsections will guide you through the use of this function to perform inferences for single sample means, two sample mean comparisons, and paired data. We will then discuss using the function <code>aov</code> for performing ANOVA tests.</p>
+<p><strong>Note:</strong> The function <code>t.test(...)</code> requires you have access to actual data, not just summary statistics. In what follows we will also discuss using the <code>tsum.test(...)</code> function from the <code>BSDA</code> package, which executes t-tests from summary statistics as well.</p>
 <div id="single-sample-mean-1" class="section level3 hasAnchor" number="7.2.1">
 <h3><span class="header-section-number">7.2.1</span> Single sample mean<a href="inferential-statistics-take-2.html#single-sample-mean-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong><em>If you have a data set,</em></strong> making an inference about a numerical variable therein with <code>t.test</code> is quite easy. The basic syntax for a single numerical variable is as follows.</p>
+<div class="sourceCode" id="cb617"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb617-1"><a href="inferential-statistics-take-2.html#cb617-1" tabindex="-1"></a><span class="fu">t.test</span>(</span>
+<span id="cb617-2"><a href="inferential-statistics-take-2.html#cb617-2" tabindex="-1"></a>  <span class="at">x =</span> <span class="co"># a VECTOR of numerical values, typically a column of a data set.</span></span>
+<span id="cb617-3"><a href="inferential-statistics-take-2.html#cb617-3" tabindex="-1"></a>  , <span class="at">mu =</span> <span class="co"># the null mean of your hypothesis test; defaults to 0.  </span></span>
+<span id="cb617-4"><a href="inferential-statistics-take-2.html#cb617-4" tabindex="-1"></a>  , <span class="at">alternative =</span> <span class="co"># the type of hypothesis test to run corresponding to your alternative hypothesis; one of &quot;two.sided&quot;, &quot;less&quot;, or &quot;greater&quot;</span></span>
+<span id="cb617-5"><a href="inferential-statistics-take-2.html#cb617-5" tabindex="-1"></a>  , <span class="at">conf.level =</span> <span class="co"># your confidence level as a decimal</span></span>
+<span id="cb617-6"><a href="inferential-statistics-take-2.html#cb617-6" tabindex="-1"></a>)</span></code></pre></div>
+<p>We will use the <code>fastfood</code> data set from the <code>openintro</code> package to demonstrate the use of this function. This data set gives the nutritional breakdown of many menu items from the following restaurants: .</p>
+<div class="sourceCode" id="cb618"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb618-1"><a href="inferential-statistics-take-2.html#cb618-1" tabindex="-1"></a><span class="fu">head</span>(fastfood)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 17
+##   restaurant item      calories cal_fat total_fat sat_fat trans_fat cholesterol sodium total_carb fiber sugar protein vit_a vit_c
+##   &lt;chr&gt;      &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 Mcdonalds  Artisan …      380      60         7       2       0            95   1110         44     3    11      37     4    20
+## 2 Mcdonalds  Single B…      840     410        45      17       1.5         130   1580         62     2    18      46     6    20
+## 3 Mcdonalds  Double B…     1130     600        67      27       3           220   1920         63     3    18      70    10    20
+## 4 Mcdonalds  Grilled …      750     280        31      10       0.5         155   1940         62     2    18      55     6    25
+## 5 Mcdonalds  Crispy B…      920     410        45      12       0.5         120   1980         81     4    18      46     6    20
+## 6 Mcdonalds  Big Mac        540     250        28      10       1            80    950         46     3     9      25    10     2
+## # ℹ 2 more variables: calcium &lt;dbl&gt;, salad &lt;chr&gt;</code></pre>
+<p>Suppose we want to know the average caloric content of a burger from a fast food restaurant. Moreover, we suspect that the average burger contains more than 600 calories. To put this in the context of statistic inference, we want to calculate a confidence interval and perform a hypothesis test. Let <span class="math inline">\(\mu\)</span> denote the average calorie content of a fast food burger. Our hypothesis test is</p>
+<p><span class="math display">\[\begin{array}{cc}
+H_0: \mu = 600 \\
+H_a: \mu &gt; 600
+\end{array}
+    \]</span></p>
+<p>We can use the data set above to help make these inferences! We will use <code>t.test(...)</code> after massaging the data a bit. First, we’ll select all rows from <code>fastfood</code> where the item contains the word “burger” or “Burger”</p>
+<div class="sourceCode" id="cb620"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb620-1"><a href="inferential-statistics-take-2.html#cb620-1" tabindex="-1"></a>burgers <span class="ot">&lt;-</span> fastfood <span class="sc">%&gt;%</span></span>
+<span id="cb620-2"><a href="inferential-statistics-take-2.html#cb620-2" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(item, <span class="st">&#39;[bB]urger&#39;</span>)) </span>
+<span id="cb620-3"><a href="inferential-statistics-take-2.html#cb620-3" tabindex="-1"></a></span>
+<span id="cb620-4"><a href="inferential-statistics-take-2.html#cb620-4" tabindex="-1"></a><span class="fu">dim</span>(burgers)</span></code></pre></div>
+<pre><code>## [1] 56 17</code></pre>
+<p>So our data set has only 56 burgers. Let’s first execute our hypothesis test with a significance level of <span class="math inline">\(\alpha = .05\)</span> to see if our idea has any legs.</p>
+<div class="sourceCode" id="cb622"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb622-1"><a href="inferential-statistics-take-2.html#cb622-1" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">t.test</span>(<span class="at">x =</span> burgers<span class="sc">$</span>calories</span>
+<span id="cb622-2"><a href="inferential-statistics-take-2.html#cb622-2" tabindex="-1"></a>       , <span class="at">alternative =</span> <span class="st">&#39;greater&#39;</span></span>
+<span id="cb622-3"><a href="inferential-statistics-take-2.html#cb622-3" tabindex="-1"></a>       , <span class="at">mu =</span> <span class="dv">600</span></span>
+<span id="cb622-4"><a href="inferential-statistics-take-2.html#cb622-4" tabindex="-1"></a>       , <span class="at">conf.level =</span> .<span class="dv">95</span>)</span>
+<span id="cb622-5"><a href="inferential-statistics-take-2.html#cb622-5" tabindex="-1"></a>results</span></code></pre></div>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  burgers$calories
+## t = 0.28482, df = 55, p-value = 0.3884
+## alternative hypothesis: true mean is greater than 600
+## 95 percent confidence interval:
+##  552.1307      Inf
+## sample estimates:
+## mean of x 
+##  609.8214</code></pre>
+<p>Our <span class="math inline">\(p\)</span>-value is about 0.3884, greater than the significance level, so we fail to reject the null. In other words, our sample data do not provide sufficient evidence to conclude that the average burger has more than 600 calories.</p>
+<p>Notice that the confidence interval reported above is one-sided to be consistent with the hypothesis test, just like the output of <code>prop.test(...)</code> when performing a one-sided hypothesis test. We can reproduce this confidence interval in a similar way. You can find the lower bound with:</p>
+<div class="sourceCode" id="cb624"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb624-1"><a href="inferential-statistics-take-2.html#cb624-1" tabindex="-1"></a>t.crit <span class="ot">&lt;-</span> <span class="fu">qt</span>(.<span class="dv">05</span>, <span class="at">df =</span> <span class="dv">55</span>, <span class="at">lower.tail =</span> F)</span>
+<span id="cb624-2"><a href="inferential-statistics-take-2.html#cb624-2" tabindex="-1"></a>SE <span class="ot">&lt;-</span> <span class="fu">sd</span>(burgers<span class="sc">$</span>calories)<span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">56</span>)</span>
+<span id="cb624-3"><a href="inferential-statistics-take-2.html#cb624-3" tabindex="-1"></a><span class="fu">mean</span>(burgers<span class="sc">$</span>calories) <span class="sc">-</span> t.crit<span class="sc">*</span>SE</span></code></pre></div>
+<pre><code>## [1] 552.1307</code></pre>
+<p>The upper bounds for one-sided confidence intervals associated with one-sided lower hypothesis tests can be calculated analogously.</p>
+<p>If we want standard two-sided confidence interval, we simply need to set `alternative = ‘two.sided’.</p>
+<div class="sourceCode" id="cb626"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb626-1"><a href="inferential-statistics-take-2.html#cb626-1" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">t.test</span>(<span class="at">x =</span> burgers<span class="sc">$</span>calories</span>
+<span id="cb626-2"><a href="inferential-statistics-take-2.html#cb626-2" tabindex="-1"></a>       , <span class="at">alternative =</span> <span class="st">&#39;two.sided&#39;</span></span>
+<span id="cb626-3"><a href="inferential-statistics-take-2.html#cb626-3" tabindex="-1"></a>       , <span class="at">mu =</span> <span class="dv">600</span></span>
+<span id="cb626-4"><a href="inferential-statistics-take-2.html#cb626-4" tabindex="-1"></a>       , <span class="at">conf.level =</span> .<span class="dv">95</span>)</span>
+<span id="cb626-5"><a href="inferential-statistics-take-2.html#cb626-5" tabindex="-1"></a>results<span class="sc">$</span>conf.int</span></code></pre></div>
+<pre><code>## [1] 540.7165 678.9263
+## attr(,&quot;conf.level&quot;)
+## [1] 0.95</code></pre>
+<p>Thus, with 95% confidence, fast food burgers contain between about 541 and 679 calories on average.</p>
+<p>Now, suppose you <strong>don’t</strong> have a data set available and only have summary statistics. This happens frequently on homework, for example. If you want to use a function similar to <code>t.test(...)</code>, you have to either write your own function (this is left as an exercise for the reader as it is beyond the scope of these notes) or install a new package called <code>BSDA</code>. This package, whose name represents “Basic Statistics and Data Analysis,” was created by Alan T. Arnholt to accompany a textbook with the same name, written by Larry J. Kitchens. In any case, remember that one must first install the package before it can be loaded into your <code>R</code> session and that it must be loaded into your <code>R</code> session before you can use any functions therein. In other words, you must run</p>
+<div class="sourceCode" id="cb628"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb628-1"><a href="inferential-statistics-take-2.html#cb628-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&#39;BSDA&#39;</span>)</span></code></pre></div>
+<p>once, the first time you want to use the functions, then run</p>
+<div class="sourceCode" id="cb629"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb629-1"><a href="inferential-statistics-take-2.html#cb629-1" tabindex="-1"></a><span class="fu">library</span>(BSDA)</span></code></pre></div>
+<p>any time you start a new <code>R</code> session and want to use this function. For a single sample t-test, the syntax for <code>t.test(...)</code> is as follows.</p>
+<div class="sourceCode" id="cb630"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb630-1"><a href="inferential-statistics-take-2.html#cb630-1" tabindex="-1"></a><span class="fu">tsum.test</span>(</span>
+<span id="cb630-2"><a href="inferential-statistics-take-2.html#cb630-2" tabindex="-1"></a>    <span class="at">mean.x =</span> <span class="co">#sample average</span></span>
+<span id="cb630-3"><a href="inferential-statistics-take-2.html#cb630-3" tabindex="-1"></a>    , <span class="at">s.x =</span> <span class="co">#sample standard deviation</span></span>
+<span id="cb630-4"><a href="inferential-statistics-take-2.html#cb630-4" tabindex="-1"></a>    , <span class="at">n.x =</span> <span class="co">#sample size</span></span>
+<span id="cb630-5"><a href="inferential-statistics-take-2.html#cb630-5" tabindex="-1"></a>    , <span class="at">alternative =</span> <span class="co">#type of test to perform</span></span>
+<span id="cb630-6"><a href="inferential-statistics-take-2.html#cb630-6" tabindex="-1"></a>    , <span class="at">mu =</span> <span class="co">#null mean</span></span>
+<span id="cb630-7"><a href="inferential-statistics-take-2.html#cb630-7" tabindex="-1"></a>    , <span class="at">conf.level =</span> <span class="co"># confidence level as a decimal</span></span>
+<span id="cb630-8"><a href="inferential-statistics-take-2.html#cb630-8" tabindex="-1"></a>)</span></code></pre></div>
+<p>We will use <code>tsum.test(...)</code> to generate perform the exact same hypothesis test as above, this time inputting the sample statistics instead of the data we were interested in.</p>
+<div class="sourceCode" id="cb631"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb631-1"><a href="inferential-statistics-take-2.html#cb631-1" tabindex="-1"></a>xBar <span class="ot">&lt;-</span> <span class="fu">mean</span>(burgers<span class="sc">$</span>calories)</span>
+<span id="cb631-2"><a href="inferential-statistics-take-2.html#cb631-2" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">sd</span>(burgers<span class="sc">$</span>calories)</span>
+<span id="cb631-3"><a href="inferential-statistics-take-2.html#cb631-3" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">dim</span>(burgers)[<span class="dv">1</span>]</span>
+<span id="cb631-4"><a href="inferential-statistics-take-2.html#cb631-4" tabindex="-1"></a></span>
+<span id="cb631-5"><a href="inferential-statistics-take-2.html#cb631-5" tabindex="-1"></a><span class="fu">tsum.test</span>(</span>
+<span id="cb631-6"><a href="inferential-statistics-take-2.html#cb631-6" tabindex="-1"></a>  <span class="at">mean.x =</span> xBar</span>
+<span id="cb631-7"><a href="inferential-statistics-take-2.html#cb631-7" tabindex="-1"></a>  , <span class="at">s.x =</span> s</span>
+<span id="cb631-8"><a href="inferential-statistics-take-2.html#cb631-8" tabindex="-1"></a>  , <span class="at">n.x =</span> n</span>
+<span id="cb631-9"><a href="inferential-statistics-take-2.html#cb631-9" tabindex="-1"></a>  , <span class="at">alternative =</span> <span class="st">&#39;greater&#39;</span></span>
+<span id="cb631-10"><a href="inferential-statistics-take-2.html#cb631-10" tabindex="-1"></a>  , <span class="at">mu =</span> <span class="dv">600</span></span>
+<span id="cb631-11"><a href="inferential-statistics-take-2.html#cb631-11" tabindex="-1"></a>  , <span class="at">conf.level =</span> .<span class="dv">95</span></span>
+<span id="cb631-12"><a href="inferential-statistics-take-2.html#cb631-12" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>## Warning in tsum.test(mean.x = xBar, s.x = s, n.x = n, alternative = &quot;greater&quot;, : argument &#39;var.equal&#39; ignored for one-sample
+## test.</code></pre>
+<pre><code>## 
+##  One-sample t-Test
+## 
+## data:  Summarized x
+## t = 0.28482, df = 55, p-value = 0.3884
+## alternative hypothesis: true mean is greater than 600
+## 95 percent confidence interval:
+##  552.1307       NA
+## sample estimates:
+## mean of x 
+##  609.8214</code></pre>
+<p>Et Voila - the exact same results as above! You can ignore the warning about <code>var.equal</code> as it is outputting the exact behavior we want.</p>
 </div>
-<div id="two-sample-mean-1" class="section level3 hasAnchor" number="7.2.2">
-<h3><span class="header-section-number">7.2.2</span> Two sample mean<a href="inferential-statistics-take-2.html#two-sample-mean-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="two-sample-mean-comparison" class="section level3 hasAnchor" number="7.2.2">
+<h3><span class="header-section-number">7.2.2</span> Two sample mean comparison<a href="inferential-statistics-take-2.html#two-sample-mean-comparison" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The functions <code>t.test(...)</code> and <code>tsum.test(...)</code> also perform two-sample t-tests for us. Recall that, roughly, a two-sample t-test checks for an association between a two-valued categorical variable and a single numerical variable. With these tests you make inferences about the difference between two population averages <span class="math inline">\(\mu_1 - \mu_2\)</span> from the difference in sample averages <span class="math inline">\(\overline{x}_1 - \overline{x}_2\)</span>, so the associated confidence intervals are estimating the <em>difference</em> in population averages.</p>
+<p>If you have a actual data for a two-sample t-test, use <code>t.test(...)</code> with the following syntax.</p>
+<div class="sourceCode" id="cb634"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb634-1"><a href="inferential-statistics-take-2.html#cb634-1" tabindex="-1"></a><span class="fu">t.test</span>(</span>
+<span id="cb634-2"><a href="inferential-statistics-take-2.html#cb634-2" tabindex="-1"></a>  <span class="at">x =</span> <span class="co">#vector of values for first group</span></span>
+<span id="cb634-3"><a href="inferential-statistics-take-2.html#cb634-3" tabindex="-1"></a> , <span class="at">y =</span> <span class="co">#vector of values for the second group</span></span>
+<span id="cb634-4"><a href="inferential-statistics-take-2.html#cb634-4" tabindex="-1"></a> , <span class="at">mu =</span> <span class="co">#null difference in population means, USUALLY = 0! </span></span>
+<span id="cb634-5"><a href="inferential-statistics-take-2.html#cb634-5" tabindex="-1"></a> , <span class="at">alternative =</span> <span class="co"># the type of hypothesis test to run</span></span>
+<span id="cb634-6"><a href="inferential-statistics-take-2.html#cb634-6" tabindex="-1"></a> , <span class="at">var.equal =</span> <span class="cn">FALSE</span> <span class="co"># we will assume the pop. variances are unequal in this class </span></span>
+<span id="cb634-7"><a href="inferential-statistics-take-2.html#cb634-7" tabindex="-1"></a> , <span class="at">conf.level =</span> <span class="co"># your confidence level as a decimal</span></span>
+<span id="cb634-8"><a href="inferential-statistics-take-2.html#cb634-8" tabindex="-1"></a>    )</span></code></pre></div>
+<p>If you don’t have data and only have sample statistics, use <code>tsum.test(...)</code> with the following syntax.</p>
+<div class="sourceCode" id="cb635"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb635-1"><a href="inferential-statistics-take-2.html#cb635-1" tabindex="-1"></a><span class="fu">tsum.test</span>(</span>
+<span id="cb635-2"><a href="inferential-statistics-take-2.html#cb635-2" tabindex="-1"></a>   <span class="at">mean.x =</span> <span class="co">#sample mean from group 1 </span></span>
+<span id="cb635-3"><a href="inferential-statistics-take-2.html#cb635-3" tabindex="-1"></a>  , <span class="at">s.x =</span> <span class="co">#sample std dev from group 1</span></span>
+<span id="cb635-4"><a href="inferential-statistics-take-2.html#cb635-4" tabindex="-1"></a>  , <span class="at">n.x =</span> <span class="co"># sample size from group 1</span></span>
+<span id="cb635-5"><a href="inferential-statistics-take-2.html#cb635-5" tabindex="-1"></a>  , <span class="at">mean.y =</span> <span class="co">#sample mean of group 2</span></span>
+<span id="cb635-6"><a href="inferential-statistics-take-2.html#cb635-6" tabindex="-1"></a>  , <span class="at">s.y =</span> <span class="co"># sample std dev of group 2</span></span>
+<span id="cb635-7"><a href="inferential-statistics-take-2.html#cb635-7" tabindex="-1"></a>  , <span class="at">n.y =</span> <span class="co"># sample size of group 2</span></span>
+<span id="cb635-8"><a href="inferential-statistics-take-2.html#cb635-8" tabindex="-1"></a>  , <span class="at">mu =</span> <span class="co">#null difference in population means, USUALLY = 0! </span></span>
+<span id="cb635-9"><a href="inferential-statistics-take-2.html#cb635-9" tabindex="-1"></a>  , <span class="at">alternative =</span> <span class="co"># the type of hypothesis test to run</span></span>
+<span id="cb635-10"><a href="inferential-statistics-take-2.html#cb635-10" tabindex="-1"></a>  , <span class="at">var.equal =</span> <span class="cn">FALSE</span> <span class="co"># we will assume the pop. variances are unqequal in this class </span></span>
+<span id="cb635-11"><a href="inferential-statistics-take-2.html#cb635-11" tabindex="-1"></a>  , <span class="at">conf.level =</span> <span class="co"># your confidence level as a decimal</span></span>
+<span id="cb635-12"><a href="inferential-statistics-take-2.html#cb635-12" tabindex="-1"></a>)</span></code></pre></div>
+<p>Let’s see these functions in action, again using the <code>fastfood</code> data set.</p>
+<p>We typically think that salads are a healthier option than burgers when dining out. While “healthiness” is a complicated notion, we can compare the calorie content of these food options as a first pass at healthiness. For instance, a fast food diner may assume they are eating a lower calorie option by ordering a salad over a burger. How true is this on average? Let’s get the data ready for comparison (note that <code>fastfood</code>)</p>
+<div class="sourceCode" id="cb636"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb636-1"><a href="inferential-statistics-take-2.html#cb636-1" tabindex="-1"></a>burgers <span class="ot">&lt;-</span> fastfood <span class="sc">%&gt;%</span></span>
+<span id="cb636-2"><a href="inferential-statistics-take-2.html#cb636-2" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(item, <span class="st">&#39;[bB]urger&#39;</span>)) </span>
+<span id="cb636-3"><a href="inferential-statistics-take-2.html#cb636-3" tabindex="-1"></a>salads <span class="ot">&lt;-</span> fastfood <span class="sc">%&gt;%</span></span>
+<span id="cb636-4"><a href="inferential-statistics-take-2.html#cb636-4" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(item, <span class="st">&#39;[sS]alad&#39;</span>))</span></code></pre></div>
+<p>[To be Continued]</p>
 </div>
 <div id="paired-data-1" class="section level3 hasAnchor" number="7.2.3">
 <h3><span class="header-section-number">7.2.3</span> Paired data<a href="inferential-statistics-take-2.html#paired-data-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>

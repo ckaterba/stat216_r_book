@@ -17,7 +17,7 @@ The main function we will use in this section is `prop.test(...)`; it both calcu
 prop.test(
   x = # The number of successes
   , n = # the sample size
-  , p = # the null proportion of your hypothesis test, the devault value is NULL
+  , p = # the null proportion of your hypothesis test, the default value is NULL
   , alternative = # the type of hypothesis test to run corresponding to your alternative hypothesis; one of "two.sided", "less", or "greater"
   , conf.level = # your confidence level as a decimal
   , correct = FALSE # This turns OFF the Yates' continuity correction so that calculations are made like we've learned in class.
@@ -326,6 +326,7 @@ results <- prop.test(
 )
 results 
 ```
+
 The p-value of our test is `r round(results$p.value , 3)` which just squeezes in under \(\alpha = .05 \), so we have statistically significant evidence that there is a difference in opinion on marijuana legalization between those with and without college degrees. 
 
 We can use the confidence interval from our results to be  a bit more specific. At the 95% confidence level, the proportion of people with college degrees who think marijuana should be legalized is between 0.1\% and 11.6\% higher than the proportion of people without college degrees. 
@@ -334,13 +335,303 @@ Remember, this was all calculated using 2010 data, so you may want to redo this 
 
 ### Chi-squared goodness of fit test
 
+A goodness of fit test checks to see if your sample data deviates from some expected distribution. For example, you can use this type of test to investigate whether political affiliation in a county deviates from the state that that county is in or test to see if your dice are actually fair.
+
+To perform a chi-squared goodness of fit test easily in `R` we will use the function `chisq.test(...)`. The inputs to this function are as follows:
+
+```{r, eval=FALSE}
+chisq.test( x = c(...) # a list of your observed counts
+            , p = c(...) # a vector of your expected proportions/probabilities
+            , correct = F # turn off the continuity correction, like usual
+            )
+```
+
+We will look at pet ownership in Seattle as an example of a goodness of fit test. From [www.zipatlas.com](www.zipatlas.com), the 10 most populous zip codes in the Seattle metro area are those in the table below. The column `pop` gives the zip codes population in 2024. Note: we change zipcode the a character vector to treat them deservedly as categorical variables. 
+
+```{r}
+zipDF <- tibble(
+  zip = c(98115,98103,98133, 98105,98118,98125,98122, 98198, 98117, 98155),
+  pop = c(54457,51878,50921,50302,48874,43993,41268,38942,36115,35550)
+) %>% 
+  mutate(zip = as.character(zip)
+         , pop = pop
+         , popProp = pop/sum(pop)   ) %>%
+  arrange(zip)
+zipDF
+```
+
+We want to see if pet ownership is evenly distributed among these zip codes. To do this, we will use the `seattlepets` data set from the `openintro` package. As usual, be sure the check the documentation to make sure you understand what the data represents. In this case, it's a data set detailing pet registrations in Seattle. The first 6 observations in the data set are shown below.
+
+```{r}
+seattlepets %>% 
+  head()
+```
+There are many zip_codes in the data set:
+
+```{r}
+length(unique(seattlepets$zip_code))
+```
+
+so we need to do some manipulation to get to a place where we can make the comparison in question. First, we reformat any zip code that is of the form `#####-#####` so that it just contains the first five digits, then we will filter for only the 10 most populous zip codes, then finally count the number of licenses in each zip. 
+
+```{r}
+df <- seattlepets %>%
+  mutate(zip_code = str_replace(zip_code, '-[0-9]{1,}', '')
+         ) %>%
+  filter(zip_code %in% zipDF$zip) %>%
+  group_by(zip_code) %>%
+  summarize(n = n()) %>% 
+  arrange(zip_code)
+
+df
+```
+
+Next we make sure that the zip codes are in the same order in both data sets
+
+```{r}
+all.equal(df$zip_code, zipDF$zip)
+```
+
+Now we're ready to perform our test. If pet-ownership in different zip codes were evenly distributed, we'd expect the proportion of licenses distributed to be roughly the same as the population distribution. Thus, we want to compare the license count, the column `n` from `df` above to the population proportion `popProp` from `zipDF`. The hypothesis test we're performing is
+
+\[\begin{array}{cc}
+H_0:\text{Pet ownership is distributed like population in Seattle} \\
+H_a: \text{Pet ownership is not distributed like population in Seattle}
+\end{array}
+    \]
+    
+Let's perform this test with a significance level of \(\alpha = .05 \). Executing the test is now easy with `chisq.test`!
+
+```{r}
+results <- chisq.test(x = df$n
+           , p = zipDF$popProp
+           , correct = F)
+results 
+```
+
+Our p-value is way less than the significance level, so we reject the null and accept the research hypothesis. In other words, we have strong evidence suggesting that pet ownership/license distribution does not match the population distribution among the 10 most populous zip codes in the Seattle metro area. 
+
+You might wonder where the distribution deviates the most from the expectation? You can use the `residuals` element of the `results` object above to try to answer that question. 
+
+If obs and exp are the observed and expected counts respectively, then each residual is:
+
+\[ \frac{\text{obs} - \text{exp}}{\sqrt{\text{exp}}} \]
+
+```{r}
+res <- results$residuals
+names(res) <- zipDF$zip
+sort(res)
+```
+
+The output above shows us that the zip code 98198 sees way fewer licenses than we'd expect if pet ownership matched the population distribution and the zip code 98117 sees way more licensing than we would expect based on population alone. 
+
+
+
 ### Chi-squared test of independence
+
+Recall from the previous chapter that a chi-squared test of independence tests for an *association* between two categorical variables. No surprise, there is a built in function in `R` to perform these tests and it is again `chisq.test(...)`. The only difference from the last section is how you input data. For a goodness of fit test you 
+
+```{r}
+table <- gss2010 %>%
+  mutate(grass = if_else(is.na(grass), 'NO REPLY', grass)) %>%
+  xtabs(~degree + grass, data = .)
+
+table
+```
+
+```{r}
+results <- chisq.test(table)
+results
+```
+
+Since our p-value is less than the significance level of $\alpha = .05$, we conclude that the data imply an association between highest educational attainment and opinion on marijuana legalization. You might then wonder if you can infer what this association actually looks like to some degree. The key to this is looking at the *residuals* of this hypothesis test. 
+
+Recall that the chi-squared test statistic is 
+
+\[ \sum \frac{(\text{obs} - \text{exp})^2}{\text{exp}}. \]
+
+where obs and exp represent the observed and expected counts and the sum ranges over all cells in the contingency table. The residual of a cell in a contingency table is simply
+
+\[\text{residual} = \frac{(\text{obs} - \text{exp})}{\sqrt{\text{exp}}} \]
+
+so a residual simply measures how far above or below the observed count is from the expected count where the difference is normalized by the expected count. Large residuals imply a large deviation from expectation, so you can think of any cell with a large residual as representing a place where the detected association between variables is more evident. We can access the residuals from our test a follows:
+
+```{r}
+results$residuals
+```
+
+Most of our residuals are either around 1 or less than 1 in absolute value, except for those corresponding to people with who did not finish high school. Here we see that fewer people than expected believe that marijuana should be legalized and more think it should be illegal if the variables were actually independent. 
+
+Does this mean that more education *causes* one to think marijuana should be legal? Of course not! We're simply observing an association in an observational data set and it would be a huge mistake to try to infer a causal relationship between the two variables. There are likely many confounding variables at play here. 
+
 
 ## Analyzing numerical variables 
 
+In this section we will learn how to use R's in-built functions to perform statistical inference for numerical variables. After the last chapter, it should come as no surprise that the bulk of our inference will be performed by a single function. For categorical variables we frequently used `prop.test(...)`; the analogous function for numerical variables is `t.test(...)`. The following subsections will guide you through the use of this function to perform inferences for single sample means, two sample mean comparisons, and paired data. We will then discuss using the function `aov` for performing ANOVA tests.  
+
+**Note:** The function `t.test(...)` requires you have access to actual data, not just summary statistics. In what follows we will also discuss using the `tsum.test(...)` function from the `BSDA` package, which executes t-tests from summary statistics as well.
+
 ### Single sample mean
 
-### Two sample mean
+***If you have a data set,*** making an inference about a numerical variable therein with `t.test` is quite easy. The basic syntax for a single numerical variable is as follows.
+
+```{r, eval=FALSE}
+t.test(
+  x = # a VECTOR of numerical values, typically a column of a data set.
+  , mu = # the null mean of your hypothesis test; defaults to 0.  
+  , alternative = # the type of hypothesis test to run corresponding to your alternative hypothesis; one of "two.sided", "less", or "greater"
+  , conf.level = # your confidence level as a decimal
+)
+```
+
+We will use the `fastfood` data set from the `openintro` package to demonstrate the use of this function. This data set gives the nutritional breakdown of many menu items from the following restaurants: `r cat(sort(unique(fastfood$restaurant)), sep = ', ')`. 
+
+```{r}
+head(fastfood)
+```
+
+Suppose we want to know the average caloric content of a burger from a fast food restaurant. Moreover, we suspect that the average burger contains more than 600 calories. To put this in the context of statistic inference, we want to calculate a confidence interval and perform a hypothesis test. Let \(\mu \) denote the average calorie content of a fast food burger. Our hypothesis test is
+
+\[\begin{array}{cc}
+H_0: \mu = 600 \\
+H_a: \mu > 600
+\end{array}
+    \]
+
+We can use the data set above to help make these inferences! We will use `t.test(...)` after massaging the data a bit.  First, we'll select all rows from `fastfood` where the item contains the word "burger" or "Burger"
+
+```{r}
+burgers <- fastfood %>%
+  filter(str_detect(item, '[bB]urger')) 
+
+dim(burgers)
+```
+
+So our data set has only 56 burgers. Let's first execute our hypothesis test with a significance level of \(\alpha = .05\) to see if our idea has any legs. 
+
+```{r}
+results <- t.test(x = burgers$calories
+       , alternative = 'greater'
+       , mu = 600
+       , conf.level = .95)
+results
+```
+
+Our $p$-value is about 0.3884, greater than the significance level, so we fail to reject the null. In other words, our sample data do not provide sufficient evidence to conclude that the average burger has more than 600 calories. 
+
+Notice that the confidence interval reported above is one-sided to be consistent with the hypothesis test, just like the output of `prop.test(...)` when performing a one-sided hypothesis test. We can reproduce this confidence interval in a similar way. You can find the lower bound with:
+
+```{r}
+t.crit <- qt(.05, df = 55, lower.tail = F)
+SE <- sd(burgers$calories)/sqrt(56)
+mean(burgers$calories) - t.crit*SE
+```
+
+The upper bounds for one-sided confidence intervals associated with one-sided lower hypothesis tests can be calculated analogously. 
+
+If we want standard two-sided confidence interval, we simply need to set `alternative = 'two.sided'. 
+
+```{r}
+results <- t.test(x = burgers$calories
+       , alternative = 'two.sided'
+       , mu = 600
+       , conf.level = .95)
+results$conf.int
+```
+Thus, with 95\% confidence, fast food burgers contain between about 541 and 679 calories on average. 
+
+Now, suppose you **don't** have a data set available and only have summary statistics. This happens frequently on homework, for example. If you want to use a function similar to `t.test(...)`, you have to either write your own function (this is left as an exercise for the reader as it is beyond the scope of these notes) or install a new package called `BSDA`. This package, whose name represents "Basic Statistics and Data Analysis," was created by 	Alan T. Arnholt to accompany a textbook with the same name, written by Larry J. Kitchens. In any case, remember that one must first install the package before it can be loaded into your `R` session and that it must be loaded into your `R` session before you can use any functions therein. In other words, you  must run 
+
+```{r, eval = F}
+install.packages('BSDA')
+```
+
+once, the first time you want to use the functions, then run
+
+```{r, message = FALSE}
+library(BSDA)
+```
+
+any time you start a new `R` session and want to use this function. For a single sample t-test, the syntax for `t.test(...)` is as follows.
+
+```{r, eval = F}
+tsum.test(
+    mean.x = #sample average
+    , s.x = #sample standard deviation
+    , n.x = #sample size
+    , alternative = #type of test to perform
+    , mu = #null mean
+    , conf.level = # confidence level as a decimal
+)
+```
+
+
+We will use `tsum.test(...)` to generate perform the exact same hypothesis test as above, this time inputting the sample statistics instead of the data we were interested in. 
+
+```{r}
+xBar <- mean(burgers$calories)
+s <- sd(burgers$calories)
+n <- dim(burgers)[1]
+
+tsum.test(
+  mean.x = xBar
+  , s.x = s
+  , n.x = n
+  , alternative = 'greater'
+  , mu = 600
+  , conf.level = .95
+)
+```
+
+Et Voila - the exact same results as above! You can ignore the warning about `var.equal` as it is outputting the exact behavior we want. 
+
+### Two sample mean comparison
+
+The functions `t.test(...)` and `tsum.test(...)` also perform two-sample t-tests for us. Recall that, roughly, a two-sample t-test checks for an association between a two-valued categorical variable and a single numerical variable. With these tests you make inferences about the difference between two population averages \( \mu_1 - \mu_2 \) from the difference in sample averages \(\overline{x}_1 - \overline{x}_2\), so the associated confidence intervals are estimating the *difference* in population averages. 
+
+If you have a actual data for a two-sample t-test, use `t.test(...)` with the following syntax. 
+
+```{r, eval = F}
+t.test(
+  x = #vector of values for first group
+ , y = #vector of values for the second group
+ , mu = #null difference in population means, USUALLY = 0! 
+ , alternative = # the type of hypothesis test to run
+ , var.equal = FALSE # we will assume the pop. variances are unequal in this class 
+ , conf.level = # your confidence level as a decimal
+    )
+```
+
+If you don't have data and only have sample statistics, use `tsum.test(...)` with the following syntax. 
+
+```{r, eval = F}
+tsum.test(
+   mean.x = #sample mean from group 1 
+  , s.x = #sample std dev from group 1
+  , n.x = # sample size from group 1
+  , mean.y = #sample mean of group 2
+  , s.y = # sample std dev of group 2
+  , n.y = # sample size of group 2
+  , mu = #null difference in population means, USUALLY = 0! 
+  , alternative = # the type of hypothesis test to run
+  , var.equal = FALSE # we will assume the pop. variances are unqequal in this class 
+  , conf.level = # your confidence level as a decimal
+)
+```
+
+
+Let's see these functions in action, again using the `fastfood` data set. 
+
+We typically think that salads are a healthier option than burgers when dining out. While "healthiness" is a complicated notion, we can compare the calorie content of these food options as a first pass at healthiness. For instance, a fast food diner may assume they are eating a lower calorie option by ordering a salad over a burger. How true is this on average? Let's get the data ready for comparison (note that `fastfood`)
+
+```{r}
+burgers <- fastfood %>%
+  filter(str_detect(item, '[bB]urger')) 
+salads <- fastfood %>%
+  filter(str_detect(item, '[sS]alad'))
+```
+
+[To be Continued]
 
 ### Paired data
 
