@@ -1442,7 +1442,7 @@ and the `hrs1` variable records the hours per week a respondent works. Some valu
 ```{r}
 mj <- gss2010 %>%
   filter(!is.na(hrs1) & !is.na(grass)) %>% #select only rows with non-null values in hrs1 and grass
-  select(grass, hrs1)
+  dplyr::select(grass, hrs1) #dealing with a package conflict so included
 ```
 
 Before moving on to making inference, let's look at a summary of data.
@@ -1598,7 +1598,7 @@ In the subsections below we will go through an example of calculating and interp
 
 ```{r}
 books <- ucla_textbooks_f18 %>%
-  select(course, bookstore_new, amazon_new) %>%
+  dplyr::select(course, bookstore_new, amazon_new) %>%
   drop_na() #this omits all rows with an NA or unknown price
   
 head(books)

@@ -542,7 +542,7 @@ Thus, with 95\% confidence, fast food burgers contain between about 541 and 679 
 
 Now, suppose you **don't** have a data set available and only have summary statistics. This happens frequently on homework, for example. If you want to use a function similar to `t.test(...)`, you have to either write your own function (this is left as an exercise for the reader as it is beyond the scope of these notes) or install a new package called `BSDA`. This package, whose name represents "Basic Statistics and Data Analysis," was created by 	Alan T. Arnholt to accompany a textbook with the same name, written by Larry J. Kitchens. In any case, remember that one must first install the package before it can be loaded into your `R` session and that it must be loaded into your `R` session before you can use any functions therein. In other words, you  must run 
 
-```{r, eval = F}
+```{r, eval = FALSE}
 install.packages('BSDA')
 ```
 
@@ -554,7 +554,7 @@ library(BSDA)
 
 any time you start a new `R` session and want to use this function. For a single sample t-test, the syntax for `t.test(...)` is as follows.
 
-```{r, eval = F}
+```{r, eval = FALSE}
 tsum.test(
     mean.x = #sample average
     , s.x = #sample standard deviation
@@ -591,7 +591,7 @@ The functions `t.test(...)` and `tsum.test(...)` also perform two-sample t-tests
 
 If you have a actual data for a two-sample t-test, use `t.test(...)` with the following syntax. 
 
-```{r, eval = F}
+```{r, eval = FALSE}
 t.test(
   x = #vector of values for first group
  , y = #vector of values for the second group
@@ -604,7 +604,7 @@ t.test(
 
 If you don't have data and only have sample statistics, use `tsum.test(...)` with the following syntax. 
 
-```{r, eval = F}
+```{r, eval = FALSE}
 tsum.test(
    mean.x = #sample mean from group 1 
   , s.x = #sample std dev from group 1
@@ -622,7 +622,8 @@ tsum.test(
 
 Let's see these functions in action, again using the `fastfood` data set. 
 
-We typically think that salads are a healthier option than burgers when dining out. While "healthiness" is a complicated notion, we can compare the calorie content of these food options as a first pass at healthiness. For instance, a fast food diner may assume they are eating a lower calorie option by ordering a salad over a burger. How true is this on average? Let's get the data ready for comparison (note that `fastfood`)
+We typically think that salads are a healthier option than burgers when dining out. While "healthiness" is a complicated notion, we can compare the calorie content of these food options as a first pass at healthiness. For instance, a fast food diner may assume they are eating a lower calorie option by ordering a salad over a burger. How true is this on average? Let's get the data ready for comparison.
+
 
 ```{r}
 burgers <- fastfood %>%
@@ -631,8 +632,239 @@ salads <- fastfood %>%
   filter(str_detect(item, '[sS]alad'))
 ```
 
-[To be Continued]
+Let \(\mu_B\) and \(\mu_S \) denote the average calorie content of fast food burgers and salads respectively. We want to test to see if fast food salads are lower calorie than burgers, on average. This notion, as a hypothesis test is
+
+\[\begin{array}{cc}
+H_0: \mu_S - \mu_B = 0 \\
+H_a: \mu_S - \mu_B < 0 
+\end{array}
+    \]
+    
+because if \( \mu_S < \mu_B\) then \(\mu_S - \mu_B < 0\). Executing this test with `t.test` is easy! We will use a significance level of \(\alpha = .05\).
+
+```{r}
+results <- t.test(
+  x = salads$calories
+  , y = burgers$calories
+  , alternative = 'less'
+  , conf.level = .95
+  , var.equal = F
+)
+results
+```
+
+With a p-value of \( p \approx 1.04 \times 10^{-7} < .05 = \alpha\), we reject the null hypothesis and accept the alternative. In other words, to data provide strong evidence that, on average, fast food salads have fewer calories than burgers. Just how different are these averages? Let's estimate the difference \(\mu_S - \mu_B\) with a typical two-sided confidence interval.
+
+```{r}
+results <- t.test(
+  x = salads$calories
+  , y = burgers$calories
+  , alternative = 'two.sided'
+  , conf.level = .95
+  , var.equal = F
+)
+results$conf.int
+```
+
+This calculation implies that fast food salads contain between about 155.6 and 328.4 *fewer* calories than burgers on average at the 95\% confidence level. 
+
+As a last calculation in this section, we will perform the same hypothesis test using `tsum.test(...)` for demostration purposes.  We need to first calculate all required summary statistics since they haven't been provided. 
+
+```{r}
+# sample size, sample avg, and sample std dev for salads
+n.s <- length(salads$calories)
+mean.s <- mean(salads$calories)
+s.s <- sd(salads$calories)
+# sample size, sample avg, and sample std dev for burgers
+n.b <- length(burgers$calories)
+mean.b <- mean(burgers$calories)
+s.b <- sd(burgers$calories)
+```
+
+Now we need to chuck these values into `tsum.test(...)`. Here we'll perform our initial one-sided hypothesis test. 
+
+```{r}
+tsum.test(
+  mean.x = mean.s
+  , s.x = s.s
+  , n.x = n.s
+  , mean.y = mean.b
+  , s.y = s.b
+  , n.y = n.b
+  , alternative = 'less'
+  , conf.level = .95
+  , var.equal = F
+)
+```
+
+As expected, this test returns the same result. Again, `tsum.test(...)` is primarily useful when you're doing homework or checking someone elses work and *only* have sample statistics available. 
 
 ### Paired data
 
+The functions `t.test` and `tsum.test` both handle paired data with ease. Recall that paired data arise whenever when there is a precise dependency between the observations of two specific variables. Paired data often comes up when looking at before/after data or when you measure two similar variables for the same individuals (reading and writing results, for instance).
+
+The syntax for both functions is similar to that for a two-sample t-test. First, `t.test` runs a paired t-test with the following.
+
+```{r, eval = FALSE}
+t.test(
+  x = #vector of values for first group
+ , y = #vector of values for the second group
+ , mu = #null difference in population means, USUALLY = 0! 
+ , alternative = # the type of hypothesis test to run
+ , paired = TRUE # we will assume the pop. variances are unequal in this class 
+ , conf.level = # your confidence level as a decimal
+    )
+```
+
+To run a paired t-test with `tsum.test` recall that the statistic you typically want to analyze when dealing with paired data is the average difference \(\mu_{diff}\) and that the the mechanics of this analysis, once you've identified that you're working with paired data, are identical to a single sample t-test. Thus, you can run this with
+
+```{r, eval = FALSE}
+tsum.test(
+  mean.x = # average sample difference
+    , s.x = # sample std dev of differences
+    , n.x = # number of differences
+    , alternative = # the type of hypothesis test to run
+    , conf.level = # your confidence level as a decimal
+)
+```
+
+As examples, we'll use the `SkiExperts` data set that's included in the `PairedData` package. Of course, you need to install the package before using this data set. 
+
+```{r, echo = FALSE, message = FALSE}
+library(PairedData)
+```
+
+```{r}
+data("SkiExperts")
+head(SkiExperts)
+```
+
+
+This data set, per the `R` documentation, "gives the actual and motor imaginary performances (time) in ski for 12 experts" where time is measured in seconds. This data set is from the paper [Differences in motor imagery time when predicting task duration in alpine skiers and equestrian riders](https://pubmed.ncbi.nlm.nih.gov/22428415/). The researchers essentially asked expert skiers to predict how long it would take them to ski a section of a ski course after inspecting it, then had them ski that section and recorded their times. Thus, we want to compare each skier's predicted time to their actual time and test for a difference. 
+
+Since it is the same skier making the prediction, then skiing the course, these data are paired.  We will look at the difference between actual and and predicted times, so \(diff = actual - predicted\) and we simply want to know if there is a difference between a skiers predicted and actual time. Our hypothesis test is thus
+
+\[\begin{array}{cc}
+H_0: \mu_{diff} = 0 \\
+H_a: \mu_{diff} \neq 0 
+\end{array}
+    \]
+
+Let's run this test with t.test using a significance level of .05. 
+
+```{r}
+t.test(x = SkiExperts$Actual
+       , y = SkiExperts$Imaginary
+       , mu = 0
+       , alternative = 'two.sided'
+       , paired = TRUE
+       , conf.level = .95
+       )
+```
+
+Let's interpret the confidence interval first, then the p-value. The confidence interval tells gives us an range of values for \(\mu_{diff} \), in other words, the average difference between actual and predicted times is between -2.4 seconds and 1.3 seconds with 95\% confidence. The negative value corresponds to predicted times that were shorter than actual and the positive values correspond to predicted times that are longer than actual. No surprise, with this confidence interval and a corresponding p-value of  about 0.5357, we fail to reject the null. We do not have evidence that expert skiers actual ski times deviate much from their estimates on average.
+
+Now let's get at the same results using `tsum.test`.  First we need the summary statistics.
+
+```{r}
+AvgDiff <- mean(SkiExperts$Actual - SkiExperts$Imaginary)
+SdDiff <- sd(SkiExperts$Actual - SkiExperts$Imaginary)
+nDiff <- dim(SkiExperts)[1] #number of rows = number of observations
+```
+
+Now we use `tsum.test`
+
+```{r}
+tsum.test(mean.x = AvgDiff
+          , s.x = SdDiff
+          , n.x = nDiff
+          , alternative = 'two.sided'
+          , mu = 0
+          , conf.level = .95)
+```
+
+As expected, we get the same exact results. 
+
 ### Analysis of variance (ANOVA)
+
+In the last section of this chapter, we will learn how to run ANOVA tests in `R`. Recall that ANOVA is an acronym for Analysis of Variance. Now, you might expect the command for an ANOVA test to be `anova(...)`, but you'd be wrong unfortunately. While this function does exist, it performs a different type of ANOVA analysis on different types of `R` objects (`anova(...)` compares different models built from the same data set... this is a topic beyond this class.) 
+
+Instead, the function we need to use is simply `aov(...)`. The input into this function requires a slightly new format: the first argument is a formula which is simply a way to express a relationship between variables. The basic format it `Explanatory variable ~ Response variable(s)`. If you have more than one response variable, you simply add the variable names together.  This might seem odd in the abstract, so it might be best to see a formula in action. 
+
+Remember that an ANOVA test checks for an association between a categorical explanatory variable and a numerical response. If there were no association between the two variables, the average values of the numerical variable at each level of the categorical variable would be the same. If there is an association, there would have to be one average that differs from the others. Thus, the hypothesis test for ANOVA looks like
+
+\[\begin{array}{l}
+H_0: \mu_1 = \mu_2 = \cdots = \mu_k \\
+H_a: \text{at least one mean differs from the others} 
+\end{array}
+    \]
+
+where \( \mu_i\) is the average of the numerical variable in the \(i^{th}\) group of the categorical variable.
+
+For an example, let's use the data set `gss_cat` from the `forcats` package (this is part of the Tidyverse, so loaded when you attach `tidyverse`). This data set gives a collection of categorical variables from the General Social Survey from the years 2000-2014. 
+
+```{r}
+head(gss_cat)
+```
+
+This data has many categorical variables and only 2 numerical variables: `age` and `tvhours`. In this example, let's test to see if there is any association between a person's religious affiliation and the amount of time they spend watching TV per day. The variable `tvhours` is missing for many observations, so we should filter out the missing values first.
+
+```{r}
+df <- gss_cat %>%
+  filter(!is.na(tvhours))
+dim(df)
+```
+
+We have 11337 observations with non-null `tvhours`. Let's look at the unique religions represented in this survey. 
+
+```{r}
+unique(df$relig)
+```
+
+To simplify matters, we will lump the "Don't know", "None" and "No answer" replies into one category called "Atheist/agnostic".
+
+```{r}
+df <- df %>%
+  mutate(relig = case_when(
+    relig == "Don't know" ~ "Atheist/agnostic"
+    , relig == "None" ~ "Atheist/agnostic"
+    , relig == "No answer" ~ "Atheist/agnostic"
+    , .default = relig
+  ))
+```
+
+Before running an ANOVA test, let's look at some summary statistics. 
+
+```{r}
+df %>%
+  group_by(relig) %>%
+  summarize(n = n()
+            , meanTV = mean(tvhours)
+            , sdTV = sd(tvhours)) %>%
+  arrange(desc(n))
+```
+
+We should assess whether or not we meet the criteria for inference. 
+
+- Are the observations independent within in and between groups? This is a reasonable assumption given that this is a random sample of GSS results over the years. 
+
+- Are the data approximately normally distributed within each group? The variable `tvhours` is very likely right skewed since many people watch some TV but some people watch a lot. The data likely violates the normality assumption. **Since we have fairly large sample sizes in each group we will ignore this though this may not be best practice!**
+
+- Is the standard deviation relatively stable across groups?  There is some variability among all standard deviations, but they are not all that different... **Again, this may not be best practice all of the time, but we will assume this condition is satisfied for the sake of the exercise**. 
+
+Now that we've checked the conditions and acknowledge that some of our assumptions are a bit shakey, we're ready to execute the ANOVA test. Since our assumptions are shakey, we should not stake too much on the results of this test. The code chunk below demonstrates how to run the test and get a nice print out of the results. Notice that the first argument of `aov` is a formula with `response ~ explanatory`. Let's use a significance level of 0.05.
+
+```{r}
+test <- aov(tvhours ~ relig, data = df)
+summary(test)
+```
+
+Since our p-value $p \approx 1.3 \times 10^{-10}$ is less than the significance level, we can reject the null and accept the alternative. The data provide sufficient evidence to detect an association between religion and hours spent watching TV. As usual, since this is observational data, we have no way of deciding if this is a causal relationship; we've merely detected a relationship (and possibly a tenuous one at that given the questionable assumptions!). 
+
+What does this relationship actually look like? Well, since we're looking for differences in averages, we'd like some way of comparing them all. `R` does this automatically; it is stored in the `test` result above as `coefficients`
+
+```{r}
+test$coefficients
+```
+
+[To be continued]
