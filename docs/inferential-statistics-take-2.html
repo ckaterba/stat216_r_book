@@ -638,15 +638,14 @@ H_a: p_C - p_H \neq 0
 <div class="sourceCode" id="cb598"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb598-1"><a href="inferential-statistics-take-2.html#cb598-1" tabindex="-1"></a>seattlepets <span class="sc">%&gt;%</span> </span>
 <span id="cb598-2"><a href="inferential-statistics-take-2.html#cb598-2" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 7
-##   license_issue_date license_number animal_name species primary_breed     secondary_breed
-##   &lt;date&gt;             &lt;chr&gt;          &lt;chr&gt;       &lt;chr&gt;   &lt;chr&gt;             &lt;chr&gt;          
-## 1 2018-11-16         8002756        Wall-E      Dog     Mixed Breed, Med… Mix            
-## 2 2018-11-11         S124529        Andre       Dog     Terrier, Jack Ru… Dachshund, Sta…
-## 3 2018-11-21         903793         Mac         Dog     Retriever, Labra… &lt;NA&gt;           
-## 4 2018-11-23         824666         Melb        Cat     Domestic Shortha… &lt;NA&gt;           
-## 5 2018-12-30         S119138        Gingersnap  Cat     Domestic Shortha… Mix            
-## 6 2018-12-16         S138529        Cody        Dog     Retriever, Labra… &lt;NA&gt;           
-## # ℹ 1 more variable: zip_code &lt;chr&gt;</code></pre>
+##   license_issue_date license_number animal_name species primary_breed   secondary_breed zip_code
+##   &lt;date&gt;             &lt;chr&gt;          &lt;chr&gt;       &lt;chr&gt;   &lt;chr&gt;           &lt;chr&gt;           &lt;chr&gt;   
+## 1 2018-11-16         8002756        Wall-E      Dog     Mixed Breed, M… Mix             98108   
+## 2 2018-11-11         S124529        Andre       Dog     Terrier, Jack … Dachshund, Sta… 98117   
+## 3 2018-11-21         903793         Mac         Dog     Retriever, Lab… &lt;NA&gt;            98136   
+## 4 2018-11-23         824666         Melb        Cat     Domestic Short… &lt;NA&gt;            98117   
+## 5 2018-12-30         S119138        Gingersnap  Cat     Domestic Short… Mix             98144   
+## 6 2018-12-16         S138529        Cody        Dog     Retriever, Lab… &lt;NA&gt;            98103</code></pre>
 <p>There are many zip_codes in the data set:</p>
 <div class="sourceCode" id="cb600"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb600-1"><a href="inferential-statistics-take-2.html#cb600-1" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">unique</span>(seattlepets<span class="sc">$</span>zip_code))</span></code></pre></div>
 <pre><code>## [1] 168</code></pre>
@@ -761,16 +760,16 @@ H_a: \text{Pet ownership is not distributed like population in Seattle}
 <p>We will use the <code>fastfood</code> data set from the <code>openintro</code> package to demonstrate the use of this function. This data set gives the nutritional breakdown of many menu items from the following restaurants: .</p>
 <div class="sourceCode" id="cb617"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb617-1"><a href="inferential-statistics-take-2.html#cb617-1" tabindex="-1"></a><span class="fu">head</span>(fastfood)</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 17
-##   restaurant item         calories cal_fat total_fat sat_fat trans_fat cholesterol sodium
-##   &lt;chr&gt;      &lt;chr&gt;           &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;  &lt;dbl&gt;
-## 1 Mcdonalds  Artisan Gri…      380      60         7       2       0            95   1110
-## 2 Mcdonalds  Single Baco…      840     410        45      17       1.5         130   1580
-## 3 Mcdonalds  Double Baco…     1130     600        67      27       3           220   1920
-## 4 Mcdonalds  Grilled Bac…      750     280        31      10       0.5         155   1940
-## 5 Mcdonalds  Crispy Baco…      920     410        45      12       0.5         120   1980
-## 6 Mcdonalds  Big Mac           540     250        28      10       1            80    950
-## # ℹ 8 more variables: total_carb &lt;dbl&gt;, fiber &lt;dbl&gt;, sugar &lt;dbl&gt;, protein &lt;dbl&gt;,
-## #   vit_a &lt;dbl&gt;, vit_c &lt;dbl&gt;, calcium &lt;dbl&gt;, salad &lt;chr&gt;</code></pre>
+##   restaurant item     calories cal_fat total_fat sat_fat trans_fat cholesterol sodium total_carb
+##   &lt;chr&gt;      &lt;chr&gt;       &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Mcdonalds  Artisan…      380      60         7       2       0            95   1110         44
+## 2 Mcdonalds  Single …      840     410        45      17       1.5         130   1580         62
+## 3 Mcdonalds  Double …     1130     600        67      27       3           220   1920         63
+## 4 Mcdonalds  Grilled…      750     280        31      10       0.5         155   1940         62
+## 5 Mcdonalds  Crispy …      920     410        45      12       0.5         120   1980         81
+## 6 Mcdonalds  Big Mac       540     250        28      10       1            80    950         46
+## # ℹ 7 more variables: fiber &lt;dbl&gt;, sugar &lt;dbl&gt;, protein &lt;dbl&gt;, vit_a &lt;dbl&gt;, vit_c &lt;dbl&gt;,
+## #   calcium &lt;dbl&gt;, salad &lt;chr&gt;</code></pre>
 <p>Suppose we want to know the average caloric content of a burger from a fast food restaurant. Moreover, we suspect that the average burger contains more than 600 calories. To put this in the context of statistic inference, we want to calculate a confidence interval and perform a hypothesis test. Let <span class="math inline">\(\mu\)</span> denote the average calorie content of a fast food burger. Our hypothesis test is</p>
 <p><span class="math display">\[\begin{array}{cc}
 H_0: \mu = 600 \\
@@ -843,8 +842,8 @@ H_a: \mu &gt; 600
 <span id="cb630-10"><a href="inferential-statistics-take-2.html#cb630-10" tabindex="-1"></a>  , <span class="at">mu =</span> <span class="dv">600</span></span>
 <span id="cb630-11"><a href="inferential-statistics-take-2.html#cb630-11" tabindex="-1"></a>  , <span class="at">conf.level =</span> .<span class="dv">95</span></span>
 <span id="cb630-12"><a href="inferential-statistics-take-2.html#cb630-12" tabindex="-1"></a>)</span></code></pre></div>
-<pre><code>## Warning in tsum.test(mean.x = xBar, s.x = s, n.x = n, alternative = &quot;greater&quot;, :
-## argument &#39;var.equal&#39; ignored for one-sample test.</code></pre>
+<pre><code>## Warning in tsum.test(mean.x = xBar, s.x = s, n.x = n, alternative = &quot;greater&quot;, : argument
+## &#39;var.equal&#39; ignored for one-sample test.</code></pre>
 <pre><code>## 
 ##  One-sample t-Test
 ## 
@@ -1030,8 +1029,8 @@ H_a: \mu_{diff} \neq 0
 <span id="cb650-4"><a href="inferential-statistics-take-2.html#cb650-4" tabindex="-1"></a>          , <span class="at">alternative =</span> <span class="st">&#39;two.sided&#39;</span></span>
 <span id="cb650-5"><a href="inferential-statistics-take-2.html#cb650-5" tabindex="-1"></a>          , <span class="at">mu =</span> <span class="dv">0</span></span>
 <span id="cb650-6"><a href="inferential-statistics-take-2.html#cb650-6" tabindex="-1"></a>          , <span class="at">conf.level =</span> .<span class="dv">95</span>)</span></code></pre></div>
-<pre><code>## Warning in tsum.test(mean.x = AvgDiff, s.x = SdDiff, n.x = nDiff, alternative =
-## &quot;two.sided&quot;, : argument &#39;var.equal&#39; ignored for one-sample test.</code></pre>
+<pre><code>## Warning in tsum.test(mean.x = AvgDiff, s.x = SdDiff, n.x = nDiff, alternative = &quot;two.sided&quot;, :
+## argument &#39;var.equal&#39; ignored for one-sample test.</code></pre>
 <pre><code>## 
 ##  One-sample t-Test
 ## 
@@ -1059,14 +1058,14 @@ H_a: \text{at least one mean differs from the others}
 <p>For an example, let’s use the data set <code>gss_cat</code> from the <code>forcats</code> package (this is part of the Tidyverse, so loaded when you attach <code>tidyverse</code>). This data set gives a collection of categorical variables from the General Social Survey from the years 2000-2014.</p>
 <div class="sourceCode" id="cb653"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb653-1"><a href="inferential-statistics-take-2.html#cb653-1" tabindex="-1"></a><span class="fu">head</span>(gss_cat)</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 9
-##    year marital         age race  rincome        partyid            relig   denom tvhours
-##   &lt;int&gt; &lt;fct&gt;         &lt;int&gt; &lt;fct&gt; &lt;fct&gt;          &lt;fct&gt;              &lt;fct&gt;   &lt;fct&gt;   &lt;int&gt;
-## 1  2000 Never married    26 White $8000 to 9999  Ind,near rep       Protes… Sout…      12
-## 2  2000 Divorced         48 White $8000 to 9999  Not str republican Protes… Bapt…      NA
-## 3  2000 Widowed          67 White Not applicable Independent        Protes… No d…       2
-## 4  2000 Never married    39 White Not applicable Ind,near rep       Orthod… Not …       4
-## 5  2000 Divorced         25 White Not applicable Not str democrat   None    Not …       1
-## 6  2000 Married          25 White $20000 - 24999 Strong democrat    Protes… Sout…      NA</code></pre>
+##    year marital         age race  rincome        partyid            relig          denom tvhours
+##   &lt;int&gt; &lt;fct&gt;         &lt;int&gt; &lt;fct&gt; &lt;fct&gt;          &lt;fct&gt;              &lt;fct&gt;          &lt;fct&gt;   &lt;int&gt;
+## 1  2000 Never married    26 White $8000 to 9999  Ind,near rep       Protestant     Sout…      12
+## 2  2000 Divorced         48 White $8000 to 9999  Not str republican Protestant     Bapt…      NA
+## 3  2000 Widowed          67 White Not applicable Independent        Protestant     No d…       2
+## 4  2000 Never married    39 White Not applicable Ind,near rep       Orthodox-chri… Not …       4
+## 5  2000 Divorced         25 White Not applicable Not str democrat   None           Not …       1
+## 6  2000 Married          25 White $20000 - 24999 Strong democrat    Protestant     Sout…      NA</code></pre>
 <p>This data has many categorical variables and only 2 numerical variables: <code>age</code> and <code>tvhours</code>. In this example, let’s test to see if there is any association between a person’s religious affiliation and the amount of time they spend watching TV per day. The variable <code>tvhours</code> is missing for many observations, so we should filter out the missing values first.</p>
 <div class="sourceCode" id="cb655"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb655-1"><a href="inferential-statistics-take-2.html#cb655-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> gss_cat <span class="sc">%&gt;%</span></span>
 <span id="cb655-2"><a href="inferential-statistics-take-2.html#cb655-2" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(tvhours))</span>
@@ -1138,7 +1137,137 @@ H_a: \text{at least one mean differs from the others}
 ##                 -0.301565378                  0.007574407                 -1.051565378 
 ##              religProtestant 
 ##                  0.427254681</code></pre>
-<p>[To be continued]</p>
+<p>Notice that the religions in the output above are ordered alphabetically and that “Atheist/agnostic” is conspicuously missing. This is the religion corresponding to the intercept value. In particular, <code>(Intercept)</code> reports the average daily TV hours that Atheist/agnostic identifiers watch. The other coefficients report the change from the Atheist/agnostic group to the group in question’s average. For example, the <code>religBuddhism</code> coefficient is -0.335515995, which means that the average daily TV hours Buddhists watch is about <span class="math inline">\(2.718232044 - 0.335515995 = 2.382716\)</span>. Is this a significant difference? That’s a separate hypothesis test. However, from the results of our ANOVA test, we can conclude that some pair of religions watch different amounts of TV on average. One can use techniques that we won’t cover in this class to identify which groups deviate.</p>
+<p>One obstacle that you may encounter “out in the wild” (on your homework, for instance) is that data you are provided or collect on your own is not formatted appropriately for using the <code>aov</code> function. Notice that the input requires the categorical explanatory variable to be in one column and the explanatory response to be in another. Sometimes your data is not presented in this way.</p>
+<p>For example, suppose 10 students were randomly selected from FVCC, UM, and MSU at the end of STAT216 to take a statistics proficiency exam.</p>
+<p>We want to compare the average exam scores for these schools. An ANOVA test is just the ticket to compare these schools. The null and alternative hypothesis are as follows.</p>
+<ul>
+<li><p><span class="math inline">\(H_0\)</span>: there is no association between stats proficiency and school.</p></li>
+<li><p><span class="math inline">\(H_0\)</span>: there is an association between stats proficiency and school.</p></li>
+</ul>
+<p>Imagine that the exams are scored and you’re given the data below.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">msu</th>
+<th align="right">um</th>
+<th align="right">fvcc</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">72</td>
+<td align="right">81</td>
+<td align="right">83</td>
+</tr>
+<tr class="even">
+<td align="right">82</td>
+<td align="right">84</td>
+<td align="right">83</td>
+</tr>
+<tr class="odd">
+<td align="right">87</td>
+<td align="right">77</td>
+<td align="right">88</td>
+</tr>
+<tr class="even">
+<td align="right">83</td>
+<td align="right">85</td>
+<td align="right">78</td>
+</tr>
+<tr class="odd">
+<td align="right">89</td>
+<td align="right">80</td>
+<td align="right">85</td>
+</tr>
+<tr class="even">
+<td align="right">82</td>
+<td align="right">82</td>
+<td align="right">89</td>
+</tr>
+<tr class="odd">
+<td align="right">85</td>
+<td align="right">74</td>
+<td align="right">81</td>
+</tr>
+<tr class="even">
+<td align="right">83</td>
+<td align="right">74</td>
+<td align="right">90</td>
+</tr>
+<tr class="odd">
+<td align="right">87</td>
+<td align="right">80</td>
+<td align="right">82</td>
+</tr>
+<tr class="even">
+<td align="right">80</td>
+<td align="right">84</td>
+<td align="right">85</td>
+</tr>
+</tbody>
+</table>
+<p>You want to run an ANOVA test, but recognize that the numerical variable is split between 3 columns and that each column name is actually a value of the <code>school</code> variable! This will not do for using the <code>aov</code> function. The solution is reformatting the data appropriately.</p>
+<p>If your data is already loaded into R, you can use the <code>pivot_longer</code> function from the <code>tidyverse</code> package. Here, our data set is called <code>df</code>. This function takes the column names and turns them into column values, just as desired.</p>
+<div class="sourceCode" id="cb666"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb666-1"><a href="inferential-statistics-take-2.html#cb666-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb666-2"><a href="inferential-statistics-take-2.html#cb666-2" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span> <span class="co">#selects columns 1-3 for the values</span></span>
+<span id="cb666-3"><a href="inferential-statistics-take-2.html#cb666-3" tabindex="-1"></a>               , <span class="at">names_to =</span> <span class="st">&#39;school&#39;</span> <span class="co"># the name of the new column</span></span>
+<span id="cb666-4"><a href="inferential-statistics-take-2.html#cb666-4" tabindex="-1"></a>               , <span class="at">values_to =</span> <span class="st">&#39;score&#39;</span>)</span>
+<span id="cb666-5"><a href="inferential-statistics-take-2.html#cb666-5" tabindex="-1"></a><span class="fu">head</span>(df) <span class="co"># returns first 6 results to inspect formatting. </span></span></code></pre></div>
+<pre><code>## # A tibble: 6 × 2
+##   school score
+##   &lt;chr&gt;  &lt;dbl&gt;
+## 1 msu       72
+## 2 um        81
+## 3 fvcc      83
+## 4 msu       82
+## 5 um        84
+## 6 fvcc      83</code></pre>
+<p>Now, if your data isn’t in R already, you need to get in in here somehow. In an ideal world, you will have the data in a CSV file or some other spreadsheet-type file. The world is not ideal, however, so sometimes you have to enter the data into R. For the example we’re working on, I would recommend entering your data into R in the following way.</p>
+<div class="sourceCode" id="cb668"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb668-1"><a href="inferential-statistics-take-2.html#cb668-1" tabindex="-1"></a><span class="co"># store each column as a list of numbers named evocatively</span></span>
+<span id="cb668-2"><a href="inferential-statistics-take-2.html#cb668-2" tabindex="-1"></a>msu <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">85</span>, <span class="dv">86</span>, <span class="dv">86</span>, <span class="dv">78</span>, <span class="dv">88</span>, <span class="dv">83</span>, <span class="dv">82</span>, <span class="dv">86</span>, <span class="dv">83</span>, <span class="dv">77</span>)</span>
+<span id="cb668-3"><a href="inferential-statistics-take-2.html#cb668-3" tabindex="-1"></a>um <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">80</span>, <span class="dv">78</span>, <span class="dv">79</span>, <span class="dv">82</span>, <span class="dv">76</span>, <span class="dv">78</span>, <span class="dv">74</span>, <span class="dv">87</span>, <span class="dv">74</span>, <span class="dv">76</span>)</span>
+<span id="cb668-4"><a href="inferential-statistics-take-2.html#cb668-4" tabindex="-1"></a>fvcc <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">83</span>, <span class="dv">86</span>, <span class="dv">83</span>, <span class="dv">88</span>, <span class="dv">85</span>, <span class="dv">86</span>, <span class="dv">90</span>, <span class="dv">86</span>, <span class="dv">83</span>, <span class="dv">83</span>)</span>
+<span id="cb668-5"><a href="inferential-statistics-take-2.html#cb668-5" tabindex="-1"></a><span class="co"># now make one long list of numbers</span></span>
+<span id="cb668-6"><a href="inferential-statistics-take-2.html#cb668-6" tabindex="-1"></a>scores <span class="ot">&lt;-</span> <span class="fu">c</span>(msu, um, fvcc)</span>
+<span id="cb668-7"><a href="inferential-statistics-take-2.html#cb668-7" tabindex="-1"></a><span class="co"># now make a list of values for your categorical variable</span></span>
+<span id="cb668-8"><a href="inferential-statistics-take-2.html#cb668-8" tabindex="-1"></a><span class="co"># this should respect the order of the lists you made above</span></span>
+<span id="cb668-9"><a href="inferential-statistics-take-2.html#cb668-9" tabindex="-1"></a>school <span class="ot">&lt;-</span> <span class="fu">c</span>( <span class="fu">rep</span>(<span class="st">&quot;msu&quot;</span>, <span class="dv">10</span>), <span class="fu">rep</span>(<span class="st">&quot;um&quot;</span>, <span class="dv">10</span>), <span class="fu">rep</span>(<span class="st">&quot;fvcc&quot;</span>, <span class="dv">10</span>))</span>
+<span id="cb668-10"><a href="inferential-statistics-take-2.html#cb668-10" tabindex="-1"></a><span class="co"># now make a dataframe/tibble with these two lists as columns.</span></span>
+<span id="cb668-11"><a href="inferential-statistics-take-2.html#cb668-11" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>( school, scores)</span>
+<span id="cb668-12"><a href="inferential-statistics-take-2.html#cb668-12" tabindex="-1"></a><span class="fu">head</span>(df)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 2
+##   school scores
+##   &lt;chr&gt;   &lt;dbl&gt;
+## 1 msu        85
+## 2 msu        86
+## 3 msu        86
+## 4 msu        78
+## 5 msu        88
+## 6 msu        83</code></pre>
+<p>The output of these two processes look different, but that’s only because they are sorted differently. Each score value from the MSU column in the original data set is represented in the <code>scores</code> column in a row with <code>school == 'msu'</code>.</p>
+<p>Now we can easily run our desired ANOVA test</p>
+<div class="sourceCode" id="cb670"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb670-1"><a href="inferential-statistics-take-2.html#cb670-1" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">aov</span>(scores <span class="sc">~</span> school, <span class="at">data =</span> df) </span>
+<span id="cb670-2"><a href="inferential-statistics-take-2.html#cb670-2" tabindex="-1"></a></span>
+<span id="cb670-3"><a href="inferential-statistics-take-2.html#cb670-3" tabindex="-1"></a>results <span class="sc">%&gt;%</span>  <span class="fu">summary</span>()</span></code></pre></div>
+<pre><code>##             Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+## school       2  254.1  127.03    11.1 0.000303 ***
+## Residuals   27  308.9   11.44                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Low and behold, the data provide evidence of an association between school and statistics proficiency. We’ll look at the coefficients to try to get some idea about how the school’s averages differ.</p>
+<div class="sourceCode" id="cb672"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb672-1"><a href="inferential-statistics-take-2.html#cb672-1" tabindex="-1"></a>results<span class="sc">$</span>coefficients</span></code></pre></div>
+<pre><code>## (Intercept)   schoolmsu    schoolum 
+##        85.3        -1.9        -6.9</code></pre>
+<p>This gives a point estimate for each school’s average test score with FVCC having the highest at 85.3. According to this fabricated data, MSU and UM STAT216 students do not score as high, on average. This is, of course, completely made up.</p>
+<p>On a closing note for the chapter, recall that one goal of statistical inference is detecting relationships between variables. In this chapter we encountered many different ways to do this.</p>
+<ul>
+<li><p>2-sample proportion tests check for associations between two (binary) categorical variables.</p></li>
+<li><p>chi-squared tests of independence check for associations between two categorical variables</p></li>
+<li><p>2-sample t-tests check for an association between a (binary) categorical variable and a numerical variable</p></li>
+<li><p>ANOVA tests for an association between a categorical variable and a numerical variable.</p></li>
+</ul>
+<p>You may notice here that we have so far skipped testing for an association between two numerical variables. The main reason for this is that these associations can be somewhat more complicated than those we’ve check already. However, you’ve likely already seen one of the main tools for this task: linear regression. The next chapter discusses linear regression and describes how to use R to perform regression tasks.</p>
 
 </div>
 </div>

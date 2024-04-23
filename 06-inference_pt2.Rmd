@@ -867,4 +867,84 @@ What does this relationship actually look like? Well, since we're looking for di
 test$coefficients
 ```
 
-[To be continued]
+Notice that the religions in the output above are ordered alphabetically and that "Atheist/agnostic" is conspicuously missing. This is the religion corresponding to the intercept value. In particular, `(Intercept)` reports the average daily TV hours that Atheist/agnostic identifiers watch. The other coefficients report the change from the Atheist/agnostic group to the group in question's average. For example, the `religBuddhism` coefficient is -0.335515995, which means that the average daily TV hours Buddhists watch is about $2.718232044 - 0.335515995 = 2.382716$. Is this a significant difference? That's a separate hypothesis test. However, from the results of our ANOVA test, we can conclude that some pair of religions watch different amounts of TV on average. One can use techniques that we won't cover in this class to identify which groups deviate.
+
+One obstacle that you may encounter "out in the wild" (on your homework, for instance) is that data you are provided or collect on your own is not formatted appropriately for using the `aov` function. Notice that the input requires the categorical explanatory variable to be in one column and the explanatory response to be in another. Sometimes your data is not presented in this way.
+
+For example, suppose 10 students were randomly selected from FVCC, UM, and MSU at the end of STAT216 to take a statistics proficiency exam.  
+
+We want to compare the average exam scores for these schools. An ANOVA test is just the ticket to compare these schools. The null and alternative hypothesis are as follows.
+
+- $H_0$: there is no association between stats proficiency and school.
+
+- $H_0$: there is an association between stats proficiency and school. 
+
+Imagine that the exams are scored and you're given the data below.
+
+```{r echo=FALSE}
+msu = round(rnorm(10, mean = 82, sd = 4))
+um = round(rnorm(10, mean = 79, sd = 4))
+fvcc = round(rnorm(10, mean = 84, sd = 4))
+df <- tibble( msu = msu, um = um, fvcc = fvcc)
+df %>% kable()
+```
+
+You want to run an ANOVA test, but recognize that the numerical variable is split between 3 columns and that each column name is actually a value of the `school` variable! This will not do for using the `aov` function. The solution is reformatting the data appropriately. 
+
+If your data is already loaded into R, you can use the `pivot_longer` function from the `tidyverse` package. Here, our data set is called `df`. This function takes the column names and turns them into column values, just as desired.
+
+```{r}
+df <- df %>% 
+  pivot_longer(cols = 1:3 #selects columns 1-3 for the values
+               , names_to = 'school' # the name of the new column
+               , values_to = 'score')
+head(df) # returns first 6 results to inspect formatting. 
+```
+
+Now, if your data isn't in R already, you need to get in in here somehow. In an ideal world, you will have the data in a CSV file or some other spreadsheet-type file. The world is not ideal, however, so sometimes you have to enter the data into R. For the example we're working on, I would recommend entering your data into R in the following way. 
+
+```{r}
+# store each column as a list of numbers named evocatively
+msu <- c(85, 86, 86, 78, 88, 83, 82, 86, 83, 77)
+um <- c(80, 78, 79, 82, 76, 78, 74, 87, 74, 76)
+fvcc <- c(83, 86, 83, 88, 85, 86, 90, 86, 83, 83)
+# now make one long list of numbers
+scores <- c(msu, um, fvcc)
+# now make a list of values for your categorical variable
+# this should respect the order of the lists you made above
+school <- c( rep("msu", 10), rep("um", 10), rep("fvcc", 10))
+# now make a dataframe/tibble with these two lists as columns.
+df <- tibble( school, scores)
+head(df)
+```
+
+
+The output of these two processes look different, but that's only because they are sorted differently. Each score value from the MSU column in the original data set is represented in the `scores` column in a row with `school == 'msu'`. 
+
+Now we can easily run our desired ANOVA test
+
+```{r}
+results <- aov(scores ~ school, data = df) 
+
+results %>%  summary()
+```
+
+Low and behold, the data provide evidence of an association between school and statistics proficiency. We'll look at the coefficients to try to get some idea about how the school's averages differ. 
+
+```{r}
+results$coefficients
+```
+
+This gives a point estimate for each school's average test score with FVCC having the highest at 85.3. According to this fabricated data, MSU and UM STAT216 students do not score as high, on average. This is, of course, completely made up. 
+
+On a closing note for the chapter, recall that one goal of statistical inference is detecting relationships between variables. In this chapter we encountered many different ways to do this. 
+
+- 2-sample proportion tests check for associations between two (binary) categorical variables.
+
+- chi-squared tests of independence check for associations between two categorical variables
+
+- 2-sample t-tests check for an association between a (binary) categorical variable and a numerical variable
+
+- ANOVA tests for an association between a categorical variable and a numerical variable. 
+
+You may notice here that we have so far skipped testing for an association between two numerical variables. The main reason for this is that these associations can be somewhat more complicated than those we've check already. However, you've likely already seen one of the main tools for this task: linear regression. The next chapter discusses linear regression and describes how to use R to perform regression tasks. 
