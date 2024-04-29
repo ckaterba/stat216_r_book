@@ -243,9 +243,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="8" data-path="modeling-relationships.html"><a href="modeling-relationships.html"><i class="fa fa-check"></i><b>8</b> Modeling relationships</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="modeling-relationships.html"><a href="modeling-relationships.html#simple-linear-regression"><i class="fa fa-check"></i><b>8.1</b> Simple linear regression</a></li>
+<li class="chapter" data-level="8.1" data-path="modeling-relationships.html"><a href="modeling-relationships.html#simple-linear-regression"><i class="fa fa-check"></i><b>8.1</b> Simple linear regression</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="modeling-relationships.html"><a href="modeling-relationships.html#the-basics"><i class="fa fa-check"></i><b>8.1.1</b> The basics</a></li>
+<li class="chapter" data-level="8.1.2" data-path="modeling-relationships.html"><a href="modeling-relationships.html#model-fit"><i class="fa fa-check"></i><b>8.1.2</b> Model fit</a></li>
+<li class="chapter" data-level="8.1.3" data-path="modeling-relationships.html"><a href="modeling-relationships.html#hypothesis-testing-5"><i class="fa fa-check"></i><b>8.1.3</b> Hypothesis testing</a></li>
+<li class="chapter" data-level="8.1.4" data-path="modeling-relationships.html"><a href="modeling-relationships.html#prediction"><i class="fa fa-check"></i><b>8.1.4</b> Prediction</a></li>
+</ul></li>
 <li class="chapter" data-level="8.2" data-path="modeling-relationships.html"><a href="modeling-relationships.html#multiple-linear-regression"><i class="fa fa-check"></i><b>8.2</b> Multiple linear regression</a></li>
-<li class="chapter" data-level="8.3" data-path="modeling-relationships.html"><a href="modeling-relationships.html#bonus-topic-logistic-regression"><i class="fa fa-check"></i><b>8.3</b> Bonus topic: logistic regression</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -270,15 +275,178 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="modeling-relationships" class="section level1 hasAnchor" number="8">
 <h1><span class="header-section-number">Chapter 8</span> Modeling relationships<a href="modeling-relationships.html#modeling-relationships" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>To do</p>
+<p>One crucial goal of inferential statistics is the attempt to detect relationships between variables. This goal is missing a conspicuous piece, however. Namely, if we detect a relationship between two variables, what does that relationship actually look like? This is where modeling comes in. A <strong>model</strong> is a precise mathematical description that approximates the relationship between two (or more) variables. Among other things, a model should be able to generate predictions/forecasts at different values for the explanatory variable(s).</p>
+<p>If we think in terms of inputs and outputs, or <strong>explanatory variables</strong> and <strong>response variables</strong> and think back to what we’ve covered so far, we have actually been modeling relationships; it’s just that these models have been quite simple. For instance, you can think of a two-sample t-test as a way to test for an association between a two-valued categorical explanatory variable and a numerical response variable. If we detect an association, what would the corresponding model be? The input/explanatory variable is just one of two values and response would simply be an estimate of that average value of the response variable for that specific input.</p>
+<p>As an example, imagine we hypothesize a relationship between cola preference and statistical aptitude. To test this, we sample 35 Pepsi drinkers and 35 Coke drinkers, then give them all a statistics test. We go through a two-sample t-test and determine that, in fact, there is a relationship between cola preference and statistical aptitude. After making this determination, how would you estimate the statistical aptitude of a Coke drinker? It turns out your best, most reliable guess (at least as a point estimate) would be to use the average score of Coke drinkers. What we’re describing here is a model and we can think of it as a function</p>
+<p><span class="math display">\[f \colon \{Pepsi, Coke\}  = \begin{cases}
+\overline{x}_{Pepsi} &amp; \text{if } Pepsi \\
+\overline{x}_{Coke} &amp; \text{if } Coke
+\end{cases}\]</span></p>
+<p>You may be thinking “This seems to make things more complicated than it needs to be” and you are probably right to a certain degree. But the hope is that this perspective frames everything we’ve done in a way that makes the rest of what we’ll do make more sense.</p>
+<p>In what comes we will finally start investigating relationships where one has a numerical explanatory variable and a numerical response variable. Our main tool for this investigation will be <strong>linear regression</strong> which is likely something you’ve seen before. Our hope is that the following chapter will soup up your understanding of linear regression and clarify some of the statistical ideas underpinning this tool. We will try to keep the formulas and math to a minimum, but a few will be necessary along the way.</p>
 <div id="simple-linear-regression" class="section level2 hasAnchor" number="8.1">
 <h2><span class="header-section-number">8.1</span> Simple linear regression<a href="modeling-relationships.html#simple-linear-regression" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="the-basics" class="section level3 hasAnchor" number="8.1.1">
+<h3><span class="header-section-number">8.1.1</span> The basics<a href="modeling-relationships.html#the-basics" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Relationships between numerical variables can take on many different forms, so we will start with the most simple and most common type: linear relationships. Recall that a relationship between numerical variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> is linear if
+<span class="math display">\[ Y = mX + b \text{ or to make it more statistical  } Y = \beta_0 + \beta_1 X + \epsilon. \]</span></p>
+<p>The coefficients <span class="math inline">\(\beta_i\)</span> are <em>population parameters</em> and <span class="math inline">\(\epsilon\)</span> represents some random normally distributed noise with a mean of zero and a fixed standard deviation. This is meant to explain, to some extent, the data we witness when we are out in the wild; we almost never see the perfect linear relationships idealized by mathematics and there is almost always some noise that scatters data “around the true line.” The scatter plot below helps to visualize one possible relationship (this is using the <code>res_demo_1</code> data set from the <code>openintro</code> package).</p>
+<div class="sourceCode" id="cb675"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb675-1"><a href="modeling-relationships.html#cb675-1" tabindex="-1"></a><span class="fu">ggplot</span>(res_demo_1, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y_lin)) <span class="sc">+</span> </span>
+<span id="cb675-2"><a href="modeling-relationships.html#cb675-2" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb675-3"><a href="modeling-relationships.html#cb675-3" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&#39;A simulated linear relationship&#39;</span> )</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-400-1.png" width="672" /></p>
+<p>As usual, we almost never know the population parameters, so we need some way to estimate them. This is where linear regression comes in as it is a procedure that generates point estimates for the slope any vertical intercepts of a linear relationship between two variables. Very briefly and roughly, linear regression finds the coefficients of a line that is “simultaneously closest to all data points.” To make this more precise, we need to introduce some terminology.</p>
+<p>Suppose you have a collection of sample data <span class="math inline">\(S = \{(x_1, y_1), \ldots,(x_n,y_n) \}\)</span> and a line $ y= mx + b$ modeling the relationship between your <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> values. The <span class="math inline">\(i^{th}\)</span> residual of this model is
+<span class="math display">\[ e_i = y_i - (mx_i + b) \]</span>
+giving the “leftovers” of the data from the model fit. If <span class="math inline">\(e_i &gt; 0\)</span> then your model under estimated <span class="math inline">\(y_i\)</span> and if <span class="math inline">\(e_i &lt; 0\)</span> your model over estimated the data. Let’s make a guess for our simulation with the line <span class="math inline">\(y = -10 + 3.25x\)</span>. We’ll add our y estimates and a helper variable whose value depends only on the sign of the residual.</p>
+<div class="sourceCode" id="cb676"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb676-1"><a href="modeling-relationships.html#cb676-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> res_demo_1  <span class="sc">%&gt;%</span></span>
+<span id="cb676-2"><a href="modeling-relationships.html#cb676-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">y_guess =</span> <span class="sc">-</span><span class="dv">10</span> <span class="sc">+</span> <span class="fl">3.25</span><span class="sc">*</span>x</span>
+<span id="cb676-3"><a href="modeling-relationships.html#cb676-3" tabindex="-1"></a>         , <span class="at">residual =</span> y_lin <span class="sc">-</span> y_guess</span>
+<span id="cb676-4"><a href="modeling-relationships.html#cb676-4" tabindex="-1"></a>         , <span class="at">residual_grp =</span> <span class="fu">if_else</span>(y_lin <span class="sc">-</span> y_guess <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="st">&#39;under&#39;</span>, <span class="st">&#39;over&#39;</span>))</span></code></pre></div>
+<p>Now let’s plot our estimated values, <code>y_gess</code>, the original data <code>y_lin</code>, and the residuals as vertical lines. The residuals have different colors depending on whether the original data lies above or below the line.</p>
+<div class="sourceCode" id="cb677"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb677-1"><a href="modeling-relationships.html#cb677-1" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y_lin)) <span class="sc">+</span> </span>
+<span id="cb677-2"><a href="modeling-relationships.html#cb677-2" tabindex="-1"></a>  <span class="fu">geom_point</span>( <span class="at">color =</span> <span class="st">&#39;black&#39;</span>) <span class="sc">+</span> </span>
+<span id="cb677-3"><a href="modeling-relationships.html#cb677-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y_guess), <span class="at">color =</span> <span class="st">&#39;black&#39;</span>, <span class="at">shape =</span> <span class="dv">1</span> ) <span class="sc">+</span></span>
+<span id="cb677-4"><a href="modeling-relationships.html#cb677-4" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">xend =</span> x, <span class="at">yend =</span> y_guess,  <span class="at">color =</span> residual_grp) ) <span class="sc">+</span></span>
+<span id="cb677-5"><a href="modeling-relationships.html#cb677-5" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&#39;An eyeballed line with residuals&#39;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-402-1.png" width="672" /></p>
+<p>Our line looks like a reasonable fit, but we also may have a suspicion that we could do better. We have to clear about what exactly we mean by better here. We don’t want to force the line to go through any specific points, but we want the residuals to be small. This means we should look for a line that <em>minimizes</em> the residuals. As we can see from the plot above, residuals can be both positive and negative, so we don’t want to try to minimize the sum of the residuals. Instead, we want to minimize the sum of squared error:</p>
+<p><span class="math display">\[ SSE = \sum_{i=1}^n e_i^2 \]</span></p>
+<p>We will skip the details, but <em>linear regression</em> produces the coefficients of the <strong>line of best fit</strong>, the line minimizing the SSE above. Looking at the plot above, you might suspect the line of best fit has a slightly smaller slope and a slightly larger vertical intercept. The plot below will compare our eyeballed guess line from above to the actual line of best fit.</p>
+<div class="sourceCode" id="cb678"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb678-1"><a href="modeling-relationships.html#cb678-1" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y_lin))<span class="sc">+</span></span>
+<span id="cb678-2"><a href="modeling-relationships.html#cb678-2" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb678-3"><a href="modeling-relationships.html#cb678-3" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="fl">3.25</span>, <span class="at">intercept =</span> <span class="sc">-</span><span class="dv">10</span>, <span class="at">color =</span> <span class="st">&#39;red&#39;</span>)  <span class="sc">+</span></span>
+<span id="cb678-4"><a href="modeling-relationships.html#cb678-4" tabindex="-1"></a>  <span class="co"># the next line adds the true line of best fit</span></span>
+<span id="cb678-5"><a href="modeling-relationships.html#cb678-5" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&#39;lm&#39;</span>, <span class="at">se =</span> F) <span class="sc">+</span></span>
+<span id="cb678-6"><a href="modeling-relationships.html#cb678-6" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&#39;Our guess compared to the real line of best fit&#39;</span>)</span></code></pre></div>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<p><img src="_main_files/figure-html/unnamed-chunk-403-1.png" width="672" /></p>
+<p>How can you actually find the line of best fit? <code>R</code> makes it quite easy! The syntax is almost identical to that which we used to run ANOVA tests in the last chapter, just with a different command. The basic syntax is</p>
+<div class="sourceCode" id="cb680"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb680-1"><a href="modeling-relationships.html#cb680-1" tabindex="-1"></a>lin.model <span class="ot">&lt;-</span> <span class="fu">lm</span>( y <span class="sc">~</span> x, <span class="at">data =</span> df)</span></code></pre></div>
+<p>and this generates a model object and stores it as the value <code>lin.model</code>. Once you’ve done this, you can inspect the details with</p>
+<div class="sourceCode" id="cb681"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb681-1"><a href="modeling-relationships.html#cb681-1" tabindex="-1"></a><span class="fu">summary</span>(lin.model)</span></code></pre></div>
+<p>Let’s run this on our simulated example and inspect the output.</p>
+<div class="sourceCode" id="cb682"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb682-1"><a href="modeling-relationships.html#cb682-1" tabindex="-1"></a>lin.model <span class="ot">&lt;-</span> <span class="fu">lm</span>( y_lin <span class="sc">~</span> x, <span class="at">data =</span> df)</span>
+<span id="cb682-2"><a href="modeling-relationships.html#cb682-2" tabindex="-1"></a><span class="fu">summary</span>(lin.model)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = y_lin ~ x, data = df)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -49.674 -11.216   1.234  10.311  41.593 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  2.43743    3.64257   0.669    0.505    
+## x            3.03273    0.06262  48.429   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 18.08 on 98 degrees of freedom
+## Multiple R-squared:  0.9599, Adjusted R-squared:  0.9595 
+## F-statistic:  2345 on 1 and 98 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>We will unpack most of the values throughout the rest of the chapter, but the first thing we want to notice is the <code>Estimate</code> column in the <code>Coefficients</code> table. Here you can read off the vertical intercept and the slope of the regression line. Thus, the line of best fit is</p>
+<p><span class="math display">\[ \hat{y} = b_0 + b_1 x \approx 2.44 + 3.03x\]</span></p>
+<p>Above we claimed that the line of best fit minimized the sum of squared error. Let’s see that this line of best fit has a smaller SSE than our eyeballed line from above.</p>
+<div class="sourceCode" id="cb684"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb684-1"><a href="modeling-relationships.html#cb684-1" tabindex="-1"></a><span class="co"># SSE of line of best fit</span></span>
+<span id="cb684-2"><a href="modeling-relationships.html#cb684-2" tabindex="-1"></a><span class="fu">sum</span>(lin.model<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 32022.14</code></pre>
+<div class="sourceCode" id="cb686"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb686-1"><a href="modeling-relationships.html#cb686-1" tabindex="-1"></a><span class="co"># SSE of our eyeballed line</span></span>
+<span id="cb686-2"><a href="modeling-relationships.html#cb686-2" tabindex="-1"></a><span class="fu">sum</span>(df<span class="sc">$</span>residual<span class="sc">^</span><span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 36170.27</code></pre>
+<p>As claimed, our eyeballed fit has a hire sum of squared error.</p>
+<p>To close this quick introduction, let’s look at some real data. The data set <code>satgpa</code> from the <code>openintro</code> package provides information on 1000 randomly sampled students from an unnamed college. Let’s suppose we’re interested in the relationship between a student’s SAT verbal score and their math score, both given as percentiles. We postulate that there is an association between these variables. More specifically, we postulate that there is a positive association between these variables: on average, as a student’s SAT verbal score increases, so does their math score. The scatter plot below plots these variables against each other and includes a regression line.</p>
+<div class="sourceCode" id="cb688"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb688-1"><a href="modeling-relationships.html#cb688-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> satgpa,  <span class="fu">aes</span>(<span class="at">x =</span> sat_v, <span class="at">y =</span> sat_m) ) <span class="sc">+</span></span>
+<span id="cb688-2"><a href="modeling-relationships.html#cb688-2" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> .<span class="dv">25</span>) <span class="sc">+</span> <span class="co">#this makes the dots transparent so that repeats are clearer in the image</span></span>
+<span id="cb688-3"><a href="modeling-relationships.html#cb688-3" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&#39;lm&#39;</span>, <span class="at">se =</span> F) <span class="sc">+</span> </span>
+<span id="cb688-4"><a href="modeling-relationships.html#cb688-4" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;SAT Scores: Math vs Verbal&quot;</span>) <span class="sc">+</span></span>
+<span id="cb688-5"><a href="modeling-relationships.html#cb688-5" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&#39;Verbal&#39;</span>) <span class="sc">+</span> </span>
+<span id="cb688-6"><a href="modeling-relationships.html#cb688-6" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&#39;Math&#39;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-408-1.png" width="672" /></p>
+<p>As we hypothesized, there does appear to be a moderately strong positive linear association between these variables, though the fit of our line doesn’t seem as good as the fit of the line of best fit in our simulated example. In the next section, we will learn about two ways to measure the strength of a model’ fit.</p>
+</div>
+<div id="model-fit" class="section level3 hasAnchor" number="8.1.2">
+<h3><span class="header-section-number">8.1.2</span> Model fit<a href="modeling-relationships.html#model-fit" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We have two primary measurements for assessing the strength of a linear model: the correlation coefficient <span class="math inline">\(R\)</span> and the coefficient of determination <span class="math inline">\(R^2\)</span>. It will come as no surprise that the coefficient of determination really is just the square of the correlation coefficient, but it ends up having a nicer or more convenient interpretation and generalizes more readily to other types of models, so we tend to report the <span class="math inline">\(R^2\)</span> over <span class="math inline">\(R\)</span>.</p>
+<p>The correlation coefficient <span class="math inline">\(R\)</span> is a number in the interval <span class="math inline">\([-1,1]\)</span>.</p>
+<ul>
+<li><p>If <span class="math inline">\(|R| = 1\)</span>, then your data exhibits a perfect linear association.</p></li>
+<li><p>If <span class="math inline">\(R = 0\)</span>, then your data does not exhibit any <em>linear</em> association. Be careful, you could have some nonlinear association on your hands.</p></li>
+<li><p>The sign of the correlation coefficient gives you the direction of the association: If <span class="math inline">\(R &gt;0\)</span>, then you have a positive association and if <span class="math inline">\(R &lt; 0\)</span>, you have a negative association.</p></li>
+</ul>
+<p><img src="_main_files/figure-html/unnamed-chunk-409-1.png" width="672" /></p>
+<p>The plots above show a handful of relationships between the variables <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> and the title of each plot indicates how these values were created, so ‘pos’ is intended to have a positive linear relationship, ‘exp’ is sample from an exponential relationship, ‘circle’ gives points sample from a circle with radius 1, etc. The table below gives the correlation coefficients of each of these plots. You should check to make sure that these values correspond with your intuition.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">grp</th>
+<th align="right">cor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">circle</td>
+<td align="right">-0.1812696</td>
+</tr>
+<tr class="even">
+<td align="left">exp</td>
+<td align="right">-0.8958734</td>
+</tr>
+<tr class="odd">
+<td align="left">neg</td>
+<td align="right">-0.9771810</td>
+</tr>
+<tr class="even">
+<td align="left">none</td>
+<td align="right">-0.1591399</td>
+</tr>
+<tr class="odd">
+<td align="left">pos</td>
+<td align="right">0.8679997</td>
+</tr>
+<tr class="even">
+<td align="left">quad</td>
+<td align="right">0.0000000</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="hypothesis-testing-5" class="section level3 hasAnchor" number="8.1.3">
+<h3><span class="header-section-number">8.1.3</span> Hypothesis testing<a href="modeling-relationships.html#hypothesis-testing-5" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+</div>
+<div id="prediction" class="section level3 hasAnchor" number="8.1.4">
+<h3><span class="header-section-number">8.1.4</span> Prediction<a href="modeling-relationships.html#prediction" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p>interpolation vs extrapolation</p></li>
+<li><p>confidence intervals</p></li>
+<li><p>prediction intervals</p></li>
+</ul>
+</div>
 </div>
 <div id="multiple-linear-regression" class="section level2 hasAnchor" number="8.2">
 <h2><span class="header-section-number">8.2</span> Multiple linear regression<a href="modeling-relationships.html#multiple-linear-regression" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-</div>
-<div id="bonus-topic-logistic-regression" class="section level2 hasAnchor" number="8.3">
-<h2><span class="header-section-number">8.3</span> Bonus topic: logistic regression<a href="modeling-relationships.html#bonus-topic-logistic-regression" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb689"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb689-1"><a href="modeling-relationships.html#cb689-1" tabindex="-1"></a><span class="fu">lm</span>(fy_gpa <span class="sc">~</span> sat_v <span class="sc">+</span> sat_m <span class="sc">+</span> hs_gpa, <span class="at">data =</span> satgpa) <span class="sc">%&gt;%</span> <span class="fu">summary</span>()</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = fy_gpa ~ sat_v + sat_m + hs_gpa, data = satgpa)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.10154 -0.35893  0.02541  0.41321  1.61394 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -0.866927   0.149202  -5.810 8.38e-09 ***
+## sat_v        0.016459   0.002648   6.215 7.55e-10 ***
+## sat_m        0.012398   0.002601   4.766 2.16e-06 ***
+## hs_gpa       0.580068   0.038463  15.081  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.5942 on 996 degrees of freedom
+## Multiple R-squared:  0.3586, Adjusted R-squared:  0.3567 
+## F-statistic: 185.6 on 3 and 996 DF,  p-value: &lt; 2.2e-16</code></pre>
 
 </div>
 </div>

@@ -243,9 +243,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="8" data-path="modeling-relationships.html"><a href="modeling-relationships.html"><i class="fa fa-check"></i><b>8</b> Modeling relationships</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="modeling-relationships.html"><a href="modeling-relationships.html#simple-linear-regression"><i class="fa fa-check"></i><b>8.1</b> Simple linear regression</a></li>
+<li class="chapter" data-level="8.1" data-path="modeling-relationships.html"><a href="modeling-relationships.html#simple-linear-regression"><i class="fa fa-check"></i><b>8.1</b> Simple linear regression</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="modeling-relationships.html"><a href="modeling-relationships.html#the-basics"><i class="fa fa-check"></i><b>8.1.1</b> The basics</a></li>
+<li class="chapter" data-level="8.1.2" data-path="modeling-relationships.html"><a href="modeling-relationships.html#model-fit"><i class="fa fa-check"></i><b>8.1.2</b> Model fit</a></li>
+<li class="chapter" data-level="8.1.3" data-path="modeling-relationships.html"><a href="modeling-relationships.html#hypothesis-testing-5"><i class="fa fa-check"></i><b>8.1.3</b> Hypothesis testing</a></li>
+<li class="chapter" data-level="8.1.4" data-path="modeling-relationships.html"><a href="modeling-relationships.html#prediction"><i class="fa fa-check"></i><b>8.1.4</b> Prediction</a></li>
+</ul></li>
 <li class="chapter" data-level="8.2" data-path="modeling-relationships.html"><a href="modeling-relationships.html#multiple-linear-regression"><i class="fa fa-check"></i><b>8.2</b> Multiple linear regression</a></li>
-<li class="chapter" data-level="8.3" data-path="modeling-relationships.html"><a href="modeling-relationships.html#bonus-topic-logistic-regression"><i class="fa fa-check"></i><b>8.3</b> Bonus topic: logistic regression</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -271,7 +276,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">R and RStudio for STAT216</h1>
 <p class="author"><em>Charles Katerba</em></p>
-<p class="date"><em>Last update: 2024-04-23</em></p>
+<p class="date"><em>Last update: 2024-04-29</em></p>
 </div>
 <div id="about" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">Chapter 1</span> About<a href="index.html#about" class="anchor-section" aria-label="Anchor link to header"></a></h1>
@@ -312,7 +317,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p><strong>Files/plots window:</strong> The files tab shows all of the files present in your current working directory. We don’t need to talk much about file management here and will cover it as needed in the future. When you make quick plots, they will appear under the plot tab. For example, evaluating</p></li>
 </ol>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">rnorm</span>(<span class="dv">10</span>), <span class="fu">rnorm</span>(<span class="dv">10</span>))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-18-1.png" width="672" />
+<p><img src="_main_files/figure-html/unnamed-chunk-82-1.png" width="672" />
 in the console will produce a plot similar to the one above in the Plots panel. This little bit of code generates 2 collections of 10 random numbers and makes a scatter plot of the results.</p>
 <ol start="3" style="list-style-type: decimal">
 <li><strong>Environment window:</strong> This window displays the names of the objects you have stored in your computer’s memory. As an example, if you evaluate <code>x &lt;- rnorm(10)</code>, you will see the value <code>x</code> appear in the Environment tab. It is good to check the values you have stored when you’re running into problems with your code.</li>

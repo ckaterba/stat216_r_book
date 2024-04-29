@@ -90,5 +90,8 @@ paired-data-1
 analysis-of-variance-anova-1
 modeling-relationships
 simple-linear-regression
+the-basics
+model-fit
+hypothesis-testing-5
+prediction
 multiple-linear-regression
-bonus-topic-logistic-regression
